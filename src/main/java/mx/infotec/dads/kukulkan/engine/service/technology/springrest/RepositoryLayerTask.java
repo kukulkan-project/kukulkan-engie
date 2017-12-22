@@ -24,7 +24,7 @@
 package mx.infotec.dads.kukulkan.engine.service.technology.springrest;
 
 import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.addCommonDataModelElements;
-import static mx.infotec.dads.kukulkan.engine.util.JavaFileNameParser.formatToPackageStatement;
+import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,12 +34,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
-import mx.infotec.dads.kukulkan.engine.util.BasePathEnum;
-import mx.infotec.dads.kukulkan.engine.util.NameConventions;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
 
 /**
  * Repository Layer Task

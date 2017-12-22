@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import mx.infotec.dads.kukulkan.engine.util.KukulkanConfigurationProperties;
+import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })

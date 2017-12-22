@@ -20,7 +20,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.github.mongobee.Mongobee;
 import com.mongodb.MongoClient;
-import mx.infotec.dads.kukulkan.engine.util.JSR310DateConverters;
+
+import mx.infotec.dads.kukulkan.metamodel.util.JSR310DateConverters;
 
 @Configuration
 @EnableMongoRepositories(basePackages = { "mx.infotec.dads.kukulkan.engine.repository" })

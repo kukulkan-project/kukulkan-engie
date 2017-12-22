@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 
 /**
  * Generation service for java applications

@@ -23,8 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.layers;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.ArchetypeType;
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ArchetypeType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 
 /**
  * LayerTask used for generate a layer task

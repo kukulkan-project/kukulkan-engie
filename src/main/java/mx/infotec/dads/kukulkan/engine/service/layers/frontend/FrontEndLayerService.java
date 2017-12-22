@@ -3,9 +3,9 @@ package mx.infotec.dads.kukulkan.engine.service.layers.frontend;
 import java.util.Collection;
 import java.util.Map;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
-import mx.infotec.dads.kukulkan.engine.domain.core.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
 public interface FrontEndLayerService {
 

@@ -23,13 +23,13 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.layers.web;
 
-import static mx.infotec.dads.kukulkan.engine.domain.editor.EditorFactory.createDefaultAceEditor;
-import static mx.infotec.dads.kukulkan.engine.domain.editor.LanguageType.JAVA;
 import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.PACKAGE_PROPERTY;
 import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.PACKAGE_SIMPLE_FORMAT_PROPERTY;
-import static mx.infotec.dads.kukulkan.engine.util.JavaFileNameParser.formatToPackageStatement;
-import static mx.infotec.dads.kukulkan.engine.util.JavaFileNameParser.replaceDotBySlash;
-import static mx.infotec.dads.kukulkan.engine.util.JavaFileNameParser.replaceSlashByDot;
+import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
+import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
+import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
+import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.replaceDotBySlash;
+import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.replaceSlashByDot;
 
 import java.util.Collection;
 import java.util.Map;
@@ -39,13 +39,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
-import mx.infotec.dads.kukulkan.engine.util.BasePathEnum;
-import mx.infotec.dads.kukulkan.engine.util.NameConventions;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
 
 /**
  * Service Layer Task

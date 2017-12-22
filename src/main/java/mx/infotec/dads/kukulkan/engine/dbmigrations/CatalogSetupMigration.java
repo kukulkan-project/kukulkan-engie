@@ -1,23 +1,23 @@
 package mx.infotec.dads.kukulkan.engine.dbmigrations;
 
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createDefaultDataStoreType;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createGrammarDataStoreType;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createDefaultPluralRuleType;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createDefaultSingularRuleType;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createEsRule;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createOsRule;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createGrammarDataStore;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createTestDataStore;
-import static mx.infotec.dads.kukulkan.engine.util.EntitiesFactory.createAtlasDataStore;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createAtlasDataStore;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createDefaultDataStoreType;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createDefaultPluralRuleType;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createDefaultSingularRuleType;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createEsRule;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createGrammarDataStore;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createGrammarDataStoreType;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createOsRule;
+import static mx.infotec.dads.kukulkan.metamodel.util.EntitiesFactory.createTestDataStore;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.github.mongobee.changeset.ChangeLog;
 import com.github.mongobee.changeset.ChangeSet;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DataStore;
-import mx.infotec.dads.kukulkan.engine.domain.core.DataStoreType;
-import mx.infotec.dads.kukulkan.engine.domain.core.RuleType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DataStore;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DataStoreType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.RuleType;
 
 /**
  * Creates the initial database setup

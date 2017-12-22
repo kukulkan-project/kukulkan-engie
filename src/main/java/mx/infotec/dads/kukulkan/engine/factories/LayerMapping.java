@@ -21,34 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.domain.core;
+package mx.infotec.dads.kukulkan.engine.factories;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ArchetypeType;
 
 /**
- * AbstractDescription
+ * DataMapping utility class
  * 
  * @author Daniel Cortes Pichardo
- * @since essence 1.1
- * @version 1.1
+ *
  */
-public abstract class AbstractDescription {
+public class LayerMapping {
 
-    private String name;
-    private String description;
+	private LayerMapping() {
 
-    public String getName() {
-        return name;
-    }
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+	public static List<LayerTask> createLaterTaskList(Map<String, LayerTask> map, ArchetypeType archetype) {
+		List<LayerTask> layerTaskList = new ArrayList<>();
+		map.entrySet().forEach(layerTaskEntry -> {
+			if (layerTaskEntry.getValue().getArchetype().equals(archetype)) {
+				layerTaskList.add(layerTaskEntry.getValue());
+			}
+		});
+		return layerTaskList;
+	}
 }

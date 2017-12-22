@@ -25,8 +25,8 @@ package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.List;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 
 /**
  * The Generation Service is the main service used to run the whole engine

@@ -25,8 +25,8 @@ package mx.infotec.dads.kukulkan.engine.factories;
 
 import java.util.List;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.ArchetypeType;
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ArchetypeType;
 
 /**
  * LayerTaskFactory

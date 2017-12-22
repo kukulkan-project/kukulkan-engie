@@ -29,10 +29,10 @@ import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.addCommo
 import java.util.Collection;
 import java.util.Map;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelGroup;
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
-import mx.infotec.dads.kukulkan.engine.domain.core.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
 /**
  * Abstract Template ControllerLayerTask

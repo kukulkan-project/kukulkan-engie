@@ -23,10 +23,10 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.technology.springrest;
 
-import static mx.infotec.dads.kukulkan.engine.domain.editor.EditorFactory.createDefaultAceEditor;
-import static mx.infotec.dads.kukulkan.engine.domain.editor.LanguageType.HTML;
-import static mx.infotec.dads.kukulkan.engine.util.BasePathEnum.WEB_INDEX;
-import static mx.infotec.dads.kukulkan.engine.util.NameConventionFormatter.camelCaseToHyphens;
+import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.HTML;
+import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
+import static mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum.WEB_INDEX;
+import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.camelCaseToHyphens;
 
 import java.util.Collection;
 import java.util.Map;
@@ -36,15 +36,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModel;
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
-import mx.infotec.dads.kukulkan.engine.domain.core.ProjectConfiguration;
-import mx.infotec.dads.kukulkan.engine.domain.editor.LanguageType;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.TemplateFormatter;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
-import mx.infotec.dads.kukulkan.engine.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.metamodel.editor.LanguageType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 
 /**
  * Service Layer Task

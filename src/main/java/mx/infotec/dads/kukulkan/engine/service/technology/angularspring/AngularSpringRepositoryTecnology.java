@@ -32,15 +32,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratorContext;
-import mx.infotec.dads.kukulkan.engine.domain.core.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
 import mx.infotec.dads.kukulkan.engine.service.layers.domain.DomainLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.frontend.FrontEndLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.repository.DataAccessLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.service.BusinessLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.web.WebLayerService;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
 /**
  * Service Layer Task

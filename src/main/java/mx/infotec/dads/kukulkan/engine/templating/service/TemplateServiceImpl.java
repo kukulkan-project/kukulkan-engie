@@ -23,8 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.templating.service;
 
-import static mx.infotec.dads.kukulkan.engine.domain.editor.EditorFactory.createDefaultAceEditor;
-import static mx.infotec.dads.kukulkan.engine.domain.editor.LanguageType.JAVA;
+import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
+import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -39,15 +39,15 @@ import org.springframework.stereotype.Service;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModel;
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.core.GeneratedElement;
-import mx.infotec.dads.kukulkan.engine.domain.editor.Editor;
-import mx.infotec.dads.kukulkan.engine.util.BasePathEnum;
-import mx.infotec.dads.kukulkan.engine.util.FileUtil;
-import mx.infotec.dads.kukulkan.engine.util.KukulkanConfigurationProperties;
-import mx.infotec.dads.kukulkan.engine.util.MetaModelException;
 import mx.infotec.dads.kukulkan.engine.util.TemplateUtil;
+import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
+import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
+import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
+import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
  * 

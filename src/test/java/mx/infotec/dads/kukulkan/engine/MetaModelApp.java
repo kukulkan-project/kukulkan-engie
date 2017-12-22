@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import mx.infotec.dads.kukulkan.engine.util.KukulkanConfigurationProperties;
+import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
@@ -54,9 +54,8 @@ public class MetaModelApp {
 	 * @throws UnknownHostException
 	 *             if the local host name could not be resolved into an address
 	 */
-	public static void main(String[] args) throws UnknownHostException {
-		SpringApplication app = new SpringApplication(MetaModelApp.class);
-		Environment env = app.run(args).getEnvironment();
-	}
+//	public static void main(String[] args) throws UnknownHostException {
+//		SpringApplication app = new SpringApplication(MetaModelApp.class);
+//	}
 
 }

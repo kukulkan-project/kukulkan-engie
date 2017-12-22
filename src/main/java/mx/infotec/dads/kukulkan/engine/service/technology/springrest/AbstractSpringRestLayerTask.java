@@ -25,8 +25,8 @@ package mx.infotec.dads.kukulkan.engine.service.technology.springrest;
 
 import javax.annotation.PostConstruct;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.ArchetypeType;
 import mx.infotec.dads.kukulkan.engine.service.layers.TemplateLayerTask;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ArchetypeType;
 
 /**
  * ConacytLayerTaskVisitor, abstract Class

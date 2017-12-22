@@ -23,10 +23,10 @@
  */
 package mx.infotec.dads.kukulkan.engine.templating.service;
 
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModel;
-import mx.infotec.dads.kukulkan.engine.domain.core.DomainModelElement;
-import mx.infotec.dads.kukulkan.engine.domain.editor.Editor;
-import mx.infotec.dads.kukulkan.engine.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 
 /**
  * 
