@@ -6,7 +6,7 @@
 		<artifactId>kukulkancraftsman</artifactId>
 		<version>0.1.0</version>
 	</parent>
-	<artifactId>kukulkan-metamodel</artifactId>
+	<artifactId>kukulkan-engine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>kukulkan-metamodel</name>
 	<packaging>jar</packaging>
@@ -88,6 +88,11 @@
 		<dependency>
 			<groupId>mx.infotec.dads.kukulkan</groupId>
 			<artifactId>kukulkan-grammar</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>mx.infotec.dads.kukulkan</groupId>
+			<artifactId>kukulkan-metamodel</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
