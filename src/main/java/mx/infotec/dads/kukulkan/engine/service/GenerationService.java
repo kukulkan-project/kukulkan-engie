@@ -24,10 +24,8 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 
@@ -39,9 +37,10 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
  */
 public interface GenerationService {
 
+    void process(GeneratorContext context, Generator generator);
+
     Optional<Generator> findGeneratorByName(String name);
 
     Collection<Generator> findAllGenerators();
 
-    void process(GeneratorContext context, Generator generator);
 }

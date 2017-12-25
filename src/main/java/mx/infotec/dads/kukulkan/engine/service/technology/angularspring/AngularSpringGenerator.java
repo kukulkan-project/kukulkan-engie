@@ -3,8 +3,7 @@ package mx.infotec.dads.kukulkan.engine.service.technology.angularspring;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import mx.infotec.dads.kukulkan.metamodel.annotation.GeneratorComponent;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 
@@ -14,11 +13,11 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service
+@GeneratorComponent
 public class AngularSpringGenerator implements Generator {
 
     @Autowired
-    List<AngularSpringRepositoryTecnology> layers;
+    List<AngularSpringLayer> layers;
 
     @Override
     public String getName() {

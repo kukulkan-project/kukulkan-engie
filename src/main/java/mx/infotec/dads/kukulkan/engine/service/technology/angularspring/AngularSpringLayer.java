@@ -31,8 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.domain.DomainLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.frontend.FrontEndLayerService;
@@ -51,7 +49,7 @@ import mx.infotec.dads.kukulkan.metamodel.generator.AbstractNavigableLayer;
  *
  */
 @Component("angular-spring-layer")
-public class AngularSpringRepositoryTecnology extends AbstractNavigableLayer {
+public class AngularSpringLayer extends AbstractNavigableLayer {
     private static final String LAYER_NAME = "AngularSpring";
 
     @Autowired
@@ -74,7 +72,7 @@ public class AngularSpringRepositoryTecnology extends AbstractNavigableLayer {
     @Qualifier(LayerNameConstants.DataAccess.Repository.SERVICE_NAME)
     private DataAccessLayerService dataAccessService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngularSpringRepositoryTecnology.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AngularSpringLayer.class);
 
     @Override
     public void doBeforeProcessDataModelGroup(GeneratorContext context, Map<String, Object> model) {

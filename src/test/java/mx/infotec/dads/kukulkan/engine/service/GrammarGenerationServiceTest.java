@@ -24,7 +24,6 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,10 +34,8 @@ import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import mx.infotec.dads.kukulkan.engine.MetaModelApp;
-import mx.infotec.dads.kukulkan.engine.factories.LayerTaskFactory;
 import mx.infotec.dads.kukulkan.engine.repository.RuleRepository;
 import mx.infotec.dads.kukulkan.engine.repository.RuleTypeRepository;
-import mx.infotec.dads.kukulkan.metamodel.foundation.ArchetypeType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
@@ -51,7 +48,6 @@ import mx.infotec.dads.kukulkan.metamodel.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.metamodel.translator.dsl.KukulkanVisitor;
 import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
-import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
 import mx.infotec.dads.kukulkan.metamodel.util.PKGenerationStrategy;
 
 /**
@@ -64,72 +60,68 @@ import mx.infotec.dads.kukulkan.metamodel.util.PKGenerationStrategy;
 @SpringBootTest(classes = MetaModelApp.class)
 public class GrammarGenerationServiceTest {
 
-	@Autowired
-	private GenerationService generationService;
-	@Autowired
-	private RuleRepository ruleRepository;
-	@Autowired
-	private LayerTaskFactory layerTaskFactory;
-	@Autowired
-	private RuleTypeRepository ruleTypeRepository;
+    @Autowired
+    private GenerationService generationService;
+    @Autowired
+    private RuleRepository ruleRepository;
+    @Autowired
+    private RuleTypeRepository ruleTypeRepository;
 
-	@Autowired
-	private KukulkanConfigurationProperties prop;
-	
-	@Autowired
-	Generator generator;
+    @Autowired
+    Generator generator;
 
-	@BeforeClass
-	public static void runOnceBeforeClass() {
+    @BeforeClass
+    public static void runOnceBeforeClass() {
 
-	}
+    }
 
-	@Test
-	public void generationService() {
-		Rule rule = new Rule();
-		RuleType ruleType = ruleTypeRepository.findAll().get(0);
-		ruleType.setName("singular");
-		rule.setRuleType(ruleType);
-		Example<Rule> ruleExample = Example.of(rule);
-		List<Rule> rulesList = ruleRepository.findAll(ruleExample);
-		for (Rule item : rulesList) {
-			InflectorProcessor.getInstance().addSingularize(item.getExpression(), item.getReplacement());
-		}
-		// Create ProjectConfiguration
-		ProjectConfiguration pConf = new ProjectConfiguration();
-		pConf.setId("kukulkanmongo");
-		pConf.setGroupId("mx.infotec.dads.mongo");
-		pConf.setVersion("1.0.0");
-		pConf.setPackaging("mx.infotec.dads.mongo");
-		pConf.setYear("2017");
-		pConf.setAuthor("KUKULKAN");
-		pConf.setWebLayerName("web.rest");
-		pConf.setServiceLayerName("service");
-		pConf.setDaoLayerName("repository");
-		pConf.setDomainLayerName("domain");
-		pConf.setMongoDb(true);
-		pConf.setGlobalGenerationType(PKGenerationStrategy.SEQUENCE);
-		// Create DataStore
+    @Test
+    public void generationService() {
+        Rule rule = new Rule();
+        RuleType ruleType = ruleTypeRepository.findAll().get(0);
+        ruleType.setName("singular");
+        rule.setRuleType(ruleType);
+        Example<Rule> ruleExample = Example.of(rule);
+        List<Rule> rulesList = ruleRepository.findAll(ruleExample);
+        for (Rule item : rulesList) {
+            InflectorProcessor.getInstance().addSingularize(item.getExpression(), item.getReplacement());
+        }
+        // Create ProjectConfiguration
+        ProjectConfiguration pConf = new ProjectConfiguration();
+        pConf.setId("kukulkanmongo");
+        pConf.setGroupId("mx.infotec.dads.mongo");
+        pConf.setVersion("1.0.0");
+        pConf.setPackaging("mx.infotec.dads.mongo");
+        pConf.setYear("2017");
+        pConf.setAuthor("KUKULKAN");
+        pConf.setWebLayerName("web.rest");
+        pConf.setServiceLayerName("service");
+        pConf.setDaoLayerName("repository");
+        pConf.setDomainLayerName("domain");
+        pConf.setMongoDb(true);
+        pConf.setGlobalGenerationType(PKGenerationStrategy.SEQUENCE);
+        // Create DataStore
 
-		// Create DataModel
-		DomainModel dataModel = new JavaDomainModel();
-		KukulkanVisitor semanticAnalyzer = new KukulkanVisitor();
+        // Create DataModel
+        DomainModel dataModel = new JavaDomainModel();
+        KukulkanVisitor semanticAnalyzer = new KukulkanVisitor();
 
-		// Mapping DataContext into DataModel
-		List<DomainModelGroup> dmgList = GrammarMapping.createSingleTestDataModelGroupList(semanticAnalyzer);
-		dataModel.setDomainModelGroup(dmgList);
-		// Create GeneratorContext
-		GeneratorContext genCtx = new GeneratorContext(dataModel, pConf);
-		// Process Activities
-		//generationService.process(genCtx, layerTaskFactory.getLayerTaskSet(ArchetypeType.ANGULAR_SPRING));
-		generationService.findGeneratorByName("angular-spring").ifPresent(generator->{
-		    generationService.process(genCtx, generator);		    
-		});
+        // Mapping DataContext into DataModel
+        List<DomainModelGroup> dmgList = GrammarMapping.createSingleTestDataModelGroupList(semanticAnalyzer);
+        dataModel.setDomainModelGroup(dmgList);
+        // Create GeneratorContext
+        GeneratorContext genCtx = new GeneratorContext(dataModel, pConf);
+        // Process Activities
+        // generationService.process(genCtx,
+        // layerTaskFactory.getLayerTaskSet(ArchetypeType.ANGULAR_SPRING));
+        generationService.findGeneratorByName("angular-spring").ifPresent(generator -> {
+            generationService.process(genCtx, generator);
+        });
 
-		FileUtil.saveToFile(genCtx);
-		// System.out.println(Paths.get(prop.getOutputdir() + "/" +
-		// pConf.getId()));
-		// FileUtil.createZip(Paths.get(prop.getConfig().getOutputdir() + "/" +
-		// pConf.getId()), "physicalArchitecture");
-	}
+        FileUtil.saveToFile(genCtx);
+        // System.out.println(Paths.get(prop.getOutputdir() + "/" +
+        // pConf.getId()));
+        // FileUtil.createZip(Paths.get(prop.getConfig().getOutputdir() + "/" +
+        // pConf.getId()), "physicalArchitecture");
+    }
 }

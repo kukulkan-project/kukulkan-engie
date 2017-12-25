@@ -23,13 +23,12 @@
  */
 package mx.infotec.dads.kukulkan.engine.service;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
@@ -44,7 +43,7 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 public class GenerationServiceImpl implements GenerationService {
 
     @Autowired
-    List<Generator> generators;
+    ApplicationContext applicationContext;
 
     @Override
     public void process(GeneratorContext context, Generator generator) {
@@ -55,6 +54,7 @@ public class GenerationServiceImpl implements GenerationService {
 
     @Override
     public Optional<Generator> findGeneratorByName(String name) {
+        Collection<Generator> generators = applicationContext.getBeansOfType(Generator.class).values();
         for (Generator generator : generators) {
             if (generator.getName().equals(name)) {
                 return Optional.of(generator);
@@ -64,7 +64,7 @@ public class GenerationServiceImpl implements GenerationService {
     }
 
     @Override
-    public List<Generator> findAllGenerators() {
-        return generators;
+    public Collection<Generator> findAllGenerators() {
+        return applicationContext.getBeansOfType(Generator.class).values();
     }
 }
