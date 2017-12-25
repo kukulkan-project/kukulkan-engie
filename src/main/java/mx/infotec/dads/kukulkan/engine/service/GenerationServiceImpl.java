@@ -25,6 +25,9 @@ package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.Collection;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -42,6 +45,8 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 @Service("javaGenerationService")
 public class GenerationServiceImpl implements GenerationService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerationServiceImpl.class);
+
     @Autowired
     ApplicationContext applicationContext;
 
@@ -55,8 +60,10 @@ public class GenerationServiceImpl implements GenerationService {
     @Override
     public Optional<Generator> findGeneratorByName(String name) {
         Collection<Generator> generators = applicationContext.getBeansOfType(Generator.class).values();
+        LOGGER.debug("Generators found: {}", generators.size());
         for (Generator generator : generators) {
             if (generator.getName().equals(name)) {
+                LOGGER.debug("Generator found: {}", generator.getName());
                 return Optional.of(generator);
             }
         }

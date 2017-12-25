@@ -33,7 +33,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import mx.infotec.dads.kukulkan.engine.MetaModelApp;
+import mx.infotec.dads.kukulkan.engine.KukulkanEngineApp;
+import mx.infotec.dads.kukulkan.engine.domain.Rule;
+import mx.infotec.dads.kukulkan.engine.domain.RuleType;
 import mx.infotec.dads.kukulkan.engine.repository.RuleRepository;
 import mx.infotec.dads.kukulkan.engine.repository.RuleTypeRepository;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
@@ -41,8 +43,6 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
-import mx.infotec.dads.kukulkan.metamodel.foundation.Rule;
-import mx.infotec.dads.kukulkan.metamodel.foundation.RuleType;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 import mx.infotec.dads.kukulkan.metamodel.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.metamodel.translator.dsl.KukulkanVisitor;
@@ -57,7 +57,7 @@ import mx.infotec.dads.kukulkan.metamodel.util.PKGenerationStrategy;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = MetaModelApp.class)
+@SpringBootTest(classes = KukulkanEngineApp.class)
 public class GrammarGenerationServiceTest {
 
     @Autowired
@@ -119,9 +119,6 @@ public class GrammarGenerationServiceTest {
         });
 
         FileUtil.saveToFile(genCtx);
-        // System.out.println(Paths.get(prop.getOutputdir() + "/" +
-        // pConf.getId()));
         // FileUtil.createZip(Paths.get(prop.getConfig().getOutputdir() + "/" +
-        // pConf.getId()), "physicalArchitecture");
     }
 }

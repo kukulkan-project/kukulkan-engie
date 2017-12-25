@@ -21,18 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.repository;
+package mx.infotec.dads.kukulkan.engine.domain;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.io.Serializable;
 
-import mx.infotec.dads.kukulkan.engine.domain.DataStoreType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
- * DataStoreTypeRepository
+ * The Rule Class
  * 
  * @author Daniel Cortes Pichardo
  *
  */
-public interface DataStoreTypeRepository extends MongoRepository<DataStoreType, Integer> {
+public class Rule implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
+    private String expression;
+    private String replacement;
+    @DBRef
+    private RuleType ruleType;
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getReplacement() {
+        return replacement;
+    }
+
+    public void setReplacement(String replacement) {
+        this.replacement = replacement;
+    }
+
+    public RuleType getRuleType() {
+        return ruleType;
+    }
+
+    public void setRuleType(RuleType ruleType) {
+        this.ruleType = ruleType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
 }

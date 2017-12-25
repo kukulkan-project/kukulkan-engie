@@ -25,7 +25,7 @@ package mx.infotec.dads.kukulkan.engine.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import mx.infotec.dads.kukulkan.metamodel.foundation.RuleType;
+import mx.infotec.dads.kukulkan.engine.domain.RuleType;
 
 /**
  * InflectorRepository

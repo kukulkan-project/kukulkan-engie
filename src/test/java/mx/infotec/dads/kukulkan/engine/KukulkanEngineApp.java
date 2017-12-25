@@ -1,12 +1,9 @@
 package mx.infotec.dads.kukulkan.engine;
 
-import java.net.UnknownHostException;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,15 +18,8 @@ import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 @EnableConfigurationProperties({ KukulkanConfigurationProperties.class })
 @EnableMongoRepositories
-public class MetaModelApp {
+public class KukulkanEngineApp {
 
-	private static final Logger log = LoggerFactory.getLogger(MetaModelApp.class);
-
-	private final Environment env;
-
-	public MetaModelApp(Environment env) {
-		this.env = env;
-	}
 
 	/**
 	 * Initializes kukulkancraftsman.

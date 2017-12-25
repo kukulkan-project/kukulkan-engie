@@ -21,18 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.repository;
+package mx.infotec.dads.kukulkan.engine.domain;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-import mx.infotec.dads.kukulkan.engine.domain.DataStoreType;
+import org.springframework.data.annotation.Id;
 
 /**
- * DataStoreTypeRepository
+ * Base class for document classes.
  * 
- * @author Daniel Cortes Pichardo
- *
+ * @author Oliver Gierke, Daniel Cortes Pichardo
+ * @since 1.0.0
+ * @version 1.0.0
  */
-public interface DataStoreTypeRepository extends MongoRepository<DataStoreType, Integer> {
 
+public abstract class AbstractDocument {
+    @Id
+    private String id;
+
+    /**
+     * Returns the identifier of the document.
+     * 
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
 }

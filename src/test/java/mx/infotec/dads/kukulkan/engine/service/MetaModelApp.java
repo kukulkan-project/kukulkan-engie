@@ -4,8 +4,6 @@ import java.net.UnknownHostException;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
@@ -22,14 +20,6 @@ import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
 @EnableConfigurationProperties({ KukulkanConfigurationProperties.class })
 @EnableMongoRepositories
 public class MetaModelApp {
-
-	private static final Logger log = LoggerFactory.getLogger(MetaModelApp.class);
-
-	private final Environment env;
-
-	public MetaModelApp(Environment env) {
-		this.env = env;
-	}
 
 	/**
 	 * Initializes kukulkancraftsman.
@@ -56,7 +46,6 @@ public class MetaModelApp {
 	 */
 	public static void main(String[] args) throws UnknownHostException {
 		SpringApplication app = new SpringApplication(MetaModelApp.class);
-		Environment env = app.run(args).getEnvironment();
 	}
 
 }
