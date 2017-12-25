@@ -1,8 +1,10 @@
-package mx.infotec.dads.kukulkan.engine.service.technology.angularspring;
+package mx.infotec.dads.kukulkan.engine.generator.angularspring;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import mx.infotec.dads.kukulkan.engine.generator.angularspring.layer.AngularJsSpringLayer;
 import mx.infotec.dads.kukulkan.metamodel.annotation.GeneratorComponent;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
@@ -17,11 +19,11 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 public class AngularSpringGenerator implements Generator {
 
     @Autowired
-    List<AngularSpringLayer> layers;
+    List<AngularJsSpringLayer> layers;
 
     @Override
     public String getName() {
-        return "angular-spring";
+        return "angularJs-spring";
     }
 
     @Override

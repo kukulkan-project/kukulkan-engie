@@ -21,13 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.service.layers.domain;
+package mx.infotec.dads.kukulkan.engine.generator.angularspring.layer;
 
-
-import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
+import static mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants.REST_SPRING_JPA_BACK_END_URL;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
+import static mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum.SRC_MAIN_JAVA;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,13 +36,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
-import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
 
 /**
  * Service Layer Task
@@ -49,44 +50,27 @@ import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(LayerNameConstants.Domain.Core.SERVICE_NAME)
-public class DomainLayerServiceImpl implements DomainLayerService {
+@Component(LayerNameConstants.DataAccess.Repository.SERVICE_NAME)
+public class DataAccessLayer extends AngularJsSpringLayer {
 
     @Autowired
     private TemplateService templateService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DomainLayerServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessLayer.class);
 
     @Override
-    public void visitDomainModelElement(ProjectConfiguration confg, Collection<DomainModelElement> dmElementCollection,
+    public void visitDomainModelElement(ProjectConfiguration pConf, Collection<DomainModelElement> dmElementCollection,
             Map<String, Object> propertiesMap, String dmgName, DomainModelElement dmElement, String basePackage) {
-        LOGGER.debug("visitDomainModelElement for {}", basePackage);
-        propertiesMap.put(PACKAGE_PROPERTY, formatToPackageStatement(false, basePackage, confg.getDomainLayerName()));
-        fillModel(confg, propertiesMap, dmgName, basePackage, dmElement);
-        fillPrimaryKey(confg, propertiesMap, dmgName, basePackage, dmElement);
-    }
-
-    private void fillModel(ProjectConfiguration pConf, Map<String, Object> model, String dmgName, String basePackage,
-            DomainModelElement dmElement) {
-        String template = null;
-        if (pConf.isMongoDb()) {
-            template = "common/model-mongo.ftl";
-        } else {
-            template = "common/model.ftl";
-        }
-        templateService.fillModel(dmElement, pConf.getId(), template, model,
-                BasePathEnum.SRC_MAIN_JAVA, basePackage.replace('.', '/') + "/" + dmgName + "/"
-                        + pConf.getDomainLayerName() + "/" + dmElement.getName() + ".java",
+        LOGGER.debug("repositoryLayerTask for dommain");
+        propertiesMap.put(PACKAGE_PROPERTY, formatToPackageStatement(basePackage, pConf.getDaoLayerName()));
+        templateService.fillModel(dmElement, pConf.getId(), REST_SPRING_JPA_BACK_END_URL + "/repository.ftl",
+                propertiesMap, SRC_MAIN_JAVA, basePackage.replace('.', '/') + "/" + dmgName + "/"
+                        + pConf.getDaoLayerName() + "/" + dmElement.getName() + NameConventions.DAO + ".java",
                 createDefaultAceEditor(JAVA));
     }
 
-    private void fillPrimaryKey(ProjectConfiguration pConf, Map<String, Object> model, String dmgName,
-            String basePackage, DomainModelElement dmElement) {
-        if (dmElement.getPrimaryKey().isComposed()) {
-            templateService.fillModel(dmElement, pConf.getId(), "common/primaryKey.ftl", model,
-                    BasePathEnum.SRC_MAIN_JAVA, basePackage.replace('.', '/') + "/" + dmgName + "/"
-                            + pConf.getDomainLayerName() + "/" + dmElement.getPrimaryKey().getType() + ".java",
-                    createDefaultAceEditor(JAVA));
-        }
+    @Override
+    public String getName() {
+        return LayerNameConstants.DataAccess.Repository.SERVICE_NAME;
     }
 }

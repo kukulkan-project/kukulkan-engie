@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.service.layers.frontend;
+package mx.infotec.dads.kukulkan.engine.generator.angularspring.layer;
 
 import static mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants.ENTITY_CONTROLLER_JS;
 import static mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants.ENTITY_DELETE_DIALOG_CONTROLLER_JS;
@@ -54,8 +54,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Component;
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.TemplateFormatter;
@@ -72,13 +71,13 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(LayerNameConstants.FrontEnd.Angular.SERVICE_NAME)
-public class AngularLayerServiceImpl implements FrontEndLayerService {
+@Component(LayerNameConstants.FrontEnd.AngularJs.SERVICE_NAME)
+public class FrontEndLayer extends AngularJsSpringLayer {
 
     @Autowired
     private TemplateService templateService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngularLayerServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrontEndLayer.class);
 
     @Override
     public void doBeforeProcessDataModelGroup(GeneratorContext context, Map<String, Object> model) {
@@ -228,5 +227,10 @@ public class AngularLayerServiceImpl implements FrontEndLayerService {
         templateService.fillModel(dmElement, pConf.getId(), templateLocation + templateName, model, WEB_APP_I18N,
                 idiomaKey + "/" + fileNamingConvention + TemplateFormatter.formatNameTemplate(templateName),
                 createDefaultAceEditor(JSON));
+    }
+
+    @Override
+    public String getName() {
+        return LayerNameConstants.FrontEnd.AngularJs.SERVICE_NAME;
     }
 }

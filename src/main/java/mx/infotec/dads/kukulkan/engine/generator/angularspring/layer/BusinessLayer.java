@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.service.layers.service;
+package mx.infotec.dads.kukulkan.engine.generator.angularspring.layer;
 
-import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_IMPL_PROPERTY;
-import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_IMPL_PROPERTY;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,7 +35,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
@@ -46,18 +46,19 @@ import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
 
 /**
- * Repository Layer Task
+ * Service Layer Task
  * 
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(LayerNameConstants.Business.SpringService.SERVICE_NAME)
-public class SpringServiceLayerServiceImpl implements BusinessLayerService {
+@Component(LayerNameConstants.Business.SpringService.SERVICE_NAME)
+public class BusinessLayer extends AngularJsSpringLayer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BusinessLayer.class);
 
     @Autowired
     private TemplateService templateService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringServiceLayerServiceImpl.class);
 
     @Override
     public void visitDomainModelElement(ProjectConfiguration pConf, Collection<DomainModelElement> dmElementCollection,
@@ -87,5 +88,10 @@ public class SpringServiceLayerServiceImpl implements BusinessLayerService {
                 BasePathEnum.SRC_MAIN_JAVA, basePackage.replace('.', '/') + "/" + dmgName + "/"
                         + pConf.getServiceLayerName() + "/" + dmElement.getName() + NameConventions.SERVICE + ".java",
                 createDefaultAceEditor(JAVA));
+    }
+
+    @Override
+    public String getName() {
+        return LayerNameConstants.Business.SpringService.SERVICE_NAME;
     }
 }

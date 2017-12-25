@@ -114,7 +114,7 @@ public class GrammarGenerationServiceTest {
         // Process Activities
         // generationService.process(genCtx,
         // layerTaskFactory.getLayerTaskSet(ArchetypeType.ANGULAR_SPRING));
-        generationService.findGeneratorByName("angular-spring").ifPresent(generator -> {
+        generationService.findGeneratorByName("angularJs-spring").ifPresent(generator -> {
             generationService.process(genCtx, generator);
         });
 

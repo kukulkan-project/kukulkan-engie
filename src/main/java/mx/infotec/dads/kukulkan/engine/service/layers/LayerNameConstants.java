@@ -16,10 +16,10 @@ public class LayerNameConstants {
         private FrontEnd() {
         }
 
-        public static class Angular {
+        public static class AngularJs {
             public static final String SERVICE_NAME = "angular-js";
 
-            private Angular() {
+            private AngularJs() {
             }
         }
     }

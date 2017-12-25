@@ -21,9 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.kukulkan.engine.service.technology.conacyt;
+package mx.infotec.dads.kukulkan.engine.generator.angularspring.layer;
 
+import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
+import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
+import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.replaceDotBySlash;
+import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.replaceSlashByDot;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_SIMPLE_FORMAT_PROPERTY;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,8 +37,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
+import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
@@ -45,43 +53,32 @@ import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service("conacytDtoLayerTask")
-public class DtoLayerTask extends AbstractConacytLayerTask {
-
+@Component(LayerNameConstants.Web.SpringRest.SERVICE_NAME)
+public class WebLayer extends AngularJsSpringLayer {
+    private static final String LAYER_NAME = LayerNameConstants.Web.SpringRest.SERVICE_NAME;
     @Autowired
     private TemplateService templateService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DtoLayerTask.class);
-
-    @Override
-    public void doForEachDataModelElement(ProjectConfiguration pConf, Collection<DomainModelElement> dmElementCollection,
-            Map<String, Object> model, String dmgName) {
-        LOGGER.debug("doForEachDataModelElement method {}", dmgName);
-        String basePackage = pConf.getPackaging() + dmgName;
-        for (DomainModelElement dmElement : dmElementCollection) {
-            model.put("className", dmElement.getName() + NameConventions.DTO);
-            model.put("tableName", dmElement.getTableName());
-            model.put("package", formatToPackageStatement(basePackage, pConf.getDtoLayerName()));
-            model.put("properties", dmElement.getProperties());
-            dmElement.getImports().add("java.io.Serializable");
-            dmElement.getImports().remove("java.lang.Long");
-            model.put("imports", dmElement.getImports());
-            fillModel(pConf, model, dmgName, basePackage, dmElement);
-        }
-    }
-
-    private void fillModel(ProjectConfiguration pConf, Map<String, Object> model, String dmgName, String basePackage,
-            DomainModelElement dmElement) {
-        templateService.fillModel(dmElement, pConf.getId(), "conacyt/dto.ftl", model, BasePathEnum.SRC_MAIN_JAVA,
-                basePackage.replace('.', '/') + "/" + dmgName + "/" + pConf.getDtoLayerName() + "/"
-                        + dmElement.getName() + NameConventions.DTO + ".java");
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebLayer.class);
 
     @Override
     public void visitDomainModelElement(ProjectConfiguration pConf, Collection<DomainModelElement> dmElementCollection,
             Map<String, Object> propertiesMap, String dmgName, DomainModelElement dmElement, String basePackage) {
-        // TODO Auto-generated method stub
-        
+        LOGGER.debug("visitDomainModelElement {} ", basePackage);
+        String webLayerDotFormat = replaceSlashByDot(pConf.getWebLayerName());
+        String webLayerSlashFormat = replaceDotBySlash(pConf.getWebLayerName());
+        propertiesMap.put(PACKAGE_PROPERTY, formatToPackageStatement(basePackage, webLayerDotFormat));
+        propertiesMap.put(PACKAGE_SIMPLE_FORMAT_PROPERTY,
+                formatToPackageStatement(true, basePackage, webLayerDotFormat));
+        templateService.fillModel(dmElement, pConf.getId(),
+                LayerConstants.REST_SPRING_JPA_BACK_END_URL + "/restResource.ftl", propertiesMap,
+                BasePathEnum.SRC_MAIN_JAVA, basePackage.replace('.', '/') + "/" + dmgName + "/" + webLayerSlashFormat
+                        + "/" + dmElement.getName() + NameConventions.REST_CONTROLLER + ".java",
+                createDefaultAceEditor(JAVA));
     }
 
+    @Override
+    public String getName() {
+        return LAYER_NAME;
+    }
 }
