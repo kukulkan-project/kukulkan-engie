@@ -23,8 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.layers.service;
 
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.PACKAGE_IMPL_PROPERTY;
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.PACKAGE_PROPERTY;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_IMPL_PROPERTY;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
@@ -51,7 +51,7 @@ import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(Layer.Business.SpringService.SERVICE_NAME)
+@Service(LayerNameConstants.Business.SpringService.SERVICE_NAME)
 public class SpringServiceLayerServiceImpl implements BusinessLayerService {
 
     @Autowired

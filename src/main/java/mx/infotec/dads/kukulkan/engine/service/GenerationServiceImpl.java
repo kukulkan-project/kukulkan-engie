@@ -24,11 +24,15 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
+import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 
 /**
  * Generation service for java applications
@@ -39,10 +43,28 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 @Service("javaGenerationService")
 public class GenerationServiceImpl implements GenerationService {
 
+    @Autowired
+    List<Generator> generators;
+
     @Override
-    public void process(GeneratorContext context, List<LayerTask> tasks) {
-        for (LayerTask task : tasks) {
-            task.doTask(context);
+    public void process(GeneratorContext context, Generator generator) {
+        for (Layer layer : generator.getLayers()) {
+            layer.process(context);
         }
+    }
+
+    @Override
+    public Optional<Generator> findGeneratorByName(String name) {
+        for (Generator generator : generators) {
+            if (generator.getName().equals(name)) {
+                return Optional.of(generator);
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Generator> findAllGenerators() {
+        return generators;
     }
 }

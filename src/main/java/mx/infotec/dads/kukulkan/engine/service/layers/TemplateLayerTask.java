@@ -23,8 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.layers;
 
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.addAuthoringData;
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.addCommonDataModelElements;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.addAuthoringData;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.addCommonDataModelElements;
 
 import java.util.Collection;
 import java.util.Map;

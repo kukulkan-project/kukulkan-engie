@@ -23,7 +23,7 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.layers.repository;
 
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.PACKAGE_PROPERTY;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
 import static mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants.REST_SPRING_JPA_BACK_END_URL;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
@@ -50,7 +50,7 @@ import mx.infotec.dads.kukulkan.metamodel.util.NameConventions;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(Layer.DataAccess.Repository.SERVICE_NAME)
+@Service(LayerNameConstants.DataAccess.Repository.SERVICE_NAME)
 public class RepositoryLayerServiceImpl implements DataAccessLayerService {
 
     @Autowired

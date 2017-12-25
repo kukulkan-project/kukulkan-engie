@@ -6,9 +6,9 @@ package mx.infotec.dads.kukulkan.engine.service.layers;
  * @author Daniel Cortes Pichardo
  *
  */
-public class Layer {
+public class LayerNameConstants {
 
-    private Layer() {
+    private LayerNameConstants() {
 
     }
 

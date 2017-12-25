@@ -23,7 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.layers.domain;
 
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.PACKAGE_PROPERTY;
+
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.PACKAGE_PROPERTY;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 import static mx.infotec.dads.kukulkan.metamodel.editor.ace.EditorFactory.createDefaultAceEditor;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
@@ -36,7 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
@@ -48,7 +49,7 @@ import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(Layer.Domain.Core.SERVICE_NAME)
+@Service(LayerNameConstants.Domain.Core.SERVICE_NAME)
 public class DomainLayerServiceImpl implements DomainLayerService {
 
     @Autowired

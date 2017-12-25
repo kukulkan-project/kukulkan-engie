@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.LayerConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.util.TemplateFormatter;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
@@ -72,7 +72,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service(Layer.FrontEnd.Angular.SERVICE_NAME)
+@Service(LayerNameConstants.FrontEnd.Angular.SERVICE_NAME)
 public class AngularLayerServiceImpl implements FrontEndLayerService {
 
     @Autowired

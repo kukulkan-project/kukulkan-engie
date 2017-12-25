@@ -30,9 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.layers.Layer;
+import mx.infotec.dads.kukulkan.engine.service.layers.LayerNameConstants;
 import mx.infotec.dads.kukulkan.engine.service.layers.domain.DomainLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.frontend.FrontEndLayerService;
 import mx.infotec.dads.kukulkan.engine.service.layers.repository.DataAccessLayerService;
@@ -41,6 +42,7 @@ import mx.infotec.dads.kukulkan.engine.service.layers.web.WebLayerService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.generator.AbstractNavigableLayer;
 
 /**
  * Service Layer Task
@@ -48,27 +50,28 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  * @author Daniel Cortes Pichardo
  *
  */
-@Service("angularLayerTask")
-public class AngularSpringRepositoryTecnology extends AbstractAngularSpringLayerTask {
+@Component("angular-spring-layer")
+public class AngularSpringRepositoryTecnology extends AbstractNavigableLayer {
+    private static final String LAYER_NAME = "AngularSpring";
 
     @Autowired
-    @Qualifier(Layer.FrontEnd.Angular.SERVICE_NAME)
+    @Qualifier(LayerNameConstants.FrontEnd.Angular.SERVICE_NAME)
     private FrontEndLayerService frontEndservice;
 
     @Autowired
-    @Qualifier(Layer.Domain.Core.SERVICE_NAME)
+    @Qualifier(LayerNameConstants.Domain.Core.SERVICE_NAME)
     private DomainLayerService domainService;
 
     @Autowired
-    @Qualifier(Layer.Web.SpringRest.SERVICE_NAME)
+    @Qualifier(LayerNameConstants.Web.SpringRest.SERVICE_NAME)
     private WebLayerService webLayerService;
 
     @Autowired
-    @Qualifier(Layer.Business.SpringService.SERVICE_NAME)
+    @Qualifier(LayerNameConstants.Business.SpringService.SERVICE_NAME)
     private BusinessLayerService businessLayerService;
 
     @Autowired
-    @Qualifier(Layer.DataAccess.Repository.SERVICE_NAME)
+    @Qualifier(LayerNameConstants.DataAccess.Repository.SERVICE_NAME)
     private DataAccessLayerService dataAccessService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AngularSpringRepositoryTecnology.class);
@@ -83,10 +86,20 @@ public class AngularSpringRepositoryTecnology extends AbstractAngularSpringLayer
     public void visitDomainModelElement(ProjectConfiguration pConf, Collection<DomainModelElement> dmElementCollection,
             Map<String, Object> propertiesMap, String dmgName, DomainModelElement dmElement, String basePackage) {
         LOGGER.debug("visitDomainModelElement");
-        frontEndservice.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement, basePackage);
-        webLayerService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement, basePackage);
-        domainService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement, basePackage);
-        businessLayerService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement, basePackage);
-        dataAccessService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement, basePackage);
+        frontEndservice.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement,
+                basePackage);
+        webLayerService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement,
+                basePackage);
+        domainService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement,
+                basePackage);
+        businessLayerService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement,
+                basePackage);
+        dataAccessService.visitDomainModelElement(pConf, dmElementCollection, propertiesMap, dmgName, dmElement,
+                basePackage);
+    }
+
+    @Override
+    public String getName() {
+        return LAYER_NAME;
     }
 }

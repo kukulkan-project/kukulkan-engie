@@ -23,7 +23,7 @@
  */
 package mx.infotec.dads.kukulkan.engine.service.technology.springrest;
 
-import static mx.infotec.dads.kukulkan.engine.service.layers.LayerUtils.addCommonDataModelElements;
+import static mx.infotec.dads.kukulkan.metamodel.util.LayerUtils.addCommonDataModelElements;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToImportStatement;
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToPackageStatement;
 

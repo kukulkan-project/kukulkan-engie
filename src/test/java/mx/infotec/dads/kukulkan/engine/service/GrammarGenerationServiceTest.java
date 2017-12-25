@@ -24,6 +24,7 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,6 +46,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Rule;
 import mx.infotec.dads.kukulkan.metamodel.foundation.RuleType;
+import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 import mx.infotec.dads.kukulkan.metamodel.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.metamodel.translator.dsl.KukulkanVisitor;
 import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
@@ -73,6 +75,9 @@ public class GrammarGenerationServiceTest {
 
 	@Autowired
 	private KukulkanConfigurationProperties prop;
+	
+	@Autowired
+	Generator generator;
 
 	@BeforeClass
 	public static void runOnceBeforeClass() {
@@ -81,7 +86,6 @@ public class GrammarGenerationServiceTest {
 
 	@Test
 	public void generationService() {
-		System.out.println("hola mudno" + prop.getConfig().getOutputdir());
 		Rule rule = new Rule();
 		RuleType ruleType = ruleTypeRepository.findAll().get(0);
 		ruleType.setName("singular");
@@ -91,8 +95,6 @@ public class GrammarGenerationServiceTest {
 		for (Rule item : rulesList) {
 			InflectorProcessor.getInstance().addSingularize(item.getExpression(), item.getReplacement());
 		}
-		System.out.println("hola mudno" + prop.getConfig().getOutputdir());
-
 		// Create ProjectConfiguration
 		ProjectConfiguration pConf = new ProjectConfiguration();
 		pConf.setId("kukulkanmongo");
@@ -119,15 +121,15 @@ public class GrammarGenerationServiceTest {
 		// Create GeneratorContext
 		GeneratorContext genCtx = new GeneratorContext(dataModel, pConf);
 		// Process Activities
-		generationService.process(genCtx, layerTaskFactory.getLayerTaskSet(ArchetypeType.ANGULAR_SPRING));
-		System.out.println("hola mudno" + prop.getConfig().getOutputdir());
+		//generationService.process(genCtx, layerTaskFactory.getLayerTaskSet(ArchetypeType.ANGULAR_SPRING));
+		generationService.findGeneratorByName("angular-spring").ifPresent(generator->{
+		    generationService.process(genCtx, generator);		    
+		});
 
 		FileUtil.saveToFile(genCtx);
 		// System.out.println(Paths.get(prop.getOutputdir() + "/" +
 		// pConf.getId()));
 		// FileUtil.createZip(Paths.get(prop.getConfig().getOutputdir() + "/" +
 		// pConf.getId()), "physicalArchitecture");
-		System.out.println("Bye" + prop.getConfig().getOutputdir());
-
 	}
 }

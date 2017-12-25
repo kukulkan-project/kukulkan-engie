@@ -23,10 +23,13 @@
  */
 package mx.infotec.dads.kukulkan.engine.service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import mx.infotec.dads.kukulkan.engine.service.layers.LayerTask;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 
 /**
  * The Generation Service is the main service used to run the whole engine
@@ -34,12 +37,11 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
  * @author Daniel Cortes Pichardo
  *
  */
-@FunctionalInterface
 public interface GenerationService {
-    /**
-     * init the process of Code Generation
-     * 
-     * @param generatorContext
-     */
-    void process(GeneratorContext context, List<LayerTask> layerTasks);
+
+    Optional<Generator> findGeneratorByName(String name);
+
+    Collection<Generator> findAllGenerators();
+
+    void process(GeneratorContext context, Generator generator);
 }
