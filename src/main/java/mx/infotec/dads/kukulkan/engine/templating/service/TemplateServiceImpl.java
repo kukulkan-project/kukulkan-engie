@@ -29,6 +29,7 @@ import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
@@ -59,62 +61,73 @@ import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 @Service
 public class TemplateServiceImpl implements TemplateService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TemplateServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TemplateServiceImpl.class);
 
-    @Autowired
-    private Configuration fmConfiguration;
+	@Autowired
+	private Configuration fmConfiguration;
 
-    @Autowired
-    private KukulkanConfigurationProperties prop;
+	@Autowired
+	private KukulkanConfigurationProperties prop;
 
-    @Override
-    public void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model,
-            BasePathEnum basePath, String filePath) {
-        fillModel(dme, proyectoId, templateName, model, basePath, filePath, createDefaultAceEditor(JAVA));
-    }
+	@Override
+	public void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model,
+			BasePathEnum basePath, String filePath) {
+		fillModel(dme, proyectoId, templateName, model, basePath, filePath, createDefaultAceEditor(JAVA));
+	}
 
-    @Override
-    public void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model,
-            BasePathEnum basePath, String filePath, Editor editor) {
-        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
-        if (templateOptional.isPresent()) {
-            Path path = FileUtil.buildPath(proyectoId, basePath, filePath, prop.getConfig().getOutputdir());
-            String simplePath = basePath.getPath() + filePath;
-            dme.addGeneratedElement(processTemplate(model, templateOptional.get(), path, simplePath, editor));
-        }
-    }
+	@Override
+	public void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model,
+			BasePathEnum basePath, String filePath, Editor editor) {
+		Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
+		if (templateOptional.isPresent()) {
+			Path path = FileUtil.buildPath(proyectoId, basePath, filePath, prop.getConfig().getOutputdir());
+			String simplePath = basePath.getPath() + filePath;
+			dme.addGeneratedElement(processTemplate(model, templateOptional.get(), path, simplePath, editor));
+		}
+	}
 
-    @Override
-    public void fillModel(DomainModel dm, String proyectoId, String templateName, Object model, BasePathEnum basePath,
-            String filePath, Editor editor) {
-        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
-        if (templateOptional.isPresent()) {
-            Path path = FileUtil.buildPath(proyectoId, basePath, filePath, prop.getConfig().getOutputdir());
-            String simplePath = basePath.getPath() + filePath;
-            dm.addGeneratedElement(processTemplate(model, templateOptional.get(), path, simplePath, editor));
-        } else {
-            LOGGER.warn("Template not found for {}", templateName);
-        }
-    }
+	@Override
+	public void fillModel(DomainModel dm, String proyectoId, String templateName, Object model, BasePathEnum basePath,
+			String filePath, Editor editor) {
+		Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
+		if (templateOptional.isPresent()) {
+			Path path = FileUtil.buildPath(proyectoId, basePath, filePath, prop.getConfig().getOutputdir());
+			String simplePath = basePath.getPath() + filePath;
+			dm.addGeneratedElement(processTemplate(model, templateOptional.get(), path, simplePath, editor));
+		} else {
+			LOGGER.warn("Template not found for {}", templateName);
+		}
+	}
 
-    public static GeneratedElement processTemplate(Object model, Template template, Path path, String simplePath,
-            Editor editor) {
-        try (StringWriter stringWriter = new StringWriter()) {
-            LOGGER.info("Generating to: {}", path.normalize().toFile());
-            template.process(model, stringWriter);
-            return new GeneratedElement(path, simplePath, stringWriter.toString(), editor);
-        } catch (IOException | TemplateException e) {
-            throw new MetaModelException("Fill Model Error", e);
-        }
-    }
+	public static GeneratedElement processTemplate(Object model, Template template, Path path, String simplePath,
+			Editor editor) {
+		try (StringWriter stringWriter = new StringWriter()) {
+			LOGGER.info("Generating to: {}", path.normalize().toFile());
+			template.process(model, stringWriter);
+			return new GeneratedElement(path, simplePath, stringWriter.toString(), editor);
+		} catch (IOException | TemplateException e) {
+			throw new MetaModelException("Fill Model Error", e);
+		}
+	}
 
-    @Override
-    public void fillModel(String proyectoId, String templateName, Object model, BasePathEnum basePath, String filePath,
-            Editor editor) {
-        TemplateUtil.get(fmConfiguration, templateName).ifPresent(template -> {
-            Path path = FileUtil.buildPath(proyectoId, basePath, filePath, prop.getConfig().getOutputdir());
-            String simplePath = basePath.getPath() + filePath;
-            processTemplate(model, template, path, simplePath, editor);
-        });
-    }
+	@Override
+	public void fillModel(String proyectoId, String templateName, Object model, BasePathEnum basePath, String filePath,
+			Editor editor) {
+		TemplateUtil.get(fmConfiguration, templateName).ifPresent(template -> {
+			Path path = FileUtil.buildPath(proyectoId, basePath, filePath, prop.getConfig().getOutputdir());
+			String simplePath = basePath.getPath() + filePath;
+			processTemplate(model, template, path, simplePath, editor);
+		});
+	}
+
+	@Override
+	public void fillAbstractTemplate(String templateName, ProjectConfiguration pConf) {
+		 Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
+	        if (templateOptional.isPresent()) {
+	            Path path = Paths.get(prop.getConfig().getOutputdir());
+	        } else {
+	            LOGGER.warn("Template not found for {}", templateName);
+	        }
+		FileUtil.saveToFile(path, content)
+	}
 }

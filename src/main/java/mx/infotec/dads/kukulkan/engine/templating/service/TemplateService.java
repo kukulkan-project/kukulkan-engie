@@ -26,6 +26,7 @@ package mx.infotec.dads.kukulkan.engine.templating.service;
 import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 
 /**
@@ -36,15 +37,17 @@ import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
  */
 public interface TemplateService {
 
-    void fillModel(DomainModelElement dme, String projectId, String templateName, Object model, BasePathEnum path,
-            String filePath, Editor editor);
+	void fillModel(DomainModelElement dme, String projectId, String templateName, Object model, BasePathEnum path,
+			String filePath, Editor editor);
 
-    void fillModel(String projectId, String templateName, Object model, BasePathEnum path, String filePath,
-            Editor editor);
+	void fillModel(String projectId, String templateName, Object model, BasePathEnum path, String filePath,
+			Editor editor);
 
-    void fillModel(DomainModel dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
-            String filePath, Editor editor);
+	void fillModel(DomainModel dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
+			String filePath, Editor editor);
 
-    void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
-            String filePath);
+	void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
+			String filePath);
+
+	void fillAbstractTemplate(String templateName, ProjectConfiguration pConf);
 }
