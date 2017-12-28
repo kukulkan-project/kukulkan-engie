@@ -24,6 +24,7 @@
 package mx.infotec.dads.kukulkan.engine.templating.service;
 
 import static mx.infotec.dads.kukulkan.engine.editor.ace.EditorFactory.createDefaultAceEditor;
+import static mx.infotec.dads.kukulkan.engine.util.TemplateUtil.processTemplate;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 
 import java.io.IOException;
@@ -99,17 +100,6 @@ public class TemplateServiceImpl implements TemplateService {
 		}
 	}
 
-	public static GeneratedElement processTemplate(Object model, Template template, Path path, String simplePath,
-			Editor editor) {
-		try (StringWriter stringWriter = new StringWriter()) {
-			LOGGER.info("Generating to: {}", path.normalize().toFile());
-			template.process(model, stringWriter);
-			return new GeneratedElement(path, simplePath, stringWriter.toString(), editor);
-		} catch (IOException | TemplateException e) {
-			throw new MetaModelException("Fill Model Error", e);
-		}
-	}
-
 	@Override
 	public void fillModel(String proyectoId, String templateName, Object model, BasePathEnum basePath, String filePath,
 			Editor editor) {
@@ -121,13 +111,12 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 
 	@Override
-	public void fillAbstractTemplate(String templateName, ProjectConfiguration pConf) {
-		 Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
-	        if (templateOptional.isPresent()) {
-	            Path path = Paths.get(prop.getConfig().getOutputdir());
-	        } else {
-	            LOGGER.warn("Template not found for {}", templateName);
-	        }
-		FileUtil.saveToFile(path, content)
+	public String fillAbstractTemplate(String templateRelativePath, Object model) {
+		Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateRelativePath);
+		if (templateOptional.isPresent()) {
+			return processTemplate(model, templateOptional.get());
+		} else {
+			throw new MetaModelException("Template not found for " + templateRelativePath);
+		}
 	}
 }

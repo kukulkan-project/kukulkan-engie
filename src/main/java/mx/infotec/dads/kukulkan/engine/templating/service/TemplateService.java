@@ -23,6 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.templating.service;
 
+import java.nio.file.Path;
+
 import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
@@ -49,5 +51,5 @@ public interface TemplateService {
 	void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
 			String filePath);
 
-	void fillAbstractTemplate(String templateName, ProjectConfiguration pConf);
+	String fillAbstractTemplate(String templateRelativePath, Object model);
 }
