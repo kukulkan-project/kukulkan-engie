@@ -29,12 +29,12 @@ import java.util.Optional;
 
 import org.apache.metamodel.schema.ColumnType;
 
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType;
 
 /**
  * 
