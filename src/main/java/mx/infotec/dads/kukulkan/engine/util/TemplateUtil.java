@@ -28,6 +28,14 @@ public class TemplateUtil {
     private TemplateUtil() {
     }
 
+    /**
+     * Get a template by name using the configuration object. This method handle
+     * the IOexception that the configuration object could throws.
+     * 
+     * @param config
+     * @param templateName
+     * @return
+     */
     public static Optional<Template> get(Configuration config, String templateName) {
         Template template = null;
         try {
@@ -38,10 +46,28 @@ public class TemplateUtil {
         return Optional.ofNullable(template);
     }
 
+    /**
+     * It process a template and transform it into a GeneratedElement object
+     * 
+     * @param model
+     * @param template
+     * @param path
+     * @param simplePath
+     * @param editor
+     * @return GeneratedElement from a Template
+     */
     public static GeneratedElement processTemplate(Object model, Template template, Path path, String simplePath,
             Editor editor) {
         return new GeneratedElement(path, simplePath, processTemplate(model, template), editor);
     }
+
+    /**
+     * It process a Template and fill it with the model object,.
+     * 
+     * @param model
+     * @param template
+     * @return
+     */
 
     public static String processTemplate(Object model, Template template) {
         try (StringWriter stringWriter = new StringWriter()) {
@@ -52,6 +78,13 @@ public class TemplateUtil {
         }
     }
 
+    /**
+     * It process a Template and save it into the specified path
+     * 
+     * @param model
+     * @param template
+     * @param pathToSave
+     */
     public static void processTemplate(Object model, Template template, Path pathToSave) {
         try (StringWriter stringWriter = new StringWriter()) {
             LOGGER.info("Generating to: {}", pathToSave.normalize().toFile());
@@ -59,6 +92,5 @@ public class TemplateUtil {
         } catch (IOException | TemplateException e) {
             throw new MetaModelException("Fill Model Error", e);
         }
-
     }
 }
