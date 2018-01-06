@@ -77,14 +77,14 @@ public class TemplateUtil {
      *
      * @param model the model
      * @param template the template
-     * @param path the path
-     * @param simplePath the simple path
+     * @param realFilePath the path
+     * @param relativeFilePath the simple path
      * @param editor the editor
      * @return GeneratedElement from a Template
      */
-    public static GeneratedElement processTemplate(Object model, Template template, Path path, String simplePath,
+    public static GeneratedElement processTemplate(Object model, Template template, Path realFilePath, Path relativeFilePath,
             Editor editor) {
-        return new GeneratedElement(path, simplePath, processTemplate(model, template), editor);
+        return new GeneratedElement(realFilePath, relativeFilePath, processTemplate(model, template), editor);
     }
 
     /**

@@ -23,9 +23,7 @@
  */
 package mx.infotec.dads.kukulkan.engine.templating.service;
 
-import static mx.infotec.dads.kukulkan.engine.editor.ace.EditorFactory.createDefaultAceEditor;
 import static mx.infotec.dads.kukulkan.engine.util.TemplateUtil.processTemplate;
-import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -37,12 +35,10 @@ import org.springframework.stereotype.Service;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import mx.infotec.dads.kukulkan.engine.model.ModelContext;
 import mx.infotec.dads.kukulkan.engine.util.TemplateUtil;
 import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
-import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
-import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
@@ -63,60 +59,43 @@ public class TemplateServiceImpl implements TemplateService {
     @Autowired
     private Configuration fmConfiguration;
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#fillModel(mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement, java.lang.String, java.lang.String, java.lang.Object, mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum, java.lang.String, java.nio.file.Path)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#
+     * fillModel(mx.infotec.dads.kukulkan.metamodel.foundation.
+     * DomainModelElement, java.lang.String, java.lang.String, java.lang.Object,
+     * mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum, java.lang.String,
+     * mx.infotec.dads.kukulkan.metamodel.editor.Editor, java.nio.file.Path)
      */
     @Override
-    public void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model,
-            BasePathEnum basePath, String filePath, Path outputDir) {
-        fillModel(dme, proyectoId, templateName, model, basePath, filePath, createDefaultAceEditor(JAVA), outputDir);
-    }
-
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#fillModel(mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement, java.lang.String, java.lang.String, java.lang.Object, mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum, java.lang.String, mx.infotec.dads.kukulkan.metamodel.editor.Editor, java.nio.file.Path)
-     */
-    @Override
-    public void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model,
-            BasePathEnum basePath, String filePath, Editor editor, Path outputDir) {
-        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
+    public Optional<GeneratedElement> createGeneratedElement(ModelContext context) {
+        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, context.getTemplateName());
         if (templateOptional.isPresent()) {
-            Path path = FileUtil.buildPath(proyectoId, basePath, filePath, outputDir.toString());
-            String simplePath = basePath.getPath() + filePath;
-            dme.addGeneratedElement(processTemplate(model, templateOptional.get(), path, simplePath, editor));
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#fillModel(mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel, java.lang.String, java.lang.String, java.lang.Object, mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum, java.lang.String, mx.infotec.dads.kukulkan.metamodel.editor.Editor, java.nio.file.Path)
-     */
-    @Override
-    public void fillModel(DomainModel dm, String proyectoId, String templateName, Object model, BasePathEnum basePath,
-            String filePath, Editor editor, Path outputDir) {
-        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
-        if (templateOptional.isPresent()) {
-            Path path = FileUtil.buildPath(proyectoId, basePath, filePath, outputDir.toString());
-            String simplePath = basePath.getPath() + filePath;
-            dm.addGeneratedElement(processTemplate(model, templateOptional.get(), path, simplePath, editor));
+            return Optional.of(processTemplate(context.getModel(), templateOptional.get(), context.getRealFilePath(),
+                    context.getRelativeFilePath(), context.getEditor()));
         } else {
-            LOGGER.warn("Template not found for {}", templateName);
+            LOGGER.error("Template not foud : {}", context.getTemplateName());
+            return Optional.empty();
         }
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#fillModel(java.lang.String, java.lang.String, java.lang.Object, mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum, java.lang.String, mx.infotec.dads.kukulkan.metamodel.editor.Editor, java.nio.file.Path)
-     */
-    @Override
-    public void fillModel(String proyectoId, String templateName, Object model, BasePathEnum basePath, String filePath,
-            Editor editor, Path outputDir) {
-        TemplateUtil.get(fmConfiguration, templateName).ifPresent(template -> {
-            Path path = FileUtil.buildPath(proyectoId, basePath, filePath, outputDir.toString());
-            String simplePath = basePath.getPath() + filePath;
-            processTemplate(model, template, path, simplePath, editor);
-        });
+    public Optional<GeneratedElement> createGeneratedElement(String templateName, Object model, Editor editor,
+            Path realFilePath, Path relativeFilePath) {
+        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
+        if (templateOptional.isPresent()) {
+            return Optional.of(processTemplate(model, templateOptional.get(), realFilePath, relativeFilePath, editor));
+        } else {
+            LOGGER.error("Template not foud : {}", templateName);
+            return Optional.empty();
+        }
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#fillAbstractTemplate(java.lang.String, java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#
+     * fillAbstractTemplate(java.lang.String, java.lang.Object)
      */
     @Override
     public String fillAbstractTemplate(String templateRelativePath, Object model) {

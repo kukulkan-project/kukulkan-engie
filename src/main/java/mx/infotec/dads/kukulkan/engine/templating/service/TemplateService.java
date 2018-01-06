@@ -23,12 +23,10 @@
  */
 package mx.infotec.dads.kukulkan.engine.templating.service;
 
-import java.nio.file.Path;
+import java.util.Optional;
 
-import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
-import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
+import mx.infotec.dads.kukulkan.engine.model.ModelContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
 
 /**
  * The Interface TemplateService.
@@ -40,68 +38,21 @@ import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 public interface TemplateService {
 
     /**
-     * Method used for fill a template with the proper entity.
+     * Creates the generated element.
      *
-     * @param dme the dme
-     * @param projectId the project id
-     * @param templateName the template name
-     * @param model the model
-     * @param path the path
-     * @param filePath the file path
-     * @param editor the editor
-     * @param outputDirs the output dirs
+     * @param context
+     *            the context
+     * @return the optional
      */
-    void fillModel(DomainModelElement dme, String projectId, String templateName, Object model, BasePathEnum path,
-            String filePath, Editor editor, Path outputDirs);
+    Optional<GeneratedElement> createGeneratedElement(ModelContext context);
 
     /**
      * Method used for fill a template with the proper entity.
      *
-     * @param projectId the project id
-     * @param templateName the template name
-     * @param model the model
-     * @param path the path
-     * @param filePath the file path
-     * @param editor the editor
-     * @param outputDir the output dir
-     */
-    void fillModel(String projectId, String templateName, Object model, BasePathEnum path, String filePath,
-            Editor editor, Path outputDir);
-
-    /**
-     * Method used for fill a template with the proper entity.
-     *
-     * @param dme the dme
-     * @param proyectoId the proyecto id
-     * @param templateName the template name
-     * @param model the model
-     * @param basePath the base path
-     * @param filePath the file path
-     * @param editor the editor
-     * @param outputDir the output dir
-     */
-    void fillModel(DomainModel dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
-            String filePath, Editor editor, Path outputDir);
-
-    /**
-     * Method used for fill a template with the proper entity.
-     *
-     * @param dme the dme
-     * @param proyectoId the proyecto id
-     * @param templateName the template name
-     * @param model the model
-     * @param basePath the base path
-     * @param filePath the file path
-     * @param outputDir the output dir
-     */
-    void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
-            String filePath, Path outputDir);
-
-    /**
-     * Method used for fill a template with the proper entity.
-     *
-     * @param templateRelativePath the template relative path
-     * @param model the model
+     * @param templateRelativePath
+     *            the template relative path
+     * @param model
+     *            the model
      * @return the string
      */
     String fillAbstractTemplate(String templateRelativePath, Object model);
