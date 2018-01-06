@@ -27,30 +27,59 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GrammarPropertyTypeImpl
- * 
- * @author Daniel Cortes Pichardo
+ * GrammarPropertyTypeImpl.
  *
+ * @author Daniel Cortes Pichardo
  */
 public class GrammarPropertyTypeImpl implements GrammarPropertyType {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** The Constant logger. */
     public static final Logger logger = LoggerFactory.getLogger(GrammarPropertyTypeImpl.class);
 
+    /** The name. */
     private final String name;
+    
+    /** The super column type. */
     private final SuperColumnType superColumnType;
+    
+    /** The java type. */
     private final Class<?> javaType;
+    
+    /** The large object. */
     private final boolean _largeObject;
 
+    /**
+     * Instantiates a new grammar property type impl.
+     *
+     * @param name the name
+     * @param superColumnType the super column type
+     */
     public GrammarPropertyTypeImpl(String name, SuperColumnType superColumnType) {
         this(name, superColumnType, null);
     }
 
+    /**
+     * Instantiates a new grammar property type impl.
+     *
+     * @param name the name
+     * @param superColumnType the super column type
+     * @param javaType the java type
+     */
     public GrammarPropertyTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType) {
         this(name, superColumnType, javaType, false);
     }
 
+    /**
+     * Instantiates a new grammar property type impl.
+     *
+     * @param name the name
+     * @param superColumnType the super column type
+     * @param javaType the java type
+     * @param largeObject the large object
+     */
     public GrammarPropertyTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType,
             boolean largeObject) {
         if (name == null) {
@@ -69,48 +98,81 @@ public class GrammarPropertyTypeImpl implements GrammarPropertyType {
         this._largeObject = largeObject;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isBoolean()
+     */
     public boolean isBoolean() {
         return this.superColumnType == SuperColumnType.BOOLEAN_TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isBinary()
+     */
     public boolean isBinary() {
         return this.superColumnType == SuperColumnType.BINARY_TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isNumber()
+     */
     public boolean isNumber() {
         return this.superColumnType == SuperColumnType.NUMBER_TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isTimeBased()
+     */
     public boolean isTimeBased() {
         return this.superColumnType == SuperColumnType.TIME_TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isLiteral()
+     */
     public boolean isLiteral() {
         return this.superColumnType == SuperColumnType.LITERAL_TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isLargeObject()
+     */
     public boolean isLargeObject() {
         return this._largeObject;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getJavaEquivalentClass()
+     */
     public Class<?> getJavaEquivalentClass() {
         return this.javaType;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getSuperType()
+     */
     public SuperColumnType getSuperType() {
         return this.superColumnType;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getGrammarName()
+     */
     @Override
     public String getGrammarName() {
         return this.name;
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getJavaName()
+     */
     @Override
     public String getJavaName() {
         return this.javaType.getSimpleName();
     }
 
+    /* (non-Javadoc)
+     * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getJavaQualifiedName()
+     */
     @Override
     public String getJavaQualifiedName() {
         return this.javaType.getCanonicalName();

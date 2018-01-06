@@ -26,33 +26,87 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 import java.io.Serializable;
 
 /**
- * GrammarPropertyType
- * 
- * @author Daniel Cortes Pichardo
+ * GrammarPropertyType.
  *
+ * @author Daniel Cortes Pichardo
  */
 public interface GrammarPropertyType extends Serializable {
 
+    /**
+     * Gets the grammar name.
+     *
+     * @return the grammar name
+     */
     public String getGrammarName();
 
+    /**
+     * Gets the java name.
+     *
+     * @return the java name
+     */
     public String getJavaName();
 
+    /**
+     * Gets the java qualified name.
+     *
+     * @return the java qualified name
+     */
     public String getJavaQualifiedName();
 
+    /**
+     * Gets the java equivalent class.
+     *
+     * @return the java equivalent class
+     */
     public Class<?> getJavaEquivalentClass();
 
+    /**
+     * Gets the super type.
+     *
+     * @return the super type
+     */
     public SuperColumnType getSuperType();
 
+    /**
+     * Checks if is boolean.
+     *
+     * @return true, if is boolean
+     */
     public boolean isBoolean();
 
+    /**
+     * Checks if is binary.
+     *
+     * @return true, if is binary
+     */
     public boolean isBinary();
 
+    /**
+     * Checks if is number.
+     *
+     * @return true, if is number
+     */
     public boolean isNumber();
 
+    /**
+     * Checks if is time based.
+     *
+     * @return true, if is time based
+     */
     public boolean isTimeBased();
 
+    /**
+     * Checks if is literal.
+     *
+     * @return true, if is literal
+     */
     public boolean isLiteral();
 
+    /**
+     * Checks if is large object.
+     *
+     * @return true, if is large object
+     */
     public boolean isLargeObject();
 
 }

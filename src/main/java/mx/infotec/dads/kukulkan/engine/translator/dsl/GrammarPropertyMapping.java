@@ -1,3 +1,26 @@
+/*
+ *  
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Daniel Cortes Pichardo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.SuperColumnType.BINARY_TYPE;
@@ -20,13 +43,13 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
- * GrammarPropertyMapping
- * 
- * @author Daniel Cortes Pichardo
+ * GrammarPropertyMapping.
  *
+ * @author Daniel Cortes Pichardo
  */
 public class GrammarPropertyMapping {
 
+    /** The Constant map. */
     private static final HashMap<String, GrammarPropertyType> map;
     static {
         map = new HashMap<>();
@@ -67,13 +90,28 @@ public class GrammarPropertyMapping {
 
     }
 
+    /**
+     * Instantiates a new grammar property mapping.
+     */
     private GrammarPropertyMapping() {
     }
 
+    /**
+     * Gets the property type.
+     *
+     * @param property the property
+     * @return the property type
+     */
     public static GrammarPropertyType getPropertyType(String property) {
         return getMap().get(property);
     }
 
+    /**
+     * Gets the property type.
+     *
+     * @param type the type
+     * @return the property type
+     */
     public static GrammarPropertyType getPropertyType(FieldTypeContext type) {
         Optional<GrammarPropertyType> optional = Optional
                 .of(getMap().get(extractPropertyType(type).getFieldTypeName()));
@@ -84,6 +122,12 @@ public class GrammarPropertyMapping {
         }
     }
 
+    /**
+     * Extract property type.
+     *
+     * @param type the type
+     * @return the grammar property
+     */
     public static GrammarProperty extractPropertyType(FieldTypeContext type) {
         if (type.stringFieldType() != null) {
             return new GrammarProperty(null, type.stringFieldType().name.getText());
@@ -100,6 +144,12 @@ public class GrammarPropertyMapping {
         }
     }
 
+    /**
+     * Gets the numeric type.
+     *
+     * @param numericTypes the numeric types
+     * @return the numeric type
+     */
     public static String getNumericType(NumericTypesContext numericTypes) {
         if (numericTypes.LONG() != null) {
             return numericTypes.LONG().getText();
@@ -116,6 +166,12 @@ public class GrammarPropertyMapping {
         }
     }
 
+    /**
+     * Gets the date type.
+     *
+     * @param dataTypes the data types
+     * @return the date type
+     */
     public static String getDateType(DateTypesContext dataTypes) {
         if (dataTypes.DATE() != null) {
             return dataTypes.DATE().getText();
@@ -130,6 +186,11 @@ public class GrammarPropertyMapping {
         }
     }
 
+    /**
+     * Gets the map.
+     *
+     * @return the map
+     */
     public static HashMap<String, GrammarPropertyType> getMap() {
         return map;
     }

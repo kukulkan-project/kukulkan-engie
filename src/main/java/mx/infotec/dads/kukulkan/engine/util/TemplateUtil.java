@@ -1,3 +1,26 @@
+/*
+ *  
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Daniel Cortes Pichardo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package mx.infotec.dads.kukulkan.engine.util;
 
 import java.io.IOException;
@@ -16,25 +39,28 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
- * TemplateUtil class used for basic operation with freemarker
- * 
- * @author Daniel Cortes Pichardo
+ * TemplateUtil class used for basic operation with freemarker.
  *
+ * @author Daniel Cortes Pichardo
  */
 public class TemplateUtil {
 
+    /** The Constant LOGGER. */
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateUtil.class);
 
+    /**
+     * Instantiates a new template util.
+     */
     private TemplateUtil() {
     }
 
     /**
      * Get a template by name using the configuration object. This method handle
      * the IOexception that the configuration object could throws.
-     * 
-     * @param config
-     * @param templateName
-     * @return
+     *
+     * @param config the config
+     * @param templateName the template name
+     * @return the optional
      */
     public static Optional<Template> get(Configuration config, String templateName) {
         Template template = null;
@@ -47,13 +73,13 @@ public class TemplateUtil {
     }
 
     /**
-     * It process a template and transform it into a GeneratedElement object
-     * 
-     * @param model
-     * @param template
-     * @param path
-     * @param simplePath
-     * @param editor
+     * It process a template and transform it into a GeneratedElement object.
+     *
+     * @param model the model
+     * @param template the template
+     * @param path the path
+     * @param simplePath the simple path
+     * @param editor the editor
      * @return GeneratedElement from a Template
      */
     public static GeneratedElement processTemplate(Object model, Template template, Path path, String simplePath,
@@ -63,10 +89,10 @@ public class TemplateUtil {
 
     /**
      * It process a Template and fill it with the model object,.
-     * 
-     * @param model
-     * @param template
-     * @return
+     *
+     * @param model the model
+     * @param template the template
+     * @return the string
      */
 
     public static String processTemplate(Object model, Template template) {
@@ -79,11 +105,11 @@ public class TemplateUtil {
     }
 
     /**
-     * It process a Template and save it into the specified path
-     * 
-     * @param model
-     * @param template
-     * @param pathToSave
+     * It process a Template and save it into the specified path.
+     *
+     * @param model the model
+     * @param template the template
+     * @param pathToSave the path to save
      */
     public static void processTemplate(Object model, Template template, Path pathToSave) {
         try (StringWriter stringWriter = new StringWriter()) {

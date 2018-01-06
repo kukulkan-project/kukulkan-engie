@@ -31,77 +31,78 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 
 /**
- * 
+ * The Interface TemplateService.
+ *
  * @author Daniel Cortes Pichardo
- * @since 1.0.0
  * @version 1.0.0
+ * @since 1.0.0
  */
 public interface TemplateService {
 
     /**
-     * Method used for fill a template with the proper entity
-     * 
-     * @param dme
-     * @param projectId
-     * @param templateName
-     * @param model
-     * @param path
-     * @param filePath
-     * @param editor
-     * @param outputDirs
+     * Method used for fill a template with the proper entity.
+     *
+     * @param dme the dme
+     * @param projectId the project id
+     * @param templateName the template name
+     * @param model the model
+     * @param path the path
+     * @param filePath the file path
+     * @param editor the editor
+     * @param outputDirs the output dirs
      */
     void fillModel(DomainModelElement dme, String projectId, String templateName, Object model, BasePathEnum path,
             String filePath, Editor editor, Path outputDirs);
 
     /**
-     * Method used for fill a template with the proper entity
-     * 
-     * @param projectId
-     * @param templateName
-     * @param model
-     * @param path
-     * @param filePath
-     * @param editor
-     * @param outputDir
+     * Method used for fill a template with the proper entity.
+     *
+     * @param projectId the project id
+     * @param templateName the template name
+     * @param model the model
+     * @param path the path
+     * @param filePath the file path
+     * @param editor the editor
+     * @param outputDir the output dir
      */
     void fillModel(String projectId, String templateName, Object model, BasePathEnum path, String filePath,
             Editor editor, Path outputDir);
 
     /**
-     * Method used for fill a template with the proper entity
-     * 
-     * @param dme
-     * @param proyectoId
-     * @param templateName
-     * @param model
-     * @param basePath
-     * @param filePath
-     * @param editor
-     * @param outputDir
+     * Method used for fill a template with the proper entity.
+     *
+     * @param dme the dme
+     * @param proyectoId the proyecto id
+     * @param templateName the template name
+     * @param model the model
+     * @param basePath the base path
+     * @param filePath the file path
+     * @param editor the editor
+     * @param outputDir the output dir
      */
     void fillModel(DomainModel dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
             String filePath, Editor editor, Path outputDir);
 
     /**
-     * Method used for fill a template with the proper entity
-     * 
-     * @param dme
-     * @param proyectoId
-     * @param templateName
-     * @param model
-     * @param basePath
-     * @param filePath
-     * @param outputDir
+     * Method used for fill a template with the proper entity.
+     *
+     * @param dme the dme
+     * @param proyectoId the proyecto id
+     * @param templateName the template name
+     * @param model the model
+     * @param basePath the base path
+     * @param filePath the file path
+     * @param outputDir the output dir
      */
     void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
             String filePath, Path outputDir);
 
     /**
-     * Method used for fill a template with the proper entity
-     * 
-     * @param templateRelativePath
-     * @param model
-     * @return
+     * Method used for fill a template with the proper entity.
+     *
+     * @param templateRelativePath the template relative path
+     * @param model the model
+     * @return the string
      */
     String fillAbstractTemplate(String templateRelativePath, Object model);
 }

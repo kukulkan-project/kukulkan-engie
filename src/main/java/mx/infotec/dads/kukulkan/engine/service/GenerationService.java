@@ -38,25 +38,25 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 public interface GenerationService {
 
     /**
-     * The main method for generation propose
-     * 
-     * @param context
-     * @param generator
+     * The main method for generation propose.
+     *
+     * @param context the context
+     * @param generator the generator
      */
     void process(GeneratorContext context, Generator generator);
 
     /**
      * It find a generator for name. A generator registered in the system must
      * be unique by name, so there are not generators with the same name.
-     * 
-     * @param name
+     *
+     * @param name the name
      * @return a Generator
      */
     Optional<Generator> findGeneratorByName(String name);
 
     /**
-     * It returns all generator available in the system
-     * 
+     * It returns all generator available in the system.
+     *
      * @return a collection of generator
      */
     Collection<Generator> findAllGenerators();

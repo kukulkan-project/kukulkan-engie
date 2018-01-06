@@ -24,7 +24,6 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,21 +39,24 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 
 /**
- * DataMapping utility class
- * 
- * @author Daniel Cortes Pichardo
+ * DataMapping utility class.
  *
+ * @author Daniel Cortes Pichardo
  */
 public class GrammarMapping {
 
+    /**
+     * Instantiates a new grammar mapping.
+     */
     private GrammarMapping() {
 
     }
 
     /**
-     * Create a DataModelGroup Class
-     * 
-     * @param dataContext
+     * Create a DataModelGroup Class.
+     *
+     * @param dmc the dmc
+     * @param visitor the visitor
      * @return DataModelGroup
      */
     public static DomainModelGroup createDefaultDataModelGroup(DomainModelContext dmc, KukulkanVisitor visitor) {
@@ -72,10 +74,10 @@ public class GrammarMapping {
     /**
      * createDataModelElement is used for map the KukulkanGrammar to
      * DataModelElement.
-     * 
-     * @param dmc
-     * @param visitor
-     * @param dmeList
+     *
+     * @param dmc the dmc
+     * @param visitor the visitor
+     * @param dmeList the dme list
      */
     private static void createDataModelElement(DomainModelContext dmc, KukulkanVisitor visitor,
             List<DomainModelElement> dmeList) {
@@ -83,6 +85,13 @@ public class GrammarMapping {
         dmeList.addAll(visitor.getVctx().getElements());
     }
 
+    /**
+     * Adds the imports.
+     *
+     * @param imports the imports
+     * @param property the property
+     * @return true, if successful
+     */
     public static boolean addImports(Collection<String> imports, JavaProperty property) {
         if (property.isBlob() || property.isLiteral() || property.isBoolean() || property.isClob()
                 || (property.isNumber() && !property.isBigDecimal())) {
@@ -93,6 +102,12 @@ public class GrammarMapping {
         }
     }
 
+    /**
+     * Adds the type.
+     *
+     * @param javaProperty the java property
+     * @param type the type
+     */
     public static void addType(JavaProperty javaProperty, FieldTypeContext type) {
         if (type.booleanFieldType() != null) {
             javaProperty.setBoolean(true);
@@ -109,12 +124,24 @@ public class GrammarMapping {
         }
     }
 
+    /**
+     * Sets the kind of numeric.
+     *
+     * @param javaProperty the java property
+     * @param type the type
+     */
     private static void setKindOfNumeric(JavaProperty javaProperty, NumericTypesContext type) {
         if (type.BIG_DECIMAL() != null) {
             javaProperty.setBigDecimal(true);
         }
     }
 
+    /**
+     * Sets the kind of blob type.
+     *
+     * @param property the property
+     * @param ctx the ctx
+     */
     private static void setKindOfBlobType(JavaProperty property, BlobTypesContext ctx) {
         if (ctx.BLOB() != null || ctx.ANY_BLOB() != null || ctx.IMAGE_BLOB() != null) {
             property.setBlob(true);
@@ -123,6 +150,12 @@ public class GrammarMapping {
         }
     }
 
+    /**
+     * Sets the kind of date type.
+     *
+     * @param property the property
+     * @param type the type
+     */
     private static void setKindOfDateType(JavaProperty property, DateTypesContext type) {
         property.setTime(true);
         if (type.ZONED_DATETIME() != null) {
@@ -135,12 +168,10 @@ public class GrammarMapping {
     }
 
     /**
-     * createSingleDataModelGroupList
-     * 
-     * @param visitor
-     * @param tablesToProcess
-     * @return
-     * @throws IOException
+     * createSingleDataModelGroupList.
+     *
+     * @param visitor the visitor
+     * @return the list
      */
     public static List<DomainModelGroup> createSingleTestDataModelGroupList(KukulkanVisitor visitor) {
         String program = "src/test/resources/grammar/test." + "3k";
@@ -151,12 +182,11 @@ public class GrammarMapping {
     }
 
     /**
-     * createSingleDataModelGroupList
-     * 
-     * @param visitor
-     * @param tablesToProcess
-     * @return
-     * @throws IOException
+     * createSingleDataModelGroupList.
+     *
+     * @param visitor the visitor
+     * @param file the file
+     * @return the list
      */
     public static List<DomainModelGroup> createSingleDataModelGroupList(KukulkanVisitor visitor, File file) {
         String program = file.getAbsolutePath();
@@ -167,12 +197,11 @@ public class GrammarMapping {
     }
 
     /**
-     * createSingleDataModelGroupList
-     * 
-     * @param visitor
-     * @param tablesToProcess
-     * @return
-     * @throws IOException
+     * createSingleDataModelGroupList.
+     *
+     * @param visitor the visitor
+     * @param textFile the text file
+     * @return the list
      */
     public static List<DomainModelGroup> createSingleDataModelGroupList(KukulkanVisitor visitor, String textFile) {
         DomainModelContext tree = GrammarUtil.getDomainModelContext(textFile, true);
@@ -181,6 +210,12 @@ public class GrammarMapping {
         return dataModelGroupList;
     }
 
+    /**
+     * Gets the property type.
+     *
+     * @param type the type
+     * @return the property type
+     */
     public static Optional<GrammarPropertyType> getPropertyType(String type) {
         return Optional.of(GrammarPropertyMapping.getPropertyType(type));
     }
