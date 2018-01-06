@@ -30,17 +30,35 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 
 /**
- * The Generation Service is the main service used to run the whole engine
+ * The Generation Service is the main service used for run a generation process.
  * 
  * @author Daniel Cortes Pichardo
  *
  */
 public interface GenerationService {
 
+    /**
+     * The main method for generation propose
+     * 
+     * @param context
+     * @param generator
+     */
     void process(GeneratorContext context, Generator generator);
 
+    /**
+     * It find a generator for name. A generator registered in the system must
+     * be unique by name, so there are not generators with the same name.
+     * 
+     * @param name
+     * @return a Generator
+     */
     Optional<Generator> findGeneratorByName(String name);
 
+    /**
+     * It returns all generator available in the system
+     * 
+     * @return a collection of generator
+     */
     Collection<Generator> findAllGenerators();
 
 }

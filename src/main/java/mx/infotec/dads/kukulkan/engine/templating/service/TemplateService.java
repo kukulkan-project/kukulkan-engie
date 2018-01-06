@@ -38,17 +38,70 @@ import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
  */
 public interface TemplateService {
 
+    /**
+     * Method used for fill a template with the proper entity
+     * 
+     * @param dme
+     * @param projectId
+     * @param templateName
+     * @param model
+     * @param path
+     * @param filePath
+     * @param editor
+     * @param outputDirs
+     */
     void fillModel(DomainModelElement dme, String projectId, String templateName, Object model, BasePathEnum path,
             String filePath, Editor editor, Path outputDirs);
 
+    /**
+     * Method used for fill a template with the proper entity
+     * 
+     * @param projectId
+     * @param templateName
+     * @param model
+     * @param path
+     * @param filePath
+     * @param editor
+     * @param outputDir
+     */
     void fillModel(String projectId, String templateName, Object model, BasePathEnum path, String filePath,
             Editor editor, Path outputDir);
 
+    /**
+     * Method used for fill a template with the proper entity
+     * 
+     * @param dme
+     * @param proyectoId
+     * @param templateName
+     * @param model
+     * @param basePath
+     * @param filePath
+     * @param editor
+     * @param outputDir
+     */
     void fillModel(DomainModel dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
             String filePath, Editor editor, Path outputDir);
 
+    /**
+     * Method used for fill a template with the proper entity
+     * 
+     * @param dme
+     * @param proyectoId
+     * @param templateName
+     * @param model
+     * @param basePath
+     * @param filePath
+     * @param outputDir
+     */
     void fillModel(DomainModelElement dme, String proyectoId, String templateName, Object model, BasePathEnum basePath,
             String filePath, Path outputDir);
 
+    /**
+     * Method used for fill a template with the proper entity
+     * 
+     * @param templateRelativePath
+     * @param model
+     * @return
+     */
     String fillAbstractTemplate(String templateRelativePath, Object model);
 }

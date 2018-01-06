@@ -37,12 +37,12 @@ import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 
 /**
- * Generation service for java applications
+ * Default Generation service
  * 
  * @author Daniel Cortes Pichardo
  *
  */
-@Service("javaGenerationService")
+@Service("defaultGenerationService")
 public class GenerationServiceImpl implements GenerationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenerationServiceImpl.class);

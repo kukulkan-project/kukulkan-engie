@@ -28,7 +28,6 @@ public class GrammarConstants {
     public static final String GRAMMAR_BOOLEAN = "Boolean";
     public static final String JAVA_BOOLEAN = "Boolean";
 
-
     /**
      * Date Types
      */

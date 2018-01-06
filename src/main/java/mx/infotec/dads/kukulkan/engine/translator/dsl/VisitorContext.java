@@ -14,9 +14,10 @@ public class VisitorContext {
 
     private List<DomainModelElement> elements;
 
-    public VisitorContext(List<DomainModelElement> dmeList){
-        this.elements= dmeList;
+    public VisitorContext(List<DomainModelElement> dmeList) {
+        this.elements = dmeList;
     }
+
     public List<DomainModelElement> getElements() {
         return elements;
     }

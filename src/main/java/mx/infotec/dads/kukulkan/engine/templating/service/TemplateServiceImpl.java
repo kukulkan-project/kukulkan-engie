@@ -27,10 +27,7 @@ import static mx.infotec.dads.kukulkan.engine.editor.ace.EditorFactory.createDef
 import static mx.infotec.dads.kukulkan.engine.util.TemplateUtil.processTemplate;
 import static mx.infotec.dads.kukulkan.metamodel.editor.LanguageType.JAVA;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -40,16 +37,12 @@ import org.springframework.stereotype.Service;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import mx.infotec.dads.kukulkan.engine.util.TemplateUtil;
 import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
-import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
-import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum;
 import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
-import mx.infotec.dads.kukulkan.metamodel.util.KukulkanConfigurationProperties;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**

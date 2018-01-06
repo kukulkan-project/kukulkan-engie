@@ -75,7 +75,8 @@ public class GrammarPropertyMapping {
     }
 
     public static GrammarPropertyType getPropertyType(FieldTypeContext type) {
-        Optional<GrammarPropertyType> optional = Optional.of(getMap().get(extractPropertyType(type).getFieldTypeName()));
+        Optional<GrammarPropertyType> optional = Optional
+                .of(getMap().get(extractPropertyType(type).getFieldTypeName()));
         if (optional.isPresent()) {
             return optional.get();
         } else {
@@ -98,7 +99,6 @@ public class GrammarPropertyMapping {
             throw new MetaModelException("Property type not found for: " + type.getText());
         }
     }
-
 
     public static String getNumericType(NumericTypesContext numericTypes) {
         if (numericTypes.LONG() != null) {

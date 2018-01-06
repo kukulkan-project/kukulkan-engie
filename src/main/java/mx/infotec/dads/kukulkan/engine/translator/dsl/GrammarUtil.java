@@ -95,20 +95,13 @@ public class GrammarUtil {
 
     public static JavaProperty createJavaProperty(EntityFieldContext field, String propertyName,
             GrammarPropertyType propertyType) {
-        return JavaProperty.builder()
-                .withName(propertyName)
-                .withType(propertyType.getJavaName())
-                .withColumnName(propertyName)
-                .withColumnType(propertyType.getGrammarName())
-                .withQualifiedName(propertyType.getJavaQualifiedName())
-                .isNullable(true)
-                .isPrimaryKey(false)
-                .isIndexed(false)
-                .isLocalDate(propertyType.getJavaEquivalentClass().equals(LocalDate.class))
+        return JavaProperty.builder().withName(propertyName).withType(propertyType.getJavaName())
+                .withColumnName(propertyName).withColumnType(propertyType.getGrammarName())
+                .withQualifiedName(propertyType.getJavaQualifiedName()).isNullable(true).isPrimaryKey(false)
+                .isIndexed(false).isLocalDate(propertyType.getJavaEquivalentClass().equals(LocalDate.class))
                 .isZoneDateTime(propertyType.getJavaEquivalentClass().equals(ZonedDateTime.class))
                 .isInstance(propertyType.getJavaEquivalentClass().equals(Instant.class))
-                .isLargeObject(propertyType.isLargeObject())
-                .addType(field.type)
+                .isLargeObject(propertyType.isLargeObject()).addType(field.type)
                 .withJavaEquivalentClass(propertyType.getJavaEquivalentClass()).build();
     }
 
