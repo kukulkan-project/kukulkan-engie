@@ -30,12 +30,12 @@ import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 /**
  * Model Context; It is used int TemplateService.
  *
- * @author Daniel Cortes Pichard
+ * @author Daniel Cortes Pichardo
  */
 public class ModelContext {
 
     /** The template name. */
-    private String templateName;
+    private Path templatePath;
 
     /** The model. */
     private Object model;
@@ -58,8 +58,8 @@ public class ModelContext {
      *
      * @return the template name
      */
-    public String getTemplateName() {
-        return templateName;
+    public Path getTemplatePath() {
+        return templatePath;
     }
 
     /**
@@ -104,8 +104,8 @@ public class ModelContext {
      * @param templateName
      *            the new template name
      */
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+    public void setTemplatePath(Path templatePath) {
+        this.templatePath = templatePath;
     }
 
     /**
@@ -149,14 +149,14 @@ public class ModelContext {
     }
 
     public static class Builder {
-        private String templateName;
+        private Path templatePath;
         private Object model;
         private Editor editor;
         private Path realFilePath;
         private Path relativeFilePath;
 
-        public Builder templateName(String templateName) {
-            this.templateName = templateName;
+        public Builder templatePath(Path templatePath) {
+            this.templatePath = templatePath;
             return this;
         }
 
@@ -186,7 +186,7 @@ public class ModelContext {
     }
 
     private ModelContext(Builder builder) {
-        this.templateName = builder.templateName;
+        this.templatePath = builder.templatePath;
         this.model = builder.model;
         this.editor = builder.editor;
         this.realFilePath = builder.realFilePath;
