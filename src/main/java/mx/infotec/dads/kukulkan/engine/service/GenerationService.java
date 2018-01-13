@@ -26,7 +26,7 @@ package mx.infotec.dads.kukulkan.engine.service;
 import java.util.Collection;
 import java.util.Optional;
 
-import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratorContext;
+import mx.infotec.dads.kukulkan.metamodel.context.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
 
 /**

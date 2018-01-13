@@ -103,7 +103,7 @@ public class TemplateServiceImpl implements TemplateService {
         if (templateOptional.isPresent()) {
             return processTemplate(model, templateOptional.get());
         } else {
-            throw new MetaModelException("Template not found for " + templateRelativePath);
+            throw new MetaModelException("Template not found : " + templateRelativePath);
         }
     }
 }
