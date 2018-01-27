@@ -55,5 +55,5 @@ public interface TemplateService {
      *            the model
      * @return the string
      */
-    String fillAbstractTemplate(String templateRelativePath, Object model);
+    String fillTemplate(String templateRelativePath, Object model);
 }

@@ -25,7 +25,6 @@ package mx.infotec.dads.kukulkan.engine.templating.service;
 
 import static mx.infotec.dads.kukulkan.engine.util.TemplateUtil.processTemplate;
 
-import java.nio.file.Path;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -37,7 +36,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import mx.infotec.dads.kukulkan.engine.model.ModelContext;
 import mx.infotec.dads.kukulkan.engine.util.TemplateUtil;
-import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
@@ -80,17 +78,6 @@ public class TemplateServiceImpl implements TemplateService {
         }
     }
 
-    public Optional<GeneratedElement> createGeneratedElement(String templateName, Object model, Editor editor,
-            Path realFilePath, Path relativeFilePath) {
-        Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateName);
-        if (templateOptional.isPresent()) {
-            return Optional.of(processTemplate(model, templateOptional.get(), realFilePath, relativeFilePath, editor));
-        } else {
-            LOGGER.error("Template not foud : {}", templateName);
-            return Optional.empty();
-        }
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -98,7 +85,7 @@ public class TemplateServiceImpl implements TemplateService {
      * fillAbstractTemplate(java.lang.String, java.lang.Object)
      */
     @Override
-    public String fillAbstractTemplate(String templateRelativePath, Object model) {
+    public String fillTemplate(String templateRelativePath, Object model) {
         Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, templateRelativePath);
         if (templateOptional.isPresent()) {
             return processTemplate(model, templateOptional.get());
