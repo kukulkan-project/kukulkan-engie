@@ -26,6 +26,9 @@ package mx.infotec.dads.kukulkan.engine.util;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -34,8 +37,12 @@ import org.slf4j.LoggerFactory;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import mx.infotec.dads.kukulkan.metamodel.context.BaseContext;
 import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
+import mx.infotec.dads.kukulkan.metamodel.template.TemplateInfo;
+import mx.infotec.dads.kukulkan.metamodel.template.TemplateType;
+import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
@@ -58,8 +65,10 @@ public class TemplateUtil {
      * Get a template by name using the configuration object. This method handle
      * the IOexception that the configuration object could throws.
      *
-     * @param config the config
-     * @param templateName the template name
+     * @param config
+     *            the config
+     * @param templateName
+     *            the template name
      * @return the optional
      */
     public static Optional<Template> get(Configuration config, String templateName) {
@@ -75,23 +84,30 @@ public class TemplateUtil {
     /**
      * It process a template and transform it into a GeneratedElement object.
      *
-     * @param model the model
-     * @param template the template
-     * @param realFilePath the path
-     * @param relativeFilePath the simple path
-     * @param editor the editor
+     * @param model
+     *            the model
+     * @param template
+     *            the template
+     * @param realFilePath
+     *            the path
+     * @param relativeFilePath
+     *            the simple path
+     * @param editor
+     *            the editor
      * @return GeneratedElement from a Template
      */
-    public static GeneratedElement processTemplate(Object model, Template template, Path realFilePath, Path relativeFilePath,
-            Editor editor) {
+    public static GeneratedElement processTemplate(Object model, Template template, Path realFilePath,
+            Path relativeFilePath, Editor editor) {
         return new GeneratedElement(realFilePath, relativeFilePath, processTemplate(model, template), editor);
     }
 
     /**
      * It process a Template and fill it with the model object,.
      *
-     * @param model the model
-     * @param template the template
+     * @param model
+     *            the model
+     * @param template
+     *            the template
      * @return the string
      */
 
@@ -107,9 +123,12 @@ public class TemplateUtil {
     /**
      * It process a Template and save it into the specified path.
      *
-     * @param model the model
-     * @param template the template
-     * @param pathToSave the path to save
+     * @param model
+     *            the model
+     * @param template
+     *            the template
+     * @param pathToSave
+     *            the path to save
      */
     public static void processTemplate(Object model, Template template, Path pathToSave) {
         try (StringWriter stringWriter = new StringWriter()) {
@@ -119,4 +138,32 @@ public class TemplateUtil {
             throw new MetaModelException("Fill Model Error", e);
         }
     }
+
+    public static List<TemplateInfo> convertToTemplateInfoList(TemplateType type, List<String> from) {
+        List<TemplateInfo> to = new ArrayList<>();
+        for (String template : from) {
+            to.add(new TemplateInfo(type, template));
+        }
+        return to;
+    }
+
+    public static String createTemplatePath(String projectid, String newPackaging, Path parent, Path outputPath,
+            TemplateInfo template) {
+        return parent.toString().replaceAll(template.getType().getTemplatePath(), outputPath + "/" + projectid)
+                .replaceAll("package", newPackaging);
+    }
+
+    public static Path createToSavePath(BaseContext context, TemplateInfo template) {
+        return createPath(template, context.getPackaging(), context.getId(), context.getOutputDir());
+    }
+
+    public static Path createPath(TemplateInfo template, String packaging, String projectid, Path outputPath) {
+        String newPackaging = packaging.replaceAll("\\.", "/");
+        Path temp = Paths.get(template.getName());
+        Path parent = temp.getParent();
+        String newTemplate = TemplateUtil.createTemplatePath(projectid, newPackaging, parent, outputPath, template);
+        Path targetPath = Paths.get(newTemplate, temp.getFileName().toString().replaceAll(".ftl", ""));
+        return FileUtil.createOutputPath(projectid, targetPath);
+    }
+
 }

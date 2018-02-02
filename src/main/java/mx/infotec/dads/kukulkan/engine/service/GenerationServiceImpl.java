@@ -34,7 +34,6 @@ import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.metamodel.context.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.generator.Generator;
-import mx.infotec.dads.kukulkan.metamodel.generator.Layer;
 
 /**
  * Default Generation service.
@@ -56,9 +55,7 @@ public class GenerationServiceImpl implements GenerationService {
      */
     @Override
     public void process(GeneratorContext context, Generator generator) {
-        for (Layer layer : generator.getLayers()) {
-            layer.process(context);
-        }
+        generator.process(context);
     }
 
     /* (non-Javadoc)
