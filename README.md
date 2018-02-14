@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/706608be0fc1442898d073ce7a4f6e81)](https://www.codacy.com/app/erik-valdivieso/kukulkan-engine?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kukulkan-project/kukulkan-engine&amp;utm_campaign=Badge_Grade)
+
 # Kukulkan Engine
  
 ## Template key-params
