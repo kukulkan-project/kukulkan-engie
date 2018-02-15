@@ -150,7 +150,8 @@ public class TemplateUtil {
 
     public static String createTemplatePath(String projectid, String newPackaging, Path parent, Path outputPath,
             TemplateInfo template) {
-        return parent.toString().replaceAll(template.getType().getTemplatePath(), outputPath + File.separator + projectid)
+        return parent.toString()
+                .replaceAll(template.getType().getTemplatePath(), outputPath + File.separator + projectid)
                 .replaceAll("package", newPackaging);
     }
 
