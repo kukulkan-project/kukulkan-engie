@@ -23,6 +23,7 @@
  */
 package mx.infotec.dads.kukulkan.engine.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
@@ -149,7 +150,7 @@ public class TemplateUtil {
 
     public static String createTemplatePath(String projectid, String newPackaging, Path parent, Path outputPath,
             TemplateInfo template) {
-        return parent.toString().replaceAll(template.getType().getTemplatePath(), outputPath + "/" + projectid)
+        return parent.toString().replaceAll(template.getType().getTemplatePath(), outputPath + File.separator + projectid)
                 .replaceAll("package", newPackaging);
     }
 
@@ -158,12 +159,11 @@ public class TemplateUtil {
     }
 
     public static Path createPath(TemplateInfo template, String packaging, String projectid, Path outputPath) {
-        String newPackaging = packaging.replaceAll("\\.", "/");
+        String newPackaging = packaging.replaceAll("\\.", File.separator);
         Path temp = Paths.get(template.getName());
         Path parent = temp.getParent();
         String newTemplate = TemplateUtil.createTemplatePath(projectid, newPackaging, parent, outputPath, template);
         Path targetPath = Paths.get(newTemplate, temp.getFileName().toString().replaceAll(".ftl", ""));
         return FileUtil.createOutputPath(projectid, targetPath);
     }
-
 }
