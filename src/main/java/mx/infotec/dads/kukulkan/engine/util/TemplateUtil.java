@@ -161,7 +161,7 @@ public class TemplateUtil {
 
     public static Path createPath(TemplateInfo template, String packaging, String projectid, Path outputPath) {
         String newPackaging = packaging.replaceAll("\\.", File.separator);
-        Path temp = Paths.get(template.getName());
+        Path temp = Paths.get(template.getStringPath());
         Path parent = temp.getParent();
         String newTemplate = TemplateUtil.createTemplatePath(projectid, newPackaging, parent, outputPath, template);
         Path targetPath = Paths.get(newTemplate, temp.getFileName().toString().replaceAll(".ftl", ""));
