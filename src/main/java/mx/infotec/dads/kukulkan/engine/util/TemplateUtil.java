@@ -46,6 +46,7 @@ import mx.infotec.dads.kukulkan.metamodel.template.TemplateInfo;
 import mx.infotec.dads.kukulkan.metamodel.template.TemplateType;
 import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
+import mx.infotec.dads.kukulkan.metamodel.util.StringFormater;
 
 /**
  * TemplateUtil class used for basic operation with freemarker.
@@ -162,7 +163,7 @@ public class TemplateUtil {
     }
 
     public static Path createPath(TemplateInfo template, String packaging, String projectid, Path outputPath) {
-        String newPackaging = packaging.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        String newPackaging = StringFormater.replaceDotByFileSeparator(packaging);
         Path temp = Paths.get(template.getStringPath());
         Path parent = temp.getParent();
         String newTemplate = TemplateUtil.createTemplatePath(projectid, newPackaging, parent, outputPath, template);
