@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +152,8 @@ public class TemplateUtil {
     public static String createTemplatePath(String projectid, String newPackaging, Path parent, Path outputPath,
             TemplateInfo template) {
         return parent.toString()
-                .replaceAll(template.getType().getTemplatePath(), outputPath + File.separator + projectid)
+                .replaceAll(template.getType().getTemplatePath(),
+                        outputPath + Matcher.quoteReplacement(File.separator) + projectid)
                 .replaceAll("package", newPackaging);
     }
 
@@ -160,7 +162,7 @@ public class TemplateUtil {
     }
 
     public static Path createPath(TemplateInfo template, String packaging, String projectid, Path outputPath) {
-        String newPackaging = packaging.replaceAll("\\.", File.separator);
+        String newPackaging = packaging.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
         Path temp = Paths.get(template.getStringPath());
         Path parent = temp.getParent();
         String newTemplate = TemplateUtil.createTemplatePath(projectid, newPackaging, parent, outputPath, template);
