@@ -59,7 +59,7 @@ public class GrammarMapping {
      * @param visitor the visitor
      * @return DataModelGroup
      */
-    public static DomainModelGroup createDefaultDataModelGroup(DomainModelContext dmc, KukulkanVisitor visitor) {
+    public static DomainModelGroup createDefaultDataModelGroup(DomainModelContext dmc, GrammarSemanticAnalyzer visitor) {
         DomainModelGroup dmg = new DomainModelGroup();
         dmg.setName("");
         dmg.setDescription("Default package");
@@ -79,7 +79,7 @@ public class GrammarMapping {
      * @param visitor the visitor
      * @param dmeList the dme list
      */
-    private static void createDataModelElement(DomainModelContext dmc, KukulkanVisitor visitor,
+    private static void createDataModelElement(DomainModelContext dmc, GrammarSemanticAnalyzer visitor,
             List<Entity> dmeList) {
         visitor.visit(dmc);
         dmeList.addAll(visitor.getVctx().getElements());
@@ -173,7 +173,7 @@ public class GrammarMapping {
      * @param visitor the visitor
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleTestDataModelGroupList(KukulkanVisitor visitor) {
+    public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
         String program = "src/test/resources/grammar/test." + "3k";
         DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
@@ -188,7 +188,7 @@ public class GrammarMapping {
      * @param file the file
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(KukulkanVisitor visitor, File file) {
+    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor, File file) {
         String program = file.getAbsolutePath();
         DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
@@ -203,7 +203,7 @@ public class GrammarMapping {
      * @param textFile the text file
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(KukulkanVisitor visitor, String textFile) {
+    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor, String textFile) {
         DomainModelContext tree = GrammarUtil.getDomainModelContext(textFile, true);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
         dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));

@@ -51,7 +51,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
  *
  * @author Daniel Cortes Pichardo
  */
-public class KukulkanVisitor extends kukulkanBaseVisitor<VisitorContext> {
+public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext> {
 
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<Entity>());
