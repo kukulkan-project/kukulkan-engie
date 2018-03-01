@@ -62,7 +62,7 @@ public class TemplateServiceImpl implements TemplateService {
      * 
      * @see mx.infotec.dads.kukulkan.engine.templating.service.TemplateService#
      * fillModel(mx.infotec.dads.kukulkan.metamodel.foundation.
-     * DomainModelElement, java.lang.String, java.lang.String, java.lang.Object,
+     * Entity, java.lang.String, java.lang.String, java.lang.Object,
      * mx.infotec.dads.kukulkan.metamodel.util.BasePathEnum, java.lang.String,
      * mx.infotec.dads.kukulkan.metamodel.editor.Editor, java.nio.file.Path)
      */

@@ -44,7 +44,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 
 /**
  * KukulkanGrammarVisitor implements the.
@@ -54,10 +54,10 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 public class KukulkanVisitor extends kukulkanBaseVisitor<VisitorContext> {
 
     /** The vctx. */
-    private final VisitorContext vctx = new VisitorContext(new ArrayList<DomainModelElement>());
+    private final VisitorContext vctx = new VisitorContext(new ArrayList<Entity>());
     
     /** The dme. */
-    private DomainModelElement dme = null;
+    private Entity dme = null;
     
     /** The efc. */
     private EntityFieldContext efc = null;
@@ -76,7 +76,7 @@ public class KukulkanVisitor extends kukulkanBaseVisitor<VisitorContext> {
      */
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
-        dme = DomainModelElement.createDomainModelElement();
+        dme = Entity.createDomainModelElement();
         addMetaData(ctx, dme);
         getVctx().getElements().add(dme);
         return super.visitEntity(ctx);

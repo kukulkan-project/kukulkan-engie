@@ -42,7 +42,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
@@ -144,7 +144,7 @@ public class GrammarUtil {
      * @param entity the entity
      * @param dme the dme
      */
-    public static void addMetaData(EntityContext entity, DomainModelElement dme) {
+    public static void addMetaData(EntityContext entity, Entity dme) {
         String singularName = InflectorProcessor.getInstance().singularize(entity.name.getText());
         dme.setTableName(entity.name.getText().toUpperCase());
         dme.setName(entity.name.getText());
@@ -160,7 +160,7 @@ public class GrammarUtil {
      * @param propertyName the property name
      * @param propertyType the property type
      */
-    public static void addContentType(DomainModelElement dme, String propertyName, GrammarPropertyType propertyType) {
+    public static void addContentType(Entity dme, String propertyName, GrammarPropertyType propertyType) {
         if (propertyType.isBinary()) {
             dme.addProperty(createContentTypeProperty(propertyName));
         }

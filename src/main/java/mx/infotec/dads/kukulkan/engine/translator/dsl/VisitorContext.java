@@ -25,7 +25,7 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import java.util.List;
 
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 
 /**
  * Visitor Context.
@@ -35,14 +35,14 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
 public class VisitorContext {
 
     /** The elements. */
-    private List<DomainModelElement> elements;
+    private List<Entity> elements;
 
     /**
      * Instantiates a new visitor context.
      *
      * @param dmeList the dme list
      */
-    public VisitorContext(List<DomainModelElement> dmeList) {
+    public VisitorContext(List<Entity> dmeList) {
         this.elements = dmeList;
     }
 
@@ -51,7 +51,7 @@ public class VisitorContext {
      *
      * @return the elements
      */
-    public List<DomainModelElement> getElements() {
+    public List<Entity> getElements() {
         return elements;
     }
 
@@ -60,7 +60,7 @@ public class VisitorContext {
      *
      * @param elements the new elements
      */
-    public void setElements(List<DomainModelElement> elements) {
+    public void setElements(List<Entity> elements) {
         this.elements = elements;
     }
 

@@ -32,7 +32,7 @@ import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Table;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.PrimaryKey;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
@@ -74,10 +74,10 @@ public class DataBaseMapping {
         dmg.setName("");
         dmg.setDescription("Default package");
         dmg.setBriefDescription("Default package");
-        dmg.setDomainModelElements(new ArrayList<>());
-        List<DomainModelElement> dmeList = new ArrayList<>();
+        dmg.setEntities(new ArrayList<>());
+        List<Entity> dmeList = new ArrayList<>();
         createDataModelElement(excludedTables, tables, dmeList);
-        dmg.setDomainModelElements(dmeList);
+        dmg.setEntities(dmeList);
         return dmg;
     }
 
@@ -89,11 +89,11 @@ public class DataBaseMapping {
      * @param dmeList the dme list
      */
     private static void createDataModelElement(List<String> tablesToProcess, List<Table> tables,
-            List<DomainModelElement> dmeList) {
+            List<Entity> dmeList) {
         tables.forEach(table -> {
             if ((tablesToProcess.contains(table.getName()) || tablesToProcess.isEmpty())
                     && hasPrimaryKey(table.getPrimaryKeys())) {
-                DomainModelElement dme = DomainModelElement.createOrderedDataModel();
+                Entity dme = Entity.createOrderedDataModel();
                 String singularName = InflectorProcessor.getInstance().singularize(table.getName());
                 dme.setTableName(table.getName());
                 dme.setName(SchemaPropertiesParser.parseToClassName(singularName));
@@ -113,7 +113,7 @@ public class DataBaseMapping {
      * @param singularName the singular name
      * @param columns the columns
      */
-    public static void extractPrimaryKey(DomainModelElement dme, String singularName, List<Column> columns) {
+    public static void extractPrimaryKey(Entity dme, String singularName, List<Column> columns) {
         dme.setPrimaryKey(mapPrimaryKeyElements(singularName, columns));
         if (!dme.getPrimaryKey().isComposed()) {
             dme.getImports().add(dme.getPrimaryKey().getQualifiedLabel());
@@ -126,7 +126,7 @@ public class DataBaseMapping {
      * @param dme the dme
      * @param table the table
      */
-    public static void extractProperties(DomainModelElement dme, Table table) {
+    public static void extractProperties(Entity dme, Table table) {
         table.getColumns().stream().filter(column -> !column.isPrimaryKey())
                 .forEach(column -> processNotPrimaryProperties(dme, column));
     }
@@ -151,7 +151,7 @@ public class DataBaseMapping {
      * @param dme the dme
      * @param column the column
      */
-    private static void processNotPrimaryProperties(DomainModelElement dme, Column column) {
+    private static void processNotPrimaryProperties(Entity dme, Column column) {
         String propertyName = SchemaPropertiesParser.parseToPropertyName(column.getName());
         String propertyType = extractPropertyType(column);
         JavaProperty javaProperty = JavaProperty.builder().withName(propertyName).withType(propertyType)
@@ -169,7 +169,7 @@ public class DataBaseMapping {
      * @param dme the dme
      * @param javaProperty the java property
      */
-    public static void fillModelMetaData(DomainModelElement dme, JavaProperty javaProperty) {
+    public static void fillModelMetaData(Entity dme, JavaProperty javaProperty) {
         if (!javaProperty.getConstraint().isNullable()) {
             dme.setHasNotNullElements(true);
             dme.setHasConstraints(true);
@@ -193,7 +193,7 @@ public class DataBaseMapping {
      * @param dme the dme
      * @param javaProperty the java property
      */
-    public static void checkIfBlob(DomainModelElement dme, JavaProperty javaProperty) {
+    public static void checkIfBlob(Entity dme, JavaProperty javaProperty) {
         dme.setHasBlobProperties(true);
         javaProperty.setBlob(true);
         return;
@@ -205,7 +205,7 @@ public class DataBaseMapping {
      * @param dme the dme
      * @param javaProperty the java property
      */
-    public static void checkIfTime(DomainModelElement dme, JavaProperty javaProperty) {
+    public static void checkIfTime(Entity dme, JavaProperty javaProperty) {
         dme.setHasTimeProperties(true);
         if (javaProperty.isZoneDateTime()) {
             dme.setHasZoneDateTime(true);

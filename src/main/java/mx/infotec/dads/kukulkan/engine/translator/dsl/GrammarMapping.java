@@ -35,7 +35,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DomainModelContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelElement;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 
 /**
@@ -64,10 +64,10 @@ public class GrammarMapping {
         dmg.setName("");
         dmg.setDescription("Default package");
         dmg.setBriefDescription("Default package");
-        dmg.setDomainModelElements(new ArrayList<>());
-        List<DomainModelElement> dmeList = new ArrayList<>();
+        dmg.setEntities(new ArrayList<>());
+        List<Entity> dmeList = new ArrayList<>();
         createDataModelElement(dmc, visitor, dmeList);
-        dmg.setDomainModelElements(dmeList);
+        dmg.setEntities(dmeList);
         return dmg;
     }
 
@@ -80,7 +80,7 @@ public class GrammarMapping {
      * @param dmeList the dme list
      */
     private static void createDataModelElement(DomainModelContext dmc, KukulkanVisitor visitor,
-            List<DomainModelElement> dmeList) {
+            List<Entity> dmeList) {
         visitor.visit(dmc);
         dmeList.addAll(visitor.getVctx().getElements());
     }
