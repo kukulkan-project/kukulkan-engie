@@ -57,8 +57,8 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<Entity>());
 
-    /** The dme. */
-    private Entity dme = null;
+    /** The entity. */
+    private Entity entity = null;
 
     /** The efc. */
     private EntityFieldContext efc = null;
@@ -80,9 +80,9 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
      */
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
-        dme = Entity.createDomainModelElement();
-        addMetaData(ctx, dme);
-        getVctx().getElements().add(dme);
+        entity = Entity.createDomainModelElement();
+        addMetaData(ctx, entity);
+        getVctx().getElements().add(entity);
         return super.visitEntity(ctx);
     }
 
@@ -185,8 +185,8 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     @Override
     public VisitorContext visitRequiredValidator(kukulkanParser.RequiredValidatorContext ctx) {
         constraint.setNullable(false);
-        dme.setHasNotNullElements(true);
-        dme.setHasConstraints(true);
+        entity.setHasNotNullElements(true);
+        entity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         return super.visitChildren(ctx);
     }
@@ -201,7 +201,7 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     @Override
     public VisitorContext visitPatternValidator(kukulkanParser.PatternValidatorContext ctx) {
         constraint.setPattern(ctx.PATTERN_VALUE().getText().substring(1, ctx.PATTERN_VALUE().getText().length() - 1));
-        dme.setHasConstraints(true);
+        entity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         return super.visitChildren(ctx);
@@ -217,7 +217,7 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     @Override
     public VisitorContext visitMinValidator(kukulkanParser.MinValidatorContext ctx) {
         constraint.setMin(ctx.NUMERIC_VALUE().getText());
-        dme.setHasConstraints(true);
+        entity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         return super.visitChildren(ctx);
     }
@@ -232,7 +232,7 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     @Override
     public VisitorContext visitMaxValidator(kukulkanParser.MaxValidatorContext ctx) {
         constraint.setMax(ctx.NUMERIC_VALUE().getText());
-        dme.setHasConstraints(true);
+        entity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         return super.visitChildren(ctx);
     }
@@ -256,10 +256,10 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         if (optional.isPresent()) {
             GrammarPropertyType grammarPropertyType = optional.get();
             javaProperty = createJavaProperty(efc, propertyName, grammarPropertyType);
-            dme.addProperty(javaProperty);
-            addContentType(dme, propertyName, grammarPropertyType);
-            GrammarMapping.addImports(dme.getImports(), javaProperty);
-            DataBaseMapping.fillModelMetaData(dme, javaProperty);
+            entity.addProperty(javaProperty);
+            addContentType(entity, propertyName, grammarPropertyType);
+            GrammarMapping.addImports(entity.getImports(), javaProperty);
+            DataBaseMapping.fillModelMetaData(entity, javaProperty);
         }
     }
 
