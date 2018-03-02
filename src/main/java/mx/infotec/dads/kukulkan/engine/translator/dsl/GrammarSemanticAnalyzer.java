@@ -56,24 +56,27 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
 
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<Entity>());
-    
+
     /** The dme. */
     private Entity dme = null;
-    
+
     /** The efc. */
     private EntityFieldContext efc = null;
-    
+
     /** The property name. */
     private String propertyName = null;
-    
+
     /** The java property. */
     private JavaProperty javaProperty = null;
-    
+
     /** The constraint. */
     private Constraint constraint = null;
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitEntity(mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitEntity(mx.
+     * infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext)
      */
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
@@ -83,8 +86,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitEntity(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitEntityField(mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitEntityField(mx.
+     * infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext)
      */
     @Override
     public VisitorContext visitEntityField(EntityFieldContext ctx) {
@@ -96,8 +103,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return vctx;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitStringFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitStringFieldType
+     * (mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext)
      */
     @Override
     public VisitorContext visitStringFieldType(StringFieldTypeContext ctx) {
@@ -106,8 +117,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitStringFieldType(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitDateFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateFieldTypeContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitDateFieldType(
+     * mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateFieldTypeContext)
      */
     @Override
     public VisitorContext visitDateFieldType(DateFieldTypeContext ctx) {
@@ -117,8 +132,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitDateFieldType(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitNumericFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#
+     * visitNumericFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.
+     * NumericFieldTypeContext)
      */
     @Override
     public VisitorContext visitNumericFieldType(NumericFieldTypeContext ctx) {
@@ -128,8 +147,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitNumericFieldType(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitBlobFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobFieldTypeContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitBlobFieldType(
+     * mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobFieldTypeContext)
      */
     @Override
     public VisitorContext visitBlobFieldType(BlobFieldTypeContext ctx) {
@@ -138,8 +161,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitBlobFieldType(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitBooleanFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.BooleanFieldTypeContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#
+     * visitBooleanFieldType(mx.infotec.dads.kukulkan.grammar.kukulkanParser.
+     * BooleanFieldTypeContext)
      */
     @Override
     public VisitorContext visitBooleanFieldType(BooleanFieldTypeContext ctx) {
@@ -151,7 +178,8 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     /**
      * Visit Constraints.
      *
-     * @param ctx the ctx
+     * @param ctx
+     *            the ctx
      * @return the visitor context
      */
     @Override
@@ -163,32 +191,12 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitChildren(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMinLengthValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.MinLengthValidatorContext)
-     */
-    @Override
-    public VisitorContext visitMinLengthValidator(kukulkanParser.MinLengthValidatorContext ctx) {
-        constraint.setMinLength(ctx.NUMERIC_VALUE().getText());
-        dme.setHasConstraints(true);
-        javaProperty.setSizeValidation(true);
-        javaProperty.setHasConstraints(true);
-        return super.visitChildren(ctx);
-    }
-
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMaxLengthValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.MaxLengthValidatorContext)
-     */
-    @Override
-    public VisitorContext visitMaxLengthValidator(kukulkanParser.MaxLengthValidatorContext ctx) {
-        constraint.setMaxLength(ctx.NUMERIC_VALUE().getText());
-        dme.setHasConstraints(true);
-        javaProperty.setSizeValidation(true);
-        javaProperty.setHasConstraints(true);
-        return super.visitChildren(ctx);
-    }
-
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitPatternValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.PatternValidatorContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#
+     * visitPatternValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.
+     * PatternValidatorContext)
      */
     @Override
     public VisitorContext visitPatternValidator(kukulkanParser.PatternValidatorContext ctx) {
@@ -199,49 +207,33 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
         return super.visitChildren(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMinValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.MinValidatorContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMinValidator(mx
+     * .infotec.dads.kukulkan.grammar.kukulkanParser.MinValidatorContext)
      */
     @Override
     public VisitorContext visitMinValidator(kukulkanParser.MinValidatorContext ctx) {
-        constraint.setMinNumber(ctx.NUMERIC_VALUE().getText());
+        constraint.setMin(ctx.NUMERIC_VALUE().getText());
         dme.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         return super.visitChildren(ctx);
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMaxValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.MaxValidatorContext)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMaxValidator(mx
+     * .infotec.dads.kukulkan.grammar.kukulkanParser.MaxValidatorContext)
      */
     @Override
     public VisitorContext visitMaxValidator(kukulkanParser.MaxValidatorContext ctx) {
-        constraint.setMaxNumber(ctx.NUMERIC_VALUE().getText());
+        constraint.setMax(ctx.NUMERIC_VALUE().getText());
         dme.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
-        return super.visitChildren(ctx);
-    }
-
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMinBytesValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.MinBytesValidatorContext)
-     */
-    @Override
-    public VisitorContext visitMinBytesValidator(kukulkanParser.MinBytesValidatorContext ctx) {
-        constraint.setMinByte(ctx.NUMERIC_VALUE().getText());
-        dme.setHasConstraints(true);
-        javaProperty.setHasConstraints(true);
-        javaProperty.setSizeValidation(true);
-        return super.visitChildren(ctx);
-    }
-
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitMaxBytesValidator(mx.infotec.dads.kukulkan.grammar.kukulkanParser.MaxBytesValidatorContext)
-     */
-    @Override
-    public VisitorContext visitMaxBytesValidator(kukulkanParser.MaxBytesValidatorContext ctx) {
-        constraint.setMaxByte(ctx.NUMERIC_VALUE().getText());
-        dme.setHasConstraints(true);
-        javaProperty.setHasConstraints(true);
-        javaProperty.setSizeValidation(true);
         return super.visitChildren(ctx);
     }
 
@@ -257,7 +249,8 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
     /**
      * Process field type.
      *
-     * @param optional the optional
+     * @param optional
+     *            the optional
      */
     public void processFieldType(Optional<GrammarPropertyType> optional) {
         if (optional.isPresent()) {
@@ -269,7 +262,7 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
             DataBaseMapping.fillModelMetaData(dme, javaProperty);
         }
     }
-    
+
     @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
         System.out.println(ctx.getText());
