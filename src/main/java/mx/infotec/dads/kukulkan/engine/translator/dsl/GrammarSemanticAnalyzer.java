@@ -38,6 +38,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BooleanFieldTypeContext;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParser.CardinalityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext;
@@ -267,5 +268,11 @@ public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext>
             GrammarMapping.addImports(dme.getImports(), javaProperty);
             DataBaseMapping.fillModelMetaData(dme, javaProperty);
         }
+    }
+    
+    @Override
+    public VisitorContext visitCardinality(CardinalityContext ctx) {
+        System.out.println(ctx.getText());
+        return super.visitCardinality(ctx);
     }
 }
