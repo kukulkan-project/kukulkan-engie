@@ -34,7 +34,6 @@ import java.util.Optional;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BooleanFieldTypeContext;
@@ -44,6 +43,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 
@@ -52,7 +52,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
  *
  * @author Daniel Cortes Pichardo
  */
-public class GrammarSemanticAnalyzer extends kukulkanBaseVisitor<VisitorContext> {
+public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorContext> {
 
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<Entity>());
