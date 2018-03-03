@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  * @author Daniel Cortes Pichardo
  */
-public interface GrammarPropertyType extends Serializable {
+public interface GrammarFieldType extends Serializable {
 
     /**
      * Gets the grammar name.

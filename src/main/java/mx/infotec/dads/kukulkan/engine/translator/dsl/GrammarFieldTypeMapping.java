@@ -47,53 +47,53 @@ import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
  *
  * @author Daniel Cortes Pichardo
  */
-public class GrammarPropertyMapping {
+public class GrammarFieldTypeMapping {
 
     /** The Constant map. */
-    private static final HashMap<String, GrammarPropertyType> map;
+    private static final HashMap<String, GrammarFieldType> map;
     static {
         map = new HashMap<>();
         /*
          * Literal
          */
-        getMap().put("String", new GrammarPropertyTypeImpl("String", LITERAL_TYPE));
-        getMap().put("TextBlob", new GrammarPropertyTypeImpl("TextBlob", LITERAL_TYPE, String.class, true));
+        getMap().put("String", new GrammarFieldTypeImpl("String", LITERAL_TYPE));
+        getMap().put("TextBlob", new GrammarFieldTypeImpl("TextBlob", LITERAL_TYPE, String.class, true));
 
         /*
          * Numbers
          */
-        getMap().put("Integer", new GrammarPropertyTypeImpl("Integer", NUMBER_TYPE, Integer.class));
-        getMap().put("Long", new GrammarPropertyTypeImpl("Long", NUMBER_TYPE, Long.class));
-        getMap().put("BigDecimal", new GrammarPropertyTypeImpl("BigDecimal", NUMBER_TYPE, BigDecimal.class));
-        getMap().put("Float", new GrammarPropertyTypeImpl("Float", NUMBER_TYPE, Float.class));
-        getMap().put("Double", new GrammarPropertyTypeImpl("Double", NUMBER_TYPE, Double.class));
+        getMap().put("Integer", new GrammarFieldTypeImpl("Integer", NUMBER_TYPE, Integer.class));
+        getMap().put("Long", new GrammarFieldTypeImpl("Long", NUMBER_TYPE, Long.class));
+        getMap().put("BigDecimal", new GrammarFieldTypeImpl("BigDecimal", NUMBER_TYPE, BigDecimal.class));
+        getMap().put("Float", new GrammarFieldTypeImpl("Float", NUMBER_TYPE, Float.class));
+        getMap().put("Double", new GrammarFieldTypeImpl("Double", NUMBER_TYPE, Double.class));
 
         /*
          * Time based
          */
-        getMap().put("Date", new GrammarPropertyTypeImpl("Date", TIME_TYPE, Date.class));
-        getMap().put("LocalDate", new GrammarPropertyTypeImpl("LocalDate", TIME_TYPE, LocalDate.class));
-        getMap().put("ZonedDateTime", new GrammarPropertyTypeImpl("ZonedDateTime", TIME_TYPE, ZonedDateTime.class));
-        getMap().put("Instant", new GrammarPropertyTypeImpl("Instant", TIME_TYPE, Instant.class));
+        getMap().put("Date", new GrammarFieldTypeImpl("Date", TIME_TYPE, Date.class));
+        getMap().put("LocalDate", new GrammarFieldTypeImpl("LocalDate", TIME_TYPE, LocalDate.class));
+        getMap().put("ZonedDateTime", new GrammarFieldTypeImpl("ZonedDateTime", TIME_TYPE, ZonedDateTime.class));
+        getMap().put("Instant", new GrammarFieldTypeImpl("Instant", TIME_TYPE, Instant.class));
 
         /*
          * Booleans
          */
-        getMap().put("Boolean", new GrammarPropertyTypeImpl("Boolean", BOOLEAN_TYPE, boolean.class));
+        getMap().put("Boolean", new GrammarFieldTypeImpl("Boolean", BOOLEAN_TYPE, boolean.class));
 
         /*
          * Blobs
          */
-        getMap().put("Blob", new GrammarPropertyTypeImpl("Blob", BINARY_TYPE, byte[].class, true));
-        getMap().put("AnyBlob", new GrammarPropertyTypeImpl("AnyBlob", BINARY_TYPE, byte[].class, true));
-        getMap().put("ImageBlob", new GrammarPropertyTypeImpl("ImageBlob", BINARY_TYPE, byte[].class, true));
+        getMap().put("Blob", new GrammarFieldTypeImpl("Blob", BINARY_TYPE, byte[].class, true));
+        getMap().put("AnyBlob", new GrammarFieldTypeImpl("AnyBlob", BINARY_TYPE, byte[].class, true));
+        getMap().put("ImageBlob", new GrammarFieldTypeImpl("ImageBlob", BINARY_TYPE, byte[].class, true));
 
     }
 
     /**
      * Instantiates a new grammar property mapping.
      */
-    private GrammarPropertyMapping() {
+    private GrammarFieldTypeMapping() {
     }
 
     /**
@@ -102,46 +102,8 @@ public class GrammarPropertyMapping {
      * @param property the property
      * @return the property type
      */
-    public static GrammarPropertyType getPropertyType(String property) {
+    public static GrammarFieldType getPropertyType(String property) {
         return getMap().get(property);
-    }
-
-    /**
-     * Gets the property type.
-     *
-     * @param type the type
-     * @return the property type
-     */
-    public static GrammarPropertyType getPropertyType(FieldTypeContext type) {
-        Optional<GrammarPropertyType> optional = Optional
-                .of(getMap().get(extractPropertyType(type).getFieldTypeName()));
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
-            throw new MetaModelException("Property Not Found" + type.getText());
-        }
-    }
-
-    /**
-     * Extract property type.
-     *
-     * @param type the type
-     * @return the grammar property
-     */
-    public static GrammarProperty extractPropertyType(FieldTypeContext type) {
-        if (type.stringFieldType() != null) {
-            return new GrammarProperty(null, type.stringFieldType().name.getText());
-        } else if (type.numericFieldType() != null) {
-            return new GrammarProperty(null, getNumericType(type.numericFieldType().numericTypes()));
-        } else if (type.booleanFieldType() != null) {
-            return new GrammarProperty(null, type.booleanFieldType().name.getText());
-        } else if (type.dateFieldType() != null) {
-            return new GrammarProperty(null, getDateType(type.dateFieldType().dateTypes()));
-        } else if (type.blobFieldType() != null) {
-            return new GrammarProperty(null, type.blobFieldType().name.getText());
-        } else {
-            throw new MetaModelException("Property type not found for: " + type.getText());
-        }
     }
 
     /**
@@ -191,7 +153,7 @@ public class GrammarPropertyMapping {
      *
      * @return the map
      */
-    public static HashMap<String, GrammarPropertyType> getMap() {
+    public static HashMap<String, GrammarFieldType> getMap() {
         return map;
     }
 }

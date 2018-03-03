@@ -31,13 +31,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author Daniel Cortes Pichardo
  */
-public class GrammarPropertyTypeImpl implements GrammarPropertyType {
+public class GrammarFieldTypeImpl implements GrammarFieldType {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** The Constant logger. */
-    public static final Logger logger = LoggerFactory.getLogger(GrammarPropertyTypeImpl.class);
+    public static final Logger logger = LoggerFactory.getLogger(GrammarFieldTypeImpl.class);
 
     /** The name. */
     private final String name;
@@ -57,7 +57,7 @@ public class GrammarPropertyTypeImpl implements GrammarPropertyType {
      * @param name the name
      * @param superColumnType the super column type
      */
-    public GrammarPropertyTypeImpl(String name, SuperColumnType superColumnType) {
+    public GrammarFieldTypeImpl(String name, SuperColumnType superColumnType) {
         this(name, superColumnType, null);
     }
 
@@ -68,7 +68,7 @@ public class GrammarPropertyTypeImpl implements GrammarPropertyType {
      * @param superColumnType the super column type
      * @param javaType the java type
      */
-    public GrammarPropertyTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType) {
+    public GrammarFieldTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType) {
         this(name, superColumnType, javaType, false);
     }
 
@@ -80,7 +80,7 @@ public class GrammarPropertyTypeImpl implements GrammarPropertyType {
      * @param javaType the java type
      * @param largeObject the large object
      */
-    public GrammarPropertyTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType,
+    public GrammarFieldTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType,
             boolean largeObject) {
         if (name == null) {
             throw new IllegalArgumentException("Name cannot be null");

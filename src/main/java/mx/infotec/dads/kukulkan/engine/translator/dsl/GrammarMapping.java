@@ -216,7 +216,7 @@ public class GrammarMapping {
      * @param type the type
      * @return the property type
      */
-    public static Optional<GrammarPropertyType> getPropertyType(String type) {
-        return Optional.of(GrammarPropertyMapping.getPropertyType(type));
+    public static Optional<GrammarFieldType> getPropertyType(String type) {
+        return Optional.of(GrammarFieldTypeMapping.getPropertyType(type));
     }
 }

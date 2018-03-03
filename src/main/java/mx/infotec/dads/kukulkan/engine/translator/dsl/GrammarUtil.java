@@ -173,7 +173,7 @@ public class GrammarUtil {
      * @param propertyType
      *            the property type
      */
-    public static void addContentType(Entity dme, String propertyName, GrammarPropertyType propertyType) {
+    public static void addContentType(Entity dme, String propertyName, GrammarFieldType propertyType) {
         if (propertyType.isBinary()) {
             dme.addProperty(createContentTypeProperty(propertyName));
         }
@@ -188,7 +188,7 @@ public class GrammarUtil {
      * @return the java property
      */
     public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
-            GrammarPropertyType propertyType) {
+            GrammarFieldType propertyType) {
         return JavaProperty.builder().withName(propertyName).withType(propertyType.getJavaName())
                 .withColumnName(propertyName).withColumnType(propertyType.getGrammarName())
                 .withQualifiedName(propertyType.getJavaQualifiedName()).isNullable(true).isPrimaryKey(false)

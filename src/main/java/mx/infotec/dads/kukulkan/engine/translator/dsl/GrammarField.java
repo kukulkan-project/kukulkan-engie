@@ -31,13 +31,13 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
  * @author Daniel Cortes Pichardo
  *
  */
-public class GrammarProperty {
+public class GrammarField {
 
     /** The field type name. */
     private String fieldTypeName;
 
     /** The property type. */
-    private GrammarPropertyType propertyType;
+    private GrammarFieldType fieldType;
     
     /** The constraint. */
     private Constraint constraint;
@@ -45,7 +45,7 @@ public class GrammarProperty {
     /**
      * Instantiates a new grammar property.
      */
-    public GrammarProperty() {
+    public GrammarField() {
     }
 
     /**
@@ -54,7 +54,7 @@ public class GrammarProperty {
      * @param constraint the constraint
      * @param fieldTypeName the field type name
      */
-    public GrammarProperty(Constraint constraint, String fieldTypeName) {
+    public GrammarField(Constraint constraint, String fieldTypeName) {
         this.fieldTypeName = fieldTypeName;
         this.constraint = constraint;
     }
@@ -64,8 +64,8 @@ public class GrammarProperty {
      *
      * @return the property type
      */
-    public GrammarPropertyType getPropertyType() {
-        return propertyType;
+    public GrammarFieldType getFieldType() {
+        return fieldType;
     }
 
     /**
@@ -73,8 +73,8 @@ public class GrammarProperty {
      *
      * @param propertyType the new property type
      */
-    public void setPropertyType(GrammarPropertyType propertyType) {
-        this.propertyType = propertyType;
+    public void setFieldType(GrammarFieldType propertyType) {
+        this.fieldType = propertyType;
     }
 
     /**

@@ -23,8 +23,8 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyMapping.getDateType;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyMapping.getNumericType;
+import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping.getDateType;
+import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping.getNumericType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addMetaData;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
@@ -35,13 +35,14 @@ import java.util.Optional;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParser.AssociationFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BooleanFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.CardinalityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
@@ -60,8 +61,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     /** The entity. */
     private Entity entity = null;
 
-    /** The efc. */
-    private EntityFieldContext efc = null;
+    private PrimitiveFieldContext pfc = null;
 
     /** The property name. */
     private String propertyName = null;
@@ -86,21 +86,25 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         return super.visitEntity(ctx);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * mx.infotec.dads.kukulkan.grammar.kukulkanBaseVisitor#visitEntityField(mx.
-     * infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext)
-     */
     @Override
-    public VisitorContext visitEntityField(EntityFieldContext ctx) {
-        efc = ctx;
-        propertyName = ctx.getText();
+    public VisitorContext visitPrimitiveField(PrimitiveFieldContext ctx) {
+        pfc = ctx;
+        propertyName = ctx.id.getText();
         constraint = new Constraint();
-        super.visitEntityField(ctx);
+        super.visitChildren(ctx);
         javaProperty.setConstraint(constraint);
         return vctx;
+    }
+
+    @Override
+    public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
+        return super.visitAssociationField(ctx);
+    }
+
+    @Override
+    public VisitorContext visitCardinality(CardinalityContext ctx) {
+        System.out.println(ctx.getText());
+        return super.visitCardinality(ctx);
     }
 
     /*
@@ -112,7 +116,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitStringFieldType(StringFieldTypeContext ctx) {
-        Optional<GrammarPropertyType> optional = Optional.of(GrammarPropertyMapping.getMap().get(ctx.name.getText()));
+        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(ctx.name.getText()));
         processFieldType(optional);
         return super.visitStringFieldType(ctx);
     }
@@ -126,8 +130,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitDateFieldType(DateFieldTypeContext ctx) {
-        Optional<GrammarPropertyType> optional = Optional
-                .of(GrammarPropertyMapping.getMap().get(getDateType(ctx.dateTypes())));
+        Optional<GrammarFieldType> optional = Optional
+                .of(GrammarFieldTypeMapping.getMap().get(getDateType(ctx.dateTypes())));
         processFieldType(optional);
         return super.visitDateFieldType(ctx);
     }
@@ -141,8 +145,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitNumericFieldType(NumericFieldTypeContext ctx) {
-        Optional<GrammarPropertyType> optional = Optional
-                .of(GrammarPropertyMapping.getMap().get(getNumericType(ctx.numericTypes())));
+        Optional<GrammarFieldType> optional = Optional
+                .of(GrammarFieldTypeMapping.getMap().get(getNumericType(ctx.numericTypes())));
         processFieldType(optional);
         return super.visitNumericFieldType(ctx);
     }
@@ -156,7 +160,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitBlobFieldType(BlobFieldTypeContext ctx) {
-        Optional<GrammarPropertyType> optional = Optional.of(GrammarPropertyMapping.getMap().get(ctx.name.getText()));
+        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(ctx.name.getText()));
         processFieldType(optional);
         return super.visitBlobFieldType(ctx);
     }
@@ -170,7 +174,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitBooleanFieldType(BooleanFieldTypeContext ctx) {
-        Optional<GrammarPropertyType> optional = Optional.of(GrammarPropertyMapping.getMap().get(ctx.name.getText()));
+        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(ctx.name.getText()));
         processFieldType(optional);
         return super.visitBooleanFieldType(ctx);
     }
@@ -252,20 +256,14 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      * @param optional
      *            the optional
      */
-    public void processFieldType(Optional<GrammarPropertyType> optional) {
+    public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
-            GrammarPropertyType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(efc, propertyName, grammarPropertyType);
+            GrammarFieldType grammarPropertyType = optional.get();
+            javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType);
             entity.addProperty(javaProperty);
             addContentType(entity, propertyName, grammarPropertyType);
             GrammarMapping.addImports(entity.getImports(), javaProperty);
             DataBaseMapping.fillModelMetaData(entity, javaProperty);
         }
-    }
-
-    @Override
-    public VisitorContext visitCardinality(CardinalityContext ctx) {
-        System.out.println(ctx.getText());
-        return super.visitCardinality(ctx);
     }
 }

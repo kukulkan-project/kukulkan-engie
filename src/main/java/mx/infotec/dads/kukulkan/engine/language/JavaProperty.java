@@ -30,7 +30,7 @@ import java.util.Optional;
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
@@ -465,7 +465,7 @@ public class JavaProperty implements Property<JavaProperty> {
          * @param optional the optional
          * @return the java property builder
          */
-        public JavaPropertyBuilder withType(Optional<GrammarPropertyType> optional) {
+        public JavaPropertyBuilder withType(Optional<GrammarFieldType> optional) {
             if (optional.isPresent()) {
                 this.javaProperty.setType(optional.get().getJavaName());
             }
