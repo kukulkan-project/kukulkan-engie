@@ -174,7 +174,7 @@ public class GrammarMapping {
      * @return the list
      */
     public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
-        String program = "src/test/resources/grammar/test." + "3k";
+        String program = "src/test/resources/grammar/single-entity." + "3k";
         DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
         dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));
