@@ -41,7 +41,7 @@ import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityFieldContext;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -68,7 +68,8 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param file the file
+     * @param file
+     *            the file
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(String file) {
@@ -85,8 +86,10 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param file the file
-     * @param isText the is text
+     * @param file
+     *            the file
+     * @param isText
+     *            the is text
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(String file, boolean isText) {
@@ -107,7 +110,8 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param lexer the lexer
+     * @param lexer
+     *            the lexer
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(kukulkanLexer lexer) {
@@ -119,9 +123,11 @@ public class GrammarUtil {
     /**
      * Gets the kukulkan lexer.
      *
-     * @param file the file
+     * @param file
+     *            the file
      * @return the kukulkan lexer
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public static kukulkanLexer getKukulkanLexer(String file) throws IOException {
         return new kukulkanLexer(new ANTLRFileStream(file));
@@ -130,9 +136,11 @@ public class GrammarUtil {
     /**
      * Gets the kukulkan lexer.
      *
-     * @param is the is
+     * @param is
+     *            the is
      * @return the kukulkan lexer
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public static kukulkanLexer getKukulkanLexer(InputStream is) throws IOException {
         return new kukulkanLexer(new ANTLRInputStream(is));
@@ -141,8 +149,10 @@ public class GrammarUtil {
     /**
      * Adds the meta data.
      *
-     * @param entity the entity
-     * @param dme the dme
+     * @param entity
+     *            the entity
+     * @param dme
+     *            the dme
      */
     public static void addMetaData(EntityContext entity, Entity dme) {
         String singularName = InflectorProcessor.getInstance().singularize(entity.name.getText());
@@ -156,9 +166,12 @@ public class GrammarUtil {
     /**
      * Adds the content type.
      *
-     * @param dme the dme
-     * @param propertyName the property name
-     * @param propertyType the property type
+     * @param dme
+     *            the dme
+     * @param propertyName
+     *            the property name
+     * @param propertyType
+     *            the property type
      */
     public static void addContentType(Entity dme, String propertyName, GrammarPropertyType propertyType) {
         if (propertyType.isBinary()) {
@@ -174,7 +187,7 @@ public class GrammarUtil {
      * @param propertyType the property type
      * @return the java property
      */
-    public static JavaProperty createJavaProperty(EntityFieldContext field, String propertyName,
+    public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
             GrammarPropertyType propertyType) {
         return JavaProperty.builder().withName(propertyName).withType(propertyType.getJavaName())
                 .withColumnName(propertyName).withColumnType(propertyType.getGrammarName())
@@ -189,7 +202,8 @@ public class GrammarUtil {
     /**
      * Creates the content type property.
      *
-     * @param propertyName the property name
+     * @param propertyName
+     *            the property name
      * @return the java property
      */
     public static JavaProperty createContentTypeProperty(String propertyName) {
