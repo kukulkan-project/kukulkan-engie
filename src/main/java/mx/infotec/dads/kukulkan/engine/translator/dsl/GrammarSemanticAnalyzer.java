@@ -96,7 +96,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     @Override
     public VisitorContext visitEntityField(EntityFieldContext ctx) {
         efc = ctx;
-        propertyName = ctx.id.getText();
+        propertyName = ctx.getText();
         constraint = new Constraint();
         super.visitEntityField(ctx);
         javaProperty.setConstraint(constraint);
