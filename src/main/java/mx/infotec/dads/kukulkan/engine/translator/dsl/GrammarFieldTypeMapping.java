@@ -35,10 +35,8 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Optional;
 
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 

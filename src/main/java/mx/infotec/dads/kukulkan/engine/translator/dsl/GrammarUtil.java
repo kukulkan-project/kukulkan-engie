@@ -42,6 +42,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -154,13 +155,13 @@ public class GrammarUtil {
      * @param dme
      *            the dme
      */
-    public static void addMetaData(EntityContext entity, Entity dme) {
+    public static void addMetaData(EntityContext entity, Entity dme, DatabaseType dbType) {
         String singularName = InflectorProcessor.getInstance().singularize(entity.name.getText());
         dme.setTableName(entity.name.getText().toUpperCase());
         dme.setName(entity.name.getText());
         dme.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
         dme.setCamelCasePluralFormat(InflectorProcessor.getInstance().pluralize(dme.getCamelCaseFormat()));
-        dme.setPrimaryKey(createDefaultPrimaryKey());
+        dme.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
 
     /**
@@ -189,13 +190,19 @@ public class GrammarUtil {
      */
     public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
             GrammarFieldType propertyType) {
-        return JavaProperty.builder().withName(propertyName).withType(propertyType.getJavaName())
-                .withColumnName(propertyName).withColumnType(propertyType.getGrammarName())
-                .withQualifiedName(propertyType.getJavaQualifiedName()).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).isLocalDate(propertyType.getJavaEquivalentClass().equals(LocalDate.class))
+        return JavaProperty.builder().withName(propertyName)
+                .withType(propertyType.getJavaName())
+                .withColumnName(propertyName)
+                .withColumnType(propertyType.getGrammarName())
+                .withQualifiedName(propertyType.getJavaQualifiedName())
+                .isNullable(true)
+                .isPrimaryKey(false)
+                .isIndexed(false)
+                .isLocalDate(propertyType.getJavaEquivalentClass().equals(LocalDate.class))
                 .isZoneDateTime(propertyType.getJavaEquivalentClass().equals(ZonedDateTime.class))
                 .isInstance(propertyType.getJavaEquivalentClass().equals(Instant.class))
-                .isLargeObject(propertyType.isLargeObject()).addType(field.type)
+                .isLargeObject(propertyType.isLargeObject())
+                .addType(field.type)
                 .withJavaEquivalentClass(propertyType.getJavaEquivalentClass()).build();
     }
 

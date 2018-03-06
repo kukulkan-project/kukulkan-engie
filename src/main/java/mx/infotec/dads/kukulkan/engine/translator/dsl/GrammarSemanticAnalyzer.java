@@ -47,6 +47,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
+import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
 /**
  * KukulkanGrammarVisitor implements the.
@@ -72,6 +73,12 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     /** The constraint. */
     private Constraint constraint = null;
 
+    private ProjectConfiguration pConf = null;
+
+    public GrammarSemanticAnalyzer(ProjectConfiguration pConf) {
+        this.pConf = pConf;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -81,7 +88,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
         entity = Entity.createDomainModelElement();
-        addMetaData(ctx, entity);
+        addMetaData(ctx, entity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(entity);
         return super.visitEntity(ctx);
     }
