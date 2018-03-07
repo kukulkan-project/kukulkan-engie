@@ -230,6 +230,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         constraint.setMin(ctx.NUMERIC_VALUE().getText());
         entity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
+        javaProperty.setSizeValidation(true);
         return super.visitChildren(ctx);
     }
 
@@ -245,6 +246,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         constraint.setMax(ctx.NUMERIC_VALUE().getText());
         entity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
+        javaProperty.setSizeValidation(true);
         return super.visitChildren(ctx);
     }
 

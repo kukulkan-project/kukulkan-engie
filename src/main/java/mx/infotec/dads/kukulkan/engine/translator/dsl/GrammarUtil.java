@@ -214,9 +214,18 @@ public class GrammarUtil {
      * @return the java property
      */
     public static JavaProperty createContentTypeProperty(String propertyName) {
-        return JavaProperty.builder().withName(propertyName + "ContentType").withType("String")
-                .withColumnName(propertyName + "ContentType").withColumnType("TextBlob")
-                .withQualifiedName("java.lang.String").isNullable(true).isPrimaryKey(false).isIndexed(false)
-                .isLargeObject(false).isLiteral(true).withJavaEquivalentClass(String.class).build();
+        return JavaProperty.builder()
+                .withName(propertyName + "ContentType")
+                .withType("String")
+                .withColumnName(propertyName + "ContentType")
+                .withColumnType("TextBlob")
+                .withQualifiedName("java.lang.String")
+                .isNullable(true)
+                .isPrimaryKey(false)
+                .isIndexed(false)
+                .isLargeObject(false)
+                .isLiteral(true)
+                .hasSizeValidation(false)
+                .withJavaEquivalentClass(String.class).build();
     }
 }

@@ -115,7 +115,6 @@ public class GrammarMapping {
             setKindOfDateType(javaProperty, type.dateFieldType().type);
         } else if (type.blobFieldType() != null) {
             setKindOfBlobType(javaProperty, type.blobFieldType().blobTypes());
-            javaProperty.setBlob(true);
         } else if (type.numericFieldType() != null) {
             javaProperty.setNumber(true);
             setKindOfNumeric(javaProperty, type.numericFieldType().numericTypes());

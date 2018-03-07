@@ -48,55 +48,55 @@ public class JavaProperty implements Property<JavaProperty> {
 
     /** The name. */
     private String name;
-    
+
     /** The type. */
     private String type;
-    
+
     /** The qualified name. */
     private String qualifiedName;
-    
+
     /** The column name. */
     private String columnName;
-    
+
     /** The column type. */
     private String columnType;
-    
+
     /** The blob. */
     private boolean blob;
-    
+
     /** The time. */
     private boolean time;
-    
+
     /** The clob. */
     private boolean clob;
-    
+
     /** The big decimal. */
     private boolean bigDecimal;
-    
+
     /** The local date. */
     private boolean localDate;
-    
+
     /** The instant. */
     private boolean instant;
-    
+
     /** The zone date time. */
     private boolean zoneDateTime;
-    
+
     /** The boolean type. */
     private boolean booleanType;
-    
+
     /** The number. */
     private boolean number;
-    
+
     /** The literal. */
     private boolean literal;
-    
+
     /** The large object. */
     private boolean largeObject;
-    
+
     /** The size validation. */
     private boolean sizeValidation;
-    
+
     /** The has constraints. */
     private boolean hasConstraints;
 
@@ -106,8 +106,11 @@ public class JavaProperty implements Property<JavaProperty> {
     /** The constraint. */
     private Constraint constraint;
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBigDecimal()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBigDecimal()
      */
     @Override
     public boolean isBigDecimal() {
@@ -117,13 +120,16 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the big decimal.
      *
-     * @param bigDecimal the new big decimal
+     * @param bigDecimal
+     *            the new big decimal
      */
     public void setBigDecimal(boolean bigDecimal) {
         this.bigDecimal = bigDecimal;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLocalDate()
      */
     @Override
@@ -131,7 +137,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return localDate;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isInstant()
      */
     @Override
@@ -142,7 +150,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the instant.
      *
-     * @param instant the new instant
+     * @param instant
+     *            the new instant
      */
     public void setInstant(boolean instant) {
         this.instant = instant;
@@ -152,14 +161,18 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the local date.
      *
-     * @param localDate the new local date
+     * @param localDate
+     *            the new local date
      */
     public void setLocalDate(boolean localDate) {
         this.localDate = localDate;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isZoneDateTime()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isZoneDateTime()
      */
     @Override
     public boolean isZoneDateTime() {
@@ -169,7 +182,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the zone date time.
      *
-     * @param zoneDateTime the new zone date time
+     * @param zoneDateTime
+     *            the new zone date time
      */
     public void setZoneDateTime(boolean zoneDateTime) {
         this.zoneDateTime = zoneDateTime;
@@ -191,7 +205,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return new JavaPropertyBuilder();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBlob()
      */
     @Override
@@ -202,7 +218,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the blob.
      *
-     * @param blob the new blob
+     * @param blob
+     *            the new blob
      */
     public void setBlob(boolean blob) {
         this.blob = blob;
@@ -220,13 +237,16 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the boolean.
      *
-     * @param booleanType the new boolean
+     * @param booleanType
+     *            the new boolean
      */
     public void setBoolean(boolean booleanType) {
         this.booleanType = booleanType;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isTime()
      */
     @Override
@@ -237,13 +257,16 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the time.
      *
-     * @param time the new time
+     * @param time
+     *            the new time
      */
     public void setTime(boolean time) {
         this.time = time;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getName()
      */
     @Override
@@ -251,7 +274,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return this.name;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getType()
      */
     @Override
@@ -259,16 +284,22 @@ public class JavaProperty implements Property<JavaProperty> {
         return this.type;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getQualifiedName()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getQualifiedName()
      */
     @Override
     public String getQualifiedName() {
         return this.qualifiedName;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getAssociations()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getAssociations()
      */
     @Override
     @SuppressWarnings("rawtypes")
@@ -276,7 +307,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return new ArrayList<>();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override
@@ -284,23 +317,31 @@ public class JavaProperty implements Property<JavaProperty> {
         return name.compareTo(o.getName());
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnName()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnName()
      */
     @Override
     public String getColumnName() {
         return this.columnName;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnType()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnType()
      */
     @Override
     public String getColumnType() {
         return this.columnType;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isClob()
      */
     @Override
@@ -308,7 +349,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return this.clob;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -319,15 +362,20 @@ public class JavaProperty implements Property<JavaProperty> {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getConstraint()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getConstraint()
      */
     @Override
     public Constraint getConstraint() {
         return constraint;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -350,7 +398,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the name.
      *
-     * @param name the new name
+     * @param name
+     *            the new name
      */
     protected void setName(String name) {
         this.name = name;
@@ -359,7 +408,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the type.
      *
-     * @param type the new type
+     * @param type
+     *            the new type
      */
     protected void setType(String type) {
         this.type = type;
@@ -368,7 +418,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the qualified name.
      *
-     * @param qualifiedName the new qualified name
+     * @param qualifiedName
+     *            the new qualified name
      */
     protected void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
@@ -377,7 +428,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the column name.
      *
-     * @param columnName the new column name
+     * @param columnName
+     *            the new column name
      */
     protected void setColumnName(String columnName) {
         this.columnName = columnName;
@@ -386,7 +438,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the column type.
      *
-     * @param columnType the new column type
+     * @param columnType
+     *            the new column type
      */
     protected void setColumnType(String columnType) {
         this.columnType = columnType;
@@ -395,7 +448,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the clob.
      *
-     * @param clob the new clob
+     * @param clob
+     *            the new clob
      */
     public void setClob(boolean clob) {
         this.clob = clob;
@@ -404,7 +458,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the constraint.
      *
-     * @param constraint the new constraint
+     * @param constraint
+     *            the new constraint
      */
     public void setConstraint(Constraint constraint) {
         this.constraint = constraint;
@@ -429,7 +484,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With java equivalent class.
          *
-         * @param javaEquivalentClass the java equivalent class
+         * @param javaEquivalentClass
+         *            the java equivalent class
          * @return the java property builder
          */
         public JavaPropertyBuilder withJavaEquivalentClass(Class<?> javaEquivalentClass) {
@@ -438,9 +494,22 @@ public class JavaProperty implements Property<JavaProperty> {
         }
 
         /**
+         * Checks if is literal.
+         *
+         * @param literal
+         *            the literal
+         * @return the java property builder
+         */
+        public JavaPropertyBuilder hasSizeValidation(boolean sizeValidation) {
+            javaProperty.setSizeValidation(sizeValidation);
+            return this;
+        }
+
+        /**
          * With name.
          *
-         * @param propertyName the property name
+         * @param propertyName
+         *            the property name
          * @return the java property builder
          */
         public JavaPropertyBuilder withName(String propertyName) {
@@ -451,7 +520,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With type.
          *
-         * @param propertyType the property type
+         * @param propertyType
+         *            the property type
          * @return the java property builder
          */
         public JavaPropertyBuilder withType(String propertyType) {
@@ -462,7 +532,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With type.
          *
-         * @param optional the optional
+         * @param optional
+         *            the optional
          * @return the java property builder
          */
         public JavaPropertyBuilder withType(Optional<GrammarFieldType> optional) {
@@ -475,7 +546,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With qualified name.
          *
-         * @param qualifiedName the qualified name
+         * @param qualifiedName
+         *            the qualified name
          * @return the java property builder
          */
         public JavaPropertyBuilder withQualifiedName(String qualifiedName) {
@@ -486,7 +558,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With column name.
          *
-         * @param columnName the column name
+         * @param columnName
+         *            the column name
          * @return the java property builder
          */
         public JavaPropertyBuilder withColumnName(String columnName) {
@@ -497,7 +570,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With column type.
          *
-         * @param columnType the column type
+         * @param columnType
+         *            the column type
          * @return the java property builder
          */
         public JavaPropertyBuilder withColumnType(String columnType) {
@@ -508,7 +582,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is nullable.
          *
-         * @param nullable the nullable
+         * @param nullable
+         *            the nullable
          * @return the java property builder
          */
         public JavaPropertyBuilder isNullable(boolean nullable) {
@@ -519,7 +594,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is primary key.
          *
-         * @param isPrimaryKey the is primary key
+         * @param isPrimaryKey
+         *            the is primary key
          * @return the java property builder
          */
         public JavaPropertyBuilder isPrimaryKey(boolean isPrimaryKey) {
@@ -530,7 +606,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is indexed.
          *
-         * @param indexed the indexed
+         * @param indexed
+         *            the indexed
          * @return the java property builder
          */
         public JavaPropertyBuilder isIndexed(boolean indexed) {
@@ -541,7 +618,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Adds the type.
          *
-         * @param type the type
+         * @param type
+         *            the type
          * @return the java property builder
          */
         public JavaPropertyBuilder addType(ColumnType type) {
@@ -552,7 +630,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Adds the type.
          *
-         * @param type the type
+         * @param type
+         *            the type
          * @return the java property builder
          */
         public JavaPropertyBuilder addType(FieldTypeContext type) {
@@ -563,7 +642,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is literal.
          *
-         * @param literal the literal
+         * @param literal
+         *            the literal
          * @return the java property builder
          */
         public JavaPropertyBuilder isLiteral(boolean literal) {
@@ -574,7 +654,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is big decimal.
          *
-         * @param bigDecimal the big decimal
+         * @param bigDecimal
+         *            the big decimal
          * @return the java property builder
          */
         public JavaPropertyBuilder isBigDecimal(boolean bigDecimal) {
@@ -585,7 +666,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is local date.
          *
-         * @param localDate the local date
+         * @param localDate
+         *            the local date
          * @return the java property builder
          */
         public JavaPropertyBuilder isLocalDate(boolean localDate) {
@@ -596,7 +678,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is zone date time.
          *
-         * @param zoneDateTime the zone date time
+         * @param zoneDateTime
+         *            the zone date time
          * @return the java property builder
          */
         public JavaPropertyBuilder isZoneDateTime(boolean zoneDateTime) {
@@ -607,7 +690,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is instance.
          *
-         * @param instant the instant
+         * @param instant
+         *            the instant
          * @return the java property builder
          */
         public JavaPropertyBuilder isInstance(boolean instant) {
@@ -618,7 +702,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is large object.
          *
-         * @param largeObject the large object
+         * @param largeObject
+         *            the large object
          * @return the java property builder
          */
         public JavaPropertyBuilder isLargeObject(boolean largeObject) {
@@ -637,7 +722,9 @@ public class JavaProperty implements Property<JavaProperty> {
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isNumber()
      */
     @Override
@@ -648,13 +735,16 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the number.
      *
-     * @param number the new number
+     * @param number
+     *            the new number
      */
     public void setNumber(boolean number) {
         this.number = number;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLiteral()
      */
     public boolean isLiteral() {
@@ -664,14 +754,18 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the literal.
      *
-     * @param literal the new literal
+     * @param literal
+     *            the new literal
      */
     public void setLiteral(boolean literal) {
         this.literal = literal;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLargeObject()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLargeObject()
      */
     @Override
     public boolean isLargeObject() {
@@ -681,7 +775,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the large object.
      *
-     * @param largeObject the new large object
+     * @param largeObject
+     *            the new large object
      */
     public void setLargeObject(boolean largeObject) {
         this.largeObject = largeObject;
@@ -690,21 +785,27 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the size validation.
      *
-     * @param sizeValidation the new size validation
+     * @param sizeValidation
+     *            the new size validation
      */
     public void setSizeValidation(boolean sizeValidation) {
         this.sizeValidation = sizeValidation;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isSizeValidation()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isSizeValidation()
      */
     @Override
     public boolean isSizeValidation() {
         return sizeValidation;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLong()
      */
     @Override
@@ -712,7 +813,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return getJavaEquivalentClass().equals(Long.class);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isInteger()
      */
     @Override
@@ -720,7 +823,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return getJavaEquivalentClass().equals(Integer.class);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isDouble()
      */
     @Override
@@ -728,7 +833,9 @@ public class JavaProperty implements Property<JavaProperty> {
         return getJavaEquivalentClass().equals(Double.class);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isFloat()
      */
     @Override
@@ -748,7 +855,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the java equivalent class.
      *
-     * @param javaEquivalentClass the new java equivalent class
+     * @param javaEquivalentClass
+     *            the new java equivalent class
      */
     public void setJavaEquivalentClass(Class<?> javaEquivalentClass) {
         this.javaEquivalentClass = javaEquivalentClass;
@@ -757,14 +865,18 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the checks for constraints.
      *
-     * @param hasConstraints the new checks for constraints
+     * @param hasConstraints
+     *            the new checks for constraints
      */
     public void setHasConstraints(boolean hasConstraints) {
         this.hasConstraints = hasConstraints;
     }
 
-    /* (non-Javadoc)
-     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isHasConstraints()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isHasConstraints()
      */
     @Override
     public boolean isHasConstraints() {
