@@ -47,21 +47,56 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
  */
 public class DataBaseMapping {
 
-    /** The Constant STRING_TYPE. */
+    /**
+     * The Constant STRING_TYPE.
+     */
     private static final String STRING_TYPE = "String";
 
-    /** The Constant STRING_TYPE. */
+    /**
+     * The Constant STRING_TYPE.
+     */
     private static final String LONG_TYPE = "Long";
 
-    /** The Constant STRING_QUALIFIED_NAME. */
+    /**
+     * The Constant LOCAL_DATE_TYPE.
+     */
+    private static final String LOCAL_DATE_TYPE = "LocalDate";
+    
+    /**
+     * The Constant BYTE_ARRAY_TYPE.
+     */
+    private static final String BYTE_ARRAY_TYPE = "byte[]";
+    
+    /**
+     * The Constant ZONED_DATE_TIME.
+     */
+    private static final String ZONED_DATE_TIME = "ZonedDateTime";
+    
+    /**
+     * The Constant STRING_QUALIFIED_NAME.
+     */
     private static final String STRING_QUALIFIED_NAME = "java.lang.String";
 
-    /** The Constant STRING_QUALIFIED_NAME. */
+    /**
+     * The Constant STRING_QUALIFIED_NAME.
+     */
     private static final String LONG_QUALIFIED_NAME = "java.lang.Long";
 
-    /** The Constant ID_DEFAULT_NAME. */
+    /**
+     * The Constant ID_DEFAULT_NAME.
+     */
     private static final String ID_DEFAULT_NAME = "id";
 
+    /**
+     * The Constant PK_SUFIX.
+     */
+    private static final String PK_SUFIX = "PK";
+    
+    /**
+     * The Constant DAFAULT_PACKAGE_DESC.
+     */
+    private static final String DAFAULT_PACKAGE_DESC = "Default package";
+    
     /**
      * Instantiates a new data base mapping.
      */
@@ -72,17 +107,15 @@ public class DataBaseMapping {
     /**
      * Create a DataModelGroup Class.
      *
-     * @param tables
-     *            the tables
-     * @param excludedTables
-     *            the excluded tables
+     * @param tables the tables
+     * @param excludedTables the excluded tables
      * @return DataModelGroup
      */
     public static DomainModelGroup createDefaultDataModelGroup(List<Table> tables, List<String> excludedTables) {
         DomainModelGroup dmg = new DomainModelGroup();
         dmg.setName("");
-        dmg.setDescription("Default package");
-        dmg.setBriefDescription("Default package");
+        dmg.setDescription(DAFAULT_PACKAGE_DESC);
+        dmg.setBriefDescription(DAFAULT_PACKAGE_DESC);
         dmg.setEntities(new ArrayList<>());
         List<Entity> dmeList = new ArrayList<>();
         createDataModelElement(excludedTables, tables, dmeList);
@@ -93,12 +126,9 @@ public class DataBaseMapping {
     /**
      * Creates the data model element.
      *
-     * @param tablesToProcess
-     *            the tables to process
-     * @param tables
-     *            the tables
-     * @param dmeList
-     *            the dme list
+     * @param tablesToProcess the tables to process
+     * @param tables the tables
+     * @param dmeList the dme list
      */
     private static void createDataModelElement(List<String> tablesToProcess, List<Table> tables, List<Entity> dmeList) {
         tables.forEach(table -> {
@@ -120,12 +150,9 @@ public class DataBaseMapping {
     /**
      * Extract primary key.
      *
-     * @param dme
-     *            the dme
-     * @param singularName
-     *            the singular name
-     * @param columns
-     *            the columns
+     * @param dme the dme
+     * @param singularName the singular name
+     * @param columns the columns
      */
     public static void extractPrimaryKey(Entity dme, String singularName, List<Column> columns) {
         dme.setPrimaryKey(mapPrimaryKeyElements(singularName, columns));
@@ -137,10 +164,8 @@ public class DataBaseMapping {
     /**
      * Extract properties.
      *
-     * @param dme
-     *            the dme
-     * @param table
-     *            the table
+     * @param dme the dme
+     * @param table the table
      */
     public static void extractProperties(Entity dme, Table table) {
         table.getColumns().stream().filter(column -> !column.isPrimaryKey())
@@ -150,6 +175,7 @@ public class DataBaseMapping {
     /**
      * Creates the default primary key.
      *
+     * @param dbType DatabaseType
      * @return the primary key
      */
     public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType) {
@@ -171,10 +197,8 @@ public class DataBaseMapping {
     /**
      * Process not primary properties.
      *
-     * @param dme
-     *            the dme
-     * @param column
-     *            the column
+     * @param dme the dme
+     * @param column the column
      */
     private static void processNotPrimaryProperties(Entity dme, Column column) {
         String propertyName = SchemaPropertiesParser.parseToPropertyName(column.getName());
@@ -191,10 +215,8 @@ public class DataBaseMapping {
     /**
      * Fill model meta data.
      *
-     * @param dme
-     *            the dme
-     * @param javaProperty
-     *            the java property
+     * @param dme the dme
+     * @param javaProperty the java property
      */
     public static void fillModelMetaData(Entity dme, JavaProperty javaProperty) {
         if (!javaProperty.getConstraint().isNullable()) {
@@ -203,38 +225,30 @@ public class DataBaseMapping {
         }
         if (javaProperty.isTime()) {
             checkIfTime(dme, javaProperty);
-            return;
         } else if (javaProperty.isBlob()) {
             checkIfBlob(dme, javaProperty);
-            return;
         } else if (javaProperty.isClob()) {
             dme.setHasClobProperties(true);
             javaProperty.setClob(true);
-            return;
         }
     }
 
     /**
      * Check if blob.
      *
-     * @param dme
-     *            the dme
-     * @param javaProperty
-     *            the java property
+     * @param dme the dme
+     * @param javaProperty the java property
      */
     public static void checkIfBlob(Entity dme, JavaProperty javaProperty) {
         dme.setHasBlobProperties(true);
         javaProperty.setBlob(true);
-        return;
     }
 
     /**
      * Check if time.
      *
-     * @param dme
-     *            the dme
-     * @param javaProperty
-     *            the java property
+     * @param dme the dme
+     * @param javaProperty the java property
      */
     public static void checkIfTime(Entity dme, JavaProperty javaProperty) {
         dme.setHasTimeProperties(true);
@@ -245,18 +259,15 @@ public class DataBaseMapping {
         } else if (javaProperty.isInstant()) {
             dme.setHasInstant(true);
         } else {
-            throw new MetaModelException("Not java Time Equivalent: " + javaProperty.getColumnName());
+            throw new MetaModelException(String.format("Not java Time Equivalent: %s", javaProperty.getColumnName()));
         }
-        return;
     }
 
     /**
      * Adds the imports.
      *
-     * @param imports
-     *            the imports
-     * @param columnType
-     *            the column type
+     * @param imports the imports
+     * @param columnType the column type
      * @return true, if successful
      */
     private static boolean addImports(Collection<String> imports, ColumnType columnType) {
@@ -272,39 +283,33 @@ public class DataBaseMapping {
     /**
      * Checks if is wrapper class.
      *
-     * @param columnType
-     *            the column type
+     * @param columnType the column type
      * @return true, if is wrapper class
      */
     private static boolean isWrapperClass(ColumnType columnType) {
         Class<?> testClass = columnType.getJavaEquivalentClass();
-        if (testClass.equals(Boolean.class) || testClass.equals(Double.class) || testClass.equals(Integer.class)
-                || testClass.equals(Long.class) || testClass.equals(Float.class) || testClass.equals(String.class)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (testClass.equals(Boolean.class) || testClass.equals(Double.class) || testClass.equals(Integer.class)
+                || testClass.equals(Long.class) || testClass.equals(Float.class) || testClass.equals(String.class));
     }
 
     /**
      * Extract property type.
      *
-     * @param column
-     *            the column
+     * @param column the column
      * @return the string
      */
     private static String extractPropertyType(Column column) {
         String propertyType = column.getType().getJavaEquivalentClass().getSimpleName();
         if (column.isIndexed() && column.getType().isNumber()) {
-            return "Long";
+            return LONG_TYPE;
         } else if (column.getType() == ColumnType.BLOB) {
-            return "byte[]";
+            return BYTE_ARRAY_TYPE;
         } else if (column.getType() == ColumnType.CLOB) {
-            return "String";
+            return STRING_TYPE;
         } else if (column.getType() == ColumnType.DATE) {
-            return "LocalDate";
+            return LOCAL_DATE_TYPE;
         } else if (column.getType() == ColumnType.TIMESTAMP) {
-            return "ZonedDateTime";
+            return ZONED_DATE_TIME;
         } else {
             return propertyType;
         }
@@ -313,13 +318,12 @@ public class DataBaseMapping {
     /**
      * Extract qualified type.
      *
-     * @param column
-     *            the column
+     * @param column the column
      * @return the string
      */
     private static String extractQualifiedType(Column column) {
         if (column.isIndexed() && column.getType().isNumber()) {
-            return "java.lang.Long";
+            return LONG_QUALIFIED_NAME;
         } else {
             return column.getType().getJavaEquivalentClass().getCanonicalName();
         }
@@ -328,39 +332,36 @@ public class DataBaseMapping {
     /**
      * Checks for primary key.
      *
-     * @param columns
-     *            the columns
+     * @param columns the columns
      * @return true, if successful
      */
     public static boolean hasPrimaryKey(List<Column> columns) {
-        return columns.size() == 0 ? false : true;
+        return !columns.isEmpty();
     }
 
     /**
      * Map primary key elements.
      *
-     * @param singularName
-     *            the singular name
-     * @param columns
-     *            the columns
+     * @param singularName the singular name
+     * @param columns the columns
      * @return the primary key
      */
     public static PrimaryKey mapPrimaryKeyElements(String singularName, List<Column> columns) {
         PrimaryKey pk = PrimaryKey.createOrderedDataModel();
         // Not found primary key
-        if (columns.size() == 0) {
+        if (columns.isEmpty()) {
             return null;
         }
         // Simple Primary key
         if (columns.size() == 1) {
-            pk.setType("Long");
+            pk.setType(LONG_TYPE);
             pk.setName(SchemaPropertiesParser.parseToPropertyName(columns.get(0).getName()));
-            pk.setQualifiedLabel("java.lang.Long");
+            pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
             pk.setComposed(false);
         } else {
             // Composed Primary key
-            pk.setType(SchemaPropertiesParser.parseToClassName(singularName) + "PK");
-            pk.setName(SchemaPropertiesParser.parseToPropertyName(singularName) + "PK");
+            pk.setType(SchemaPropertiesParser.parseToClassName(singularName) + PK_SUFIX);
+            pk.setName(SchemaPropertiesParser.parseToPropertyName(singularName) + PK_SUFIX);
             pk.setComposed(true);
             for (Column columnElement : columns) {
                 String propertyName = SchemaPropertiesParser.parseToPropertyName(columnElement.getName());
@@ -378,10 +379,8 @@ public class DataBaseMapping {
     /**
      * Adds the type.
      *
-     * @param javaProperty
-     *            the java property
-     * @param type
-     *            the type
+     * @param javaProperty the java property
+     * @param type the type
      */
     public static void addType(JavaProperty javaProperty, ColumnType type) {
         if (type.isBoolean()) {
@@ -401,10 +400,8 @@ public class DataBaseMapping {
     /**
      * Sets the kind of date type.
      *
-     * @param property
-     *            the property
-     * @param type
-     *            the type
+     * @param property the property
+     * @param type the type
      */
     public static void setKindOfDateType(JavaProperty property, ColumnType type) {
         property.setTime(true);
@@ -418,10 +415,8 @@ public class DataBaseMapping {
     /**
      * Sets the kind of literal.
      *
-     * @param property
-     *            the property
-     * @param type
-     *            the type
+     * @param property the property
+     * @param type the type
      */
     public static void setKindOfLiteral(JavaProperty property, ColumnType type) {
         property.setLiteral(true);
@@ -434,10 +429,8 @@ public class DataBaseMapping {
      * Create a List of DataModelGroup into a single group from a DataContext
      * Element.
      *
-     * @param tables
-     *            the tables
-     * @param excludedTables
-     *            the excluded tables
+     * @param tables the tables
+     * @param excludedTables the excluded tables
      * @return the list
      */
     public static List<DomainModelGroup> createSingleDataModelGroupList(List<Table> tables,
