@@ -36,6 +36,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 
+import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -54,37 +55,44 @@ public class GrammarFieldTypeMapping {
         /*
          * Literal
          */
-        getMap().put("String", new GrammarFieldTypeImpl("String", LITERAL_TYPE));
-        getMap().put("TextBlob", new GrammarFieldTypeImpl("TextBlob", LITERAL_TYPE, String.class, true));
+        getMap().put(FieldType.STRING.text(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
+        getMap().put(FieldType.TEXT_BLOB.text(),
+                new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
 
         /*
          * Numbers
          */
-        getMap().put("Integer", new GrammarFieldTypeImpl("Integer", NUMBER_TYPE, Integer.class));
-        getMap().put("Long", new GrammarFieldTypeImpl("Long", NUMBER_TYPE, Long.class));
-        getMap().put("BigDecimal", new GrammarFieldTypeImpl("BigDecimal", NUMBER_TYPE, BigDecimal.class));
-        getMap().put("Float", new GrammarFieldTypeImpl("Float", NUMBER_TYPE, Float.class));
-        getMap().put("Double", new GrammarFieldTypeImpl("Double", NUMBER_TYPE, Double.class));
+        getMap().put(FieldType.INTEGER.text(), new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
+        getMap().put(FieldType.LONG.text(), new GrammarFieldTypeImpl(FieldType.LONG, NUMBER_TYPE, Long.class));
+        getMap().put(FieldType.BIG_DECIMAL.text(),
+                new GrammarFieldTypeImpl(FieldType.BIG_DECIMAL, NUMBER_TYPE, BigDecimal.class));
+        getMap().put(FieldType.FLOAT.text(), new GrammarFieldTypeImpl(FieldType.FLOAT, NUMBER_TYPE, Float.class));
+        getMap().put(FieldType.DOUBLE.text(), new GrammarFieldTypeImpl(FieldType.DOUBLE, NUMBER_TYPE, Double.class));
 
         /*
          * Time based
          */
-        getMap().put("Date", new GrammarFieldTypeImpl("Date", TIME_TYPE, Date.class));
-        getMap().put("LocalDate", new GrammarFieldTypeImpl("LocalDate", TIME_TYPE, LocalDate.class));
-        getMap().put("ZonedDateTime", new GrammarFieldTypeImpl("ZonedDateTime", TIME_TYPE, ZonedDateTime.class));
-        getMap().put("Instant", new GrammarFieldTypeImpl("Instant", TIME_TYPE, Instant.class));
+        getMap().put(FieldType.DATE.text(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
+        getMap().put(FieldType.LOCAL_DATE.text(),
+                new GrammarFieldTypeImpl(FieldType.LOCAL_DATE, TIME_TYPE, LocalDate.class));
+        getMap().put(FieldType.ZONED_DATETIME.text(),
+                new GrammarFieldTypeImpl(FieldType.ZONED_DATETIME, TIME_TYPE, ZonedDateTime.class));
+        getMap().put(FieldType.INSTANT.text(), new GrammarFieldTypeImpl(FieldType.INSTANT, TIME_TYPE, Instant.class));
 
         /*
          * Booleans
          */
-        getMap().put("Boolean", new GrammarFieldTypeImpl("Boolean", BOOLEAN_TYPE, boolean.class));
+        getMap().put(FieldType.BOOLEAN_TYPE.text(),
+                new GrammarFieldTypeImpl(FieldType.BOOLEAN_TYPE, BOOLEAN_TYPE, boolean.class));
 
         /*
          * Blobs
          */
-        getMap().put("Blob", new GrammarFieldTypeImpl("Blob", BINARY_TYPE, byte[].class, true));
-        getMap().put("AnyBlob", new GrammarFieldTypeImpl("AnyBlob", BINARY_TYPE, byte[].class, true));
-        getMap().put("ImageBlob", new GrammarFieldTypeImpl("ImageBlob", BINARY_TYPE, byte[].class, true));
+        getMap().put(FieldType.BLOB.text(), new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
+        getMap().put(FieldType.ANY_BLOB.text(),
+                new GrammarFieldTypeImpl(FieldType.ANY_BLOB, BINARY_TYPE, byte[].class, true));
+        getMap().put(FieldType.IMAGE_BLOB.text(),
+                new GrammarFieldTypeImpl(FieldType.IMAGE_BLOB, BINARY_TYPE, byte[].class, true));
 
     }
 
@@ -97,7 +105,8 @@ public class GrammarFieldTypeMapping {
     /**
      * Gets the property type.
      *
-     * @param property the property
+     * @param property
+     *            the property
      * @return the property type
      */
     public static GrammarFieldType getPropertyType(String property) {
@@ -107,7 +116,8 @@ public class GrammarFieldTypeMapping {
     /**
      * Gets the numeric type.
      *
-     * @param numericTypes the numeric types
+     * @param numericTypes
+     *            the numeric types
      * @return the numeric type
      */
     public static String getNumericType(NumericTypesContext numericTypes) {
@@ -129,7 +139,8 @@ public class GrammarFieldTypeMapping {
     /**
      * Gets the date type.
      *
-     * @param dataTypes the data types
+     * @param dataTypes
+     *            the data types
      * @return the date type
      */
     public static String getDateType(DateTypesContext dataTypes) {
@@ -143,6 +154,34 @@ public class GrammarFieldTypeMapping {
             return dataTypes.ZONED_DATETIME().getText();
         } else {
             throw new MetaModelException("Date Type Not Found for: " + dataTypes.getText());
+        }
+    }
+
+    public static void configurateGrammarFieldType(GrammarFieldType propertyType, JavaProperty javaProperty) {
+        switch (propertyType.getFieldType()) {
+        case LOCAL_DATE:
+            javaProperty.setLocalDate(true);
+            break;
+        case ZONED_DATETIME:
+            javaProperty.setZoneDateTime(true);
+            break;
+        case INSTANT:
+            javaProperty.setInstant(true);
+            break;
+        case BIG_DECIMAL:
+            javaProperty.setBigDecimal(true);
+            break;
+        case ANY_BLOB:
+            javaProperty.setAnyBlob(true);
+            break;
+        case IMAGE_BLOB:
+            javaProperty.setImageBlob(true);
+            break;
+        case BLOB:
+            javaProperty.setBlob(true);
+            break;
+        default:
+            break;
         }
     }
 

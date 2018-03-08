@@ -40,7 +40,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     public static final Logger logger = LoggerFactory.getLogger(GrammarFieldTypeImpl.class);
 
     /** The name. */
-    private final String name;
+    private final FieldType fieldType;
     
     /** The super column type. */
     private final SuperColumnType superColumnType;
@@ -57,8 +57,8 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
      * @param name the name
      * @param superColumnType the super column type
      */
-    public GrammarFieldTypeImpl(String name, SuperColumnType superColumnType) {
-        this(name, superColumnType, null);
+    public GrammarFieldTypeImpl(FieldType fieldType, SuperColumnType superColumnType) {
+        this(fieldType, superColumnType, null);
     }
 
     /**
@@ -68,8 +68,8 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
      * @param superColumnType the super column type
      * @param javaType the java type
      */
-    public GrammarFieldTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType) {
-        this(name, superColumnType, javaType, false);
+    public GrammarFieldTypeImpl(FieldType fieldType, SuperColumnType superColumnType, Class<?> javaType) {
+        this(fieldType, superColumnType, javaType, false);
     }
 
     /**
@@ -80,15 +80,15 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
      * @param javaType the java type
      * @param largeObject the large object
      */
-    public GrammarFieldTypeImpl(String name, SuperColumnType superColumnType, Class<?> javaType,
+    public GrammarFieldTypeImpl(FieldType fieldType, SuperColumnType superColumnType, Class<?> javaType,
             boolean largeObject) {
-        if (name == null) {
+        if (fieldType == null) {
             throw new IllegalArgumentException("Name cannot be null");
         }
         if (superColumnType == null) {
             throw new IllegalArgumentException("SuperColumnType cannot be null");
         }
-        this.name = name;
+        this.fieldType = fieldType;
         this.superColumnType = superColumnType;
         if (javaType == null) {
             this.javaType = superColumnType.getJavaEquivalentClass();
@@ -158,8 +158,8 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getGrammarName()
      */
     @Override
-    public String getGrammarName() {
-        return this.name;
+    public FieldType getFieldType() {
+        return this.fieldType;
     }
 
     /* (non-Javadoc)

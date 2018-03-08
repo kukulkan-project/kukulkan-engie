@@ -33,11 +33,11 @@ import java.io.Serializable;
 public interface GrammarFieldType extends Serializable {
 
     /**
-     * Gets the grammar name.
+     * Gets the grammar field Type.
      *
-     * @return the grammar name
+     * @return the FieldType
      */
-    public String getGrammarName();
+    public FieldType getFieldType();
 
     /**
      * Gets the java name.
