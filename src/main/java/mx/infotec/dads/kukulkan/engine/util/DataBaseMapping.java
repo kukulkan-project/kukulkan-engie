@@ -61,17 +61,17 @@ public class DataBaseMapping {
      * The Constant LOCAL_DATE_TYPE.
      */
     private static final String LOCAL_DATE_TYPE = "LocalDate";
-    
+
     /**
      * The Constant BYTE_ARRAY_TYPE.
      */
     private static final String BYTE_ARRAY_TYPE = "byte[]";
-    
+
     /**
      * The Constant ZONED_DATE_TIME.
      */
     private static final String ZONED_DATE_TIME = "ZonedDateTime";
-    
+
     /**
      * The Constant STRING_QUALIFIED_NAME.
      */
@@ -91,12 +91,12 @@ public class DataBaseMapping {
      * The Constant PK_SUFIX.
      */
     private static final String PK_SUFIX = "PK";
-    
+
     /**
      * The Constant DAFAULT_PACKAGE_DESC.
      */
     private static final String DAFAULT_PACKAGE_DESC = "Default package";
-    
+
     /**
      * Instantiates a new data base mapping.
      */
@@ -226,7 +226,8 @@ public class DataBaseMapping {
         if (javaProperty.isTime()) {
             checkIfTime(dme, javaProperty);
         } else if (javaProperty.isBlob()) {
-            checkIfBlob(dme, javaProperty);
+            dme.setHasBlobProperties(true);
+            javaProperty.setBlob(true);
         } else if (javaProperty.isClob()) {
             dme.setHasClobProperties(true);
             javaProperty.setClob(true);

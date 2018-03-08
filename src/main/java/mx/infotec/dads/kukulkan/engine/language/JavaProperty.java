@@ -29,8 +29,9 @@ import java.util.Optional;
 
 import org.apache.metamodel.schema.ColumnType;
 
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
@@ -63,6 +64,12 @@ public class JavaProperty implements Property<JavaProperty> {
 
     /** The blob. */
     private boolean blob;
+
+    /** The blob. */
+    private boolean anyBlob;
+
+    /** The blob. */
+    private boolean imageBlob;
 
     /** The time. */
     private boolean time;
@@ -223,6 +230,46 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     public void setBlob(boolean blob) {
         this.blob = blob;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBlob()
+     */
+    @Override
+    public boolean isImageBlob() {
+        return imageBlob;
+    }
+
+    /**
+     * Sets the blob.
+     *
+     * @param blob
+     *            the new blob
+     */
+    public void setImageBlob(boolean imageBlob) {
+        this.imageBlob = imageBlob;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBlob()
+     */
+    @Override
+    public boolean isAnyBlob() {
+        return anyBlob;
+    }
+
+    /**
+     * Sets the blob.
+     *
+     * @param blob
+     *            the new blob
+     */
+    public void setAnyBlob(boolean anyBlob) {
+        this.anyBlob = anyBlob;
     }
 
     /**
@@ -526,6 +573,23 @@ public class JavaProperty implements Property<JavaProperty> {
          */
         public JavaPropertyBuilder withType(String propertyType) {
             this.javaProperty.setType(propertyType);
+            return this;
+        }
+
+        /**
+         * With propertyType.
+         *
+         * @param propertyType
+         *            the property type
+         * @return the java property builder
+         */
+        public JavaPropertyBuilder withPropertyType(GrammarFieldType propertyType) {
+            GrammarFieldTypeMapping.configurateGrammarFieldType(propertyType, this.javaProperty);
+            this.isLargeObject(propertyType.isLargeObject());
+            this.withType(propertyType.getJavaName());
+            this.withColumnType(propertyType.getFieldType().text());
+            this.withQualifiedName(propertyType.getJavaQualifiedName());
+            this.withJavaEquivalentClass(propertyType.getJavaEquivalentClass());
             return this;
         }
 

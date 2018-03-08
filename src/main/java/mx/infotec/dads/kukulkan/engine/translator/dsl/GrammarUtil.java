@@ -191,19 +191,12 @@ public class GrammarUtil {
     public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
             GrammarFieldType propertyType) {
         return JavaProperty.builder().withName(propertyName)
-                .withType(propertyType.getJavaName())
+                .withPropertyType(propertyType)
                 .withColumnName(propertyName)
-                .withColumnType(propertyType.getGrammarName())
-                .withQualifiedName(propertyType.getJavaQualifiedName())
                 .isNullable(true)
                 .isPrimaryKey(false)
                 .isIndexed(false)
-                .isLocalDate(propertyType.getJavaEquivalentClass().equals(LocalDate.class))
-                .isZoneDateTime(propertyType.getJavaEquivalentClass().equals(ZonedDateTime.class))
-                .isInstance(propertyType.getJavaEquivalentClass().equals(Instant.class))
-                .isLargeObject(propertyType.isLargeObject())
-                .addType(field.type)
-                .withJavaEquivalentClass(propertyType.getJavaEquivalentClass()).build();
+                .addType(field.type).build();
     }
 
     /**
