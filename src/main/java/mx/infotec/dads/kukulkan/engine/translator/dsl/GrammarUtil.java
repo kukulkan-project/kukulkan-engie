@@ -27,9 +27,6 @@ import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefault
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -50,13 +47,15 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
  * Grammar Util, It is used to performe common operation in the grammar.
- * 
+ *
  * @author Daniel Cortes Pichardo
  *
  */
 public class GrammarUtil {
 
-    /** The Constant LOGGER. */
+    /**
+     * The Constant LOGGER.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(GrammarUtil.class);
 
     /**
@@ -69,8 +68,7 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param file
-     *            the file
+     * @param file the file
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(String file) {
@@ -87,10 +85,8 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param file
-     *            the file
-     * @param isText
-     *            the is text
+     * @param file the file
+     * @param isText the is text
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(String file, boolean isText) {
@@ -111,8 +107,7 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param lexer
-     *            the lexer
+     * @param lexer the lexer
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(kukulkanLexer lexer) {
@@ -124,11 +119,9 @@ public class GrammarUtil {
     /**
      * Gets the kukulkan lexer.
      *
-     * @param file
-     *            the file
+     * @param file the file
      * @return the kukulkan lexer
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static kukulkanLexer getKukulkanLexer(String file) throws IOException {
         return new kukulkanLexer(new ANTLRFileStream(file));
@@ -137,11 +130,9 @@ public class GrammarUtil {
     /**
      * Gets the kukulkan lexer.
      *
-     * @param is
-     *            the is
+     * @param is the is
      * @return the kukulkan lexer
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static kukulkanLexer getKukulkanLexer(InputStream is) throws IOException {
         return new kukulkanLexer(new ANTLRInputStream(is));
@@ -150,10 +141,9 @@ public class GrammarUtil {
     /**
      * Adds the meta data.
      *
-     * @param entity
-     *            the entity
-     * @param dme
-     *            the dme
+     * @param entity the entity
+     * @param dme the dme
+     * @param dbType the database type
      */
     public static void addMetaData(EntityContext entity, Entity dme, DatabaseType dbType) {
         String singularName = InflectorProcessor.getInstance().singularize(entity.name.getText());
@@ -167,12 +157,9 @@ public class GrammarUtil {
     /**
      * Adds the content type.
      *
-     * @param dme
-     *            the dme
-     * @param propertyName
-     *            the property name
-     * @param propertyType
-     *            the property type
+     * @param dme the dme
+     * @param propertyName the property name
+     * @param propertyType the property type
      */
     public static void addContentType(Entity dme, String propertyName, GrammarFieldType propertyType) {
         if (propertyType.isBinary()) {
@@ -202,8 +189,7 @@ public class GrammarUtil {
     /**
      * Creates the content type property.
      *
-     * @param propertyName
-     *            the property name
+     * @param propertyName the property name
      * @return the java property
      */
     public static JavaProperty createContentTypeProperty(String propertyName) {

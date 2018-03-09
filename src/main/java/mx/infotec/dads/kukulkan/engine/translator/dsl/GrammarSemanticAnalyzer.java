@@ -49,6 +49,9 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * KukulkanGrammarVisitor implements the.
  *
@@ -56,8 +59,13 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  */
 public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorContext> {
 
+    /**
+     * The logger class.
+     */
+    private final static Logger LOGGER = LoggerFactory.getLogger(GrammarSemanticAnalyzer.class);
+    
     /** The vctx. */
-    private final VisitorContext vctx = new VisitorContext(new ArrayList<Entity>());
+    private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
 
     /** The entity. */
     private Entity entity = null;
@@ -105,12 +113,13 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     @Override
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
+        LOGGER.debug(ctx.getText());
         return super.visitAssociationField(ctx);
     }
 
     @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
-        System.out.println(ctx.getText());
+        LOGGER.debug(ctx.getText());
         return super.visitCardinality(ctx);
     }
 

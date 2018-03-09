@@ -24,7 +24,7 @@ public enum FieldType {
     IMAGE_BLOB("ImageBlob"), 
     TEXT_BLOB("TextBlob");
     
-    private String text;
+    private final String text;
     
     private FieldType(String text){
         this.text=text;
