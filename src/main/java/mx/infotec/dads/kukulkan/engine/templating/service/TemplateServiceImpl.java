@@ -70,8 +70,7 @@ public class TemplateServiceImpl implements TemplateService {
     public Optional<GeneratedElement> createGeneratedElement(ModelContext context) {
         Optional<Template> templateOptional = TemplateUtil.get(fmConfiguration, context.getTemplatePath().toString());
         if (templateOptional.isPresent()) {
-            return Optional.of(processTemplate(context.getModel(), templateOptional.get(), context.getRealFilePath(),
-                    context.getRelativeFilePath(), context.getEditor()));
+            return Optional.of(processTemplate(templateOptional.get(), context));
         } else {
             LOGGER.error("Template not foud : {}", context.getTemplatePath());
             return Optional.empty();

@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import mx.infotec.dads.kukulkan.engine.model.ModelContext;
 import mx.infotec.dads.kukulkan.metamodel.context.BaseContext;
 import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
@@ -99,9 +100,12 @@ public class TemplateUtil {
      *            the editor
      * @return GeneratedElement from a Template
      */
-    public static GeneratedElement processTemplate(Object model, Template template, Path realFilePath,
-            Path relativeFilePath, Editor editor) {
-        return new GeneratedElement(realFilePath, relativeFilePath, processTemplate(model, template), editor);
+    public static GeneratedElement processTemplate(Template template, ModelContext context) {
+        GeneratedElement ge = new GeneratedElement(context.getRealFilePath(), context.getRelativeFilePath(),
+                processTemplate(context.getModel(), template), context.getEditor());
+        ge.setKeywords(context.getKeywords());
+        ge.setFileName(context.getFileName());
+        return ge;
     }
 
     /**

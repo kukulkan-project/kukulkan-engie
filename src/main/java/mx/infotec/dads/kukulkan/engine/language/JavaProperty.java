@@ -277,6 +277,7 @@ public class JavaProperty implements Property<JavaProperty> {
      *
      * @return true, if is boolean
      */
+    @Override
     public boolean isBoolean() {
         return booleanType;
     }
