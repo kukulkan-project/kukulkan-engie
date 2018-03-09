@@ -48,6 +48,10 @@ public class ModelContext {
 
     /** The relative file path. */
     private Path relativeFilePath;
+    
+    private String fileName;
+    
+    private String[] keywords;
 
     private ModelContext() {
 
@@ -191,5 +195,21 @@ public class ModelContext {
         this.editor = builder.editor;
         this.realFilePath = builder.realFilePath;
         this.relativeFilePath = builder.relativeFilePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String[] getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String[] keywords) {
+        this.keywords = keywords;
     }
 }
