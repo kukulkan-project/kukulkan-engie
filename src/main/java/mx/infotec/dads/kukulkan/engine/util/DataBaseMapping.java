@@ -405,7 +405,6 @@ public class DataBaseMapping {
      * @param type the type
      */
     public static void setKindOfDateType(JavaProperty property, ColumnType type) {
-        property.setTime(true);
         if (type == ColumnType.TIMESTAMP) {
             property.setZoneDateTime(true);
         } else if (type == ColumnType.DATE) {

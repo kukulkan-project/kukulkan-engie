@@ -156,7 +156,6 @@ public class GrammarMapping {
      * @param type the type
      */
     private static void setKindOfDateType(JavaProperty property, DateTypesContext type) {
-        property.setTime(true);
         if (type.ZONED_DATETIME() != null) {
             property.setZoneDateTime(true);
         } else if (type.DATE() != null || type.LOCAL_DATE() != null) {

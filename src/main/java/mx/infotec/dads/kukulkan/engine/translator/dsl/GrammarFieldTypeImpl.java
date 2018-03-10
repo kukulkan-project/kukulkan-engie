@@ -23,9 +23,6 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * GrammarPropertyTypeImpl.
  *
@@ -33,28 +30,35 @@ import org.slf4j.LoggerFactory;
  */
 public class GrammarFieldTypeImpl implements GrammarFieldType {
 
-    /** The Constant serialVersionUID. */
+    /**
+     * The Constant serialVersionUID.
+     */
     private static final long serialVersionUID = 1L;
 
-    /** The Constant logger. */
-    public static final Logger logger = LoggerFactory.getLogger(GrammarFieldTypeImpl.class);
-
-    /** The name. */
+    /**
+     * The name.
+     */
     private final FieldType fieldType;
-    
-    /** The super column type. */
+
+    /**
+     * The super column type.
+     */
     private final SuperColumnType superColumnType;
-    
-    /** The java type. */
+
+    /**
+     * The java type.
+     */
     private final Class<?> javaType;
-    
-    /** The large object. */
-    private final boolean _largeObject;
+
+    /**
+     * The large object.
+     */
+    private final boolean largeObject;
 
     /**
      * Instantiates a new grammar property type impl.
      *
-     * @param name the name
+     * @param fieldType the fieldType
      * @param superColumnType the super column type
      */
     public GrammarFieldTypeImpl(FieldType fieldType, SuperColumnType superColumnType) {
@@ -64,7 +68,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /**
      * Instantiates a new grammar property type impl.
      *
-     * @param name the name
+     * @param fieldType the fieldType
      * @param superColumnType the super column type
      * @param javaType the java type
      */
@@ -75,7 +79,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /**
      * Instantiates a new grammar property type impl.
      *
-     * @param name the name
+     * @param fieldType the fieldType
      * @param superColumnType the super column type
      * @param javaType the java type
      * @param largeObject the large object
@@ -95,12 +99,13 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
         } else {
             this.javaType = javaType;
         }
-        this._largeObject = largeObject;
+        this.largeObject = largeObject;
     }
 
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isBoolean()
      */
+    @Override
     public boolean isBoolean() {
         return this.superColumnType == SuperColumnType.BOOLEAN_TYPE;
     }
@@ -108,6 +113,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isBinary()
      */
+    @Override
     public boolean isBinary() {
         return this.superColumnType == SuperColumnType.BINARY_TYPE;
     }
@@ -115,6 +121,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isNumber()
      */
+    @Override
     public boolean isNumber() {
         return this.superColumnType == SuperColumnType.NUMBER_TYPE;
     }
@@ -122,6 +129,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isTimeBased()
      */
+    @Override
     public boolean isTimeBased() {
         return this.superColumnType == SuperColumnType.TIME_TYPE;
     }
@@ -129,6 +137,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isLiteral()
      */
+    @Override
     public boolean isLiteral() {
         return this.superColumnType == SuperColumnType.LITERAL_TYPE;
     }
@@ -136,13 +145,15 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#isLargeObject()
      */
+    @Override
     public boolean isLargeObject() {
-        return this._largeObject;
+        return this.largeObject;
     }
 
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getJavaEquivalentClass()
      */
+    @Override
     public Class<?> getJavaEquivalentClass() {
         return this.javaType;
     }
@@ -150,6 +161,7 @@ public class GrammarFieldTypeImpl implements GrammarFieldType {
     /* (non-Javadoc)
      * @see mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarPropertyType#getSuperType()
      */
+    @Override
     public SuperColumnType getSuperType() {
         return this.superColumnType;
     }

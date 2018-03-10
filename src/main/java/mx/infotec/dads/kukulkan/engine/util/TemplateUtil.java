@@ -41,7 +41,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import mx.infotec.dads.kukulkan.engine.model.ModelContext;
 import mx.infotec.dads.kukulkan.metamodel.context.BaseContext;
-import mx.infotec.dads.kukulkan.metamodel.editor.Editor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
 import mx.infotec.dads.kukulkan.metamodel.template.TemplateInfo;
 import mx.infotec.dads.kukulkan.metamodel.template.TemplateType;
@@ -56,7 +55,9 @@ import mx.infotec.dads.kukulkan.metamodel.util.StringFormater;
  */
 public class TemplateUtil {
 
-    /** The Constant LOGGER. */
+    /**
+     * The Constant LOGGER.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateUtil.class);
 
     /**
@@ -69,10 +70,8 @@ public class TemplateUtil {
      * Get a template by name using the configuration object. This method handle
      * the IOexception that the configuration object could throws.
      *
-     * @param config
-     *            the config
-     * @param templateName
-     *            the template name
+     * @param config the config
+     * @param templateName the template name
      * @return the optional
      */
     public static Optional<Template> get(Configuration config, String templateName) {
@@ -88,16 +87,8 @@ public class TemplateUtil {
     /**
      * It process a template and transform it into a GeneratedElement object.
      *
-     * @param model
-     *            the model
-     * @param template
-     *            the template
-     * @param realFilePath
-     *            the path
-     * @param relativeFilePath
-     *            the simple path
-     * @param editor
-     *            the editor
+     * @param template the template
+     * @param context the context
      * @return GeneratedElement from a Template
      */
     public static GeneratedElement processTemplate(Template template, ModelContext context) {
@@ -111,13 +102,10 @@ public class TemplateUtil {
     /**
      * It process a Template and fill it with the model object,.
      *
-     * @param model
-     *            the model
-     * @param template
-     *            the template
+     * @param model the model
+     * @param template the template
      * @return the string
      */
-
     public static String processTemplate(Object model, Template template) {
         try (StringWriter stringWriter = new StringWriter()) {
             template.process(model, stringWriter);
@@ -130,12 +118,9 @@ public class TemplateUtil {
     /**
      * It process a Template and save it into the specified path.
      *
-     * @param model
-     *            the model
-     * @param template
-     *            the template
-     * @param pathToSave
-     *            the path to save
+     * @param model the model
+     * @param template the template
+     * @param pathToSave the path to save
      */
     public static void processTemplate(Object model, Template template, Path pathToSave) {
         try (StringWriter stringWriter = new StringWriter()) {

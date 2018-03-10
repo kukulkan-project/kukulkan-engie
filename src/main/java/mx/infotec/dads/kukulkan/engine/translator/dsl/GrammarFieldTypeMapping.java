@@ -35,6 +35,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
@@ -49,9 +50,9 @@ import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 public class GrammarFieldTypeMapping {
 
     /** The Constant map. */
-    private static final HashMap<String, GrammarFieldType> map;
+    private static final Map<String, GrammarFieldType> GRAMMAR_MAP;
     static {
-        map = new HashMap<>();
+        GRAMMAR_MAP = new HashMap<>();
         /*
          * Literal
          */
@@ -190,7 +191,7 @@ public class GrammarFieldTypeMapping {
      *
      * @return the map
      */
-    public static HashMap<String, GrammarFieldType> getMap() {
-        return map;
+    public static Map<String, GrammarFieldType> getMap() {
+        return GRAMMAR_MAP;
     }
 }

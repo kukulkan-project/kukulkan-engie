@@ -62,7 +62,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     /**
      * The logger class.
      */
-    private final static Logger LOGGER = LoggerFactory.getLogger(GrammarSemanticAnalyzer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GrammarSemanticAnalyzer.class);
     
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
