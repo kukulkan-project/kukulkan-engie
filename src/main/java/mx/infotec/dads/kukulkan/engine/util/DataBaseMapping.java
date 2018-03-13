@@ -107,8 +107,10 @@ public class DataBaseMapping {
     /**
      * Create a DataModelGroup Class.
      *
-     * @param tables the tables
-     * @param excludedTables the excluded tables
+     * @param tables
+     *            the tables
+     * @param excludedTables
+     *            the excluded tables
      * @return DataModelGroup
      */
     public static DomainModelGroup createDefaultDataModelGroup(List<Table> tables, List<String> excludedTables) {
@@ -126,9 +128,12 @@ public class DataBaseMapping {
     /**
      * Creates the data model element.
      *
-     * @param tablesToProcess the tables to process
-     * @param tables the tables
-     * @param dmeList the dme list
+     * @param tablesToProcess
+     *            the tables to process
+     * @param tables
+     *            the tables
+     * @param dmeList
+     *            the dme list
      */
     private static void createDataModelElement(List<String> tablesToProcess, List<Table> tables, List<Entity> dmeList) {
         tables.forEach(table -> {
@@ -150,9 +155,12 @@ public class DataBaseMapping {
     /**
      * Extract primary key.
      *
-     * @param dme the dme
-     * @param singularName the singular name
-     * @param columns the columns
+     * @param dme
+     *            the dme
+     * @param singularName
+     *            the singular name
+     * @param columns
+     *            the columns
      */
     public static void extractPrimaryKey(Entity dme, String singularName, List<Column> columns) {
         dme.setPrimaryKey(mapPrimaryKeyElements(singularName, columns));
@@ -164,8 +172,10 @@ public class DataBaseMapping {
     /**
      * Extract properties.
      *
-     * @param dme the dme
-     * @param table the table
+     * @param dme
+     *            the dme
+     * @param table
+     *            the table
      */
     public static void extractProperties(Entity dme, Table table) {
         table.getColumns().stream().filter(column -> !column.isPrimaryKey())
@@ -175,7 +185,8 @@ public class DataBaseMapping {
     /**
      * Creates the default primary key.
      *
-     * @param dbType DatabaseType
+     * @param dbType
+     *            DatabaseType
      * @return the primary key
      */
     public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType) {
@@ -197,8 +208,10 @@ public class DataBaseMapping {
     /**
      * Process not primary properties.
      *
-     * @param dme the dme
-     * @param column the column
+     * @param dme
+     *            the dme
+     * @param column
+     *            the column
      */
     private static void processNotPrimaryProperties(Entity dme, Column column) {
         String propertyName = SchemaPropertiesParser.parseToPropertyName(column.getName());
@@ -215,8 +228,10 @@ public class DataBaseMapping {
     /**
      * Fill model meta data.
      *
-     * @param dme the dme
-     * @param javaProperty the java property
+     * @param dme
+     *            the dme
+     * @param javaProperty
+     *            the java property
      */
     public static void fillModelMetaData(Entity dme, JavaProperty javaProperty) {
         if (!javaProperty.getConstraint().isNullable()) {
@@ -237,8 +252,10 @@ public class DataBaseMapping {
     /**
      * Check if blob.
      *
-     * @param dme the dme
-     * @param javaProperty the java property
+     * @param dme
+     *            the dme
+     * @param javaProperty
+     *            the java property
      */
     public static void checkIfBlob(Entity dme, JavaProperty javaProperty) {
         dme.setHasBlobProperties(true);
@@ -248,8 +265,10 @@ public class DataBaseMapping {
     /**
      * Check if time.
      *
-     * @param dme the dme
-     * @param javaProperty the java property
+     * @param dme
+     *            the dme
+     * @param javaProperty
+     *            the java property
      */
     public static void checkIfTime(Entity dme, JavaProperty javaProperty) {
         dme.setHasTimeProperties(true);
@@ -267,8 +286,10 @@ public class DataBaseMapping {
     /**
      * Adds the imports.
      *
-     * @param imports the imports
-     * @param columnType the column type
+     * @param imports
+     *            the imports
+     * @param columnType
+     *            the column type
      * @return true, if successful
      */
     private static boolean addImports(Collection<String> imports, ColumnType columnType) {
@@ -284,7 +305,8 @@ public class DataBaseMapping {
     /**
      * Checks if is wrapper class.
      *
-     * @param columnType the column type
+     * @param columnType
+     *            the column type
      * @return true, if is wrapper class
      */
     private static boolean isWrapperClass(ColumnType columnType) {
@@ -296,7 +318,8 @@ public class DataBaseMapping {
     /**
      * Extract property type.
      *
-     * @param column the column
+     * @param column
+     *            the column
      * @return the string
      */
     private static String extractPropertyType(Column column) {
@@ -319,7 +342,8 @@ public class DataBaseMapping {
     /**
      * Extract qualified type.
      *
-     * @param column the column
+     * @param column
+     *            the column
      * @return the string
      */
     private static String extractQualifiedType(Column column) {
@@ -333,7 +357,8 @@ public class DataBaseMapping {
     /**
      * Checks for primary key.
      *
-     * @param columns the columns
+     * @param columns
+     *            the columns
      * @return true, if successful
      */
     public static boolean hasPrimaryKey(List<Column> columns) {
@@ -343,8 +368,10 @@ public class DataBaseMapping {
     /**
      * Map primary key elements.
      *
-     * @param singularName the singular name
-     * @param columns the columns
+     * @param singularName
+     *            the singular name
+     * @param columns
+     *            the columns
      * @return the primary key
      */
     public static PrimaryKey mapPrimaryKeyElements(String singularName, List<Column> columns) {
@@ -380,8 +407,10 @@ public class DataBaseMapping {
     /**
      * Adds the type.
      *
-     * @param javaProperty the java property
-     * @param type the type
+     * @param javaProperty
+     *            the java property
+     * @param type
+     *            the type
      */
     public static void addType(JavaProperty javaProperty, ColumnType type) {
         if (type.isBoolean()) {
@@ -390,19 +419,18 @@ public class DataBaseMapping {
             setKindOfDateType(javaProperty, type);
         } else if (type.isBinary()) {
             javaProperty.setBlob(true);
-        } else if (type.isNumber()) {
-            javaProperty.setNumber(true);
         } else if (type.isLiteral()) {
             setKindOfLiteral(javaProperty, type);
-            javaProperty.setLiteral(true);
         }
     }
 
     /**
      * Sets the kind of date type.
      *
-     * @param property the property
-     * @param type the type
+     * @param property
+     *            the property
+     * @param type
+     *            the type
      */
     public static void setKindOfDateType(JavaProperty property, ColumnType type) {
         if (type == ColumnType.TIMESTAMP) {
@@ -415,11 +443,12 @@ public class DataBaseMapping {
     /**
      * Sets the kind of literal.
      *
-     * @param property the property
-     * @param type the type
+     * @param property
+     *            the property
+     * @param type
+     *            the type
      */
     public static void setKindOfLiteral(JavaProperty property, ColumnType type) {
-        property.setLiteral(true);
         if (type == ColumnType.CLOB || type == ColumnType.NCLOB) {
             property.setClob(true);
         }
@@ -429,8 +458,10 @@ public class DataBaseMapping {
      * Create a List of DataModelGroup into a single group from a DataContext
      * Element.
      *
-     * @param tables the tables
-     * @param excludedTables the excluded tables
+     * @param tables
+     *            the tables
+     * @param excludedTables
+     *            the excluded tables
      * @return the list
      */
     public static List<DomainModelGroup> createSingleDataModelGroupList(List<Table> tables,

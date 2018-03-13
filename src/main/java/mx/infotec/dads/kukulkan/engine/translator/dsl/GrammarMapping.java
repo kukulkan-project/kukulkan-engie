@@ -55,11 +55,14 @@ public class GrammarMapping {
     /**
      * Create a DataModelGroup Class.
      *
-     * @param dmc the dmc
-     * @param visitor the visitor
+     * @param dmc
+     *            the dmc
+     * @param visitor
+     *            the visitor
      * @return DataModelGroup
      */
-    public static DomainModelGroup createDefaultDataModelGroup(DomainModelContext dmc, GrammarSemanticAnalyzer visitor) {
+    public static DomainModelGroup createDefaultDataModelGroup(DomainModelContext dmc,
+            GrammarSemanticAnalyzer visitor) {
         DomainModelGroup dmg = new DomainModelGroup();
         dmg.setName("");
         dmg.setDescription("Default package");
@@ -75,9 +78,12 @@ public class GrammarMapping {
      * createDataModelElement is used for map the KukulkanGrammar to
      * DataModelElement.
      *
-     * @param dmc the dmc
-     * @param visitor the visitor
-     * @param dmeList the dme list
+     * @param dmc
+     *            the dmc
+     * @param visitor
+     *            the visitor
+     * @param dmeList
+     *            the dme list
      */
     private static void createDataModelElement(DomainModelContext dmc, GrammarSemanticAnalyzer visitor,
             List<Entity> dmeList) {
@@ -88,8 +94,10 @@ public class GrammarMapping {
     /**
      * Adds the imports.
      *
-     * @param imports the imports
-     * @param property the property
+     * @param imports
+     *            the imports
+     * @param property
+     *            the property
      * @return true, if successful
      */
     public static boolean addImports(Collection<String> imports, JavaProperty property) {
@@ -105,8 +113,10 @@ public class GrammarMapping {
     /**
      * Adds the type.
      *
-     * @param javaProperty the java property
-     * @param type the type
+     * @param javaProperty
+     *            the java property
+     * @param type
+     *            the type
      */
     public static void addType(JavaProperty javaProperty, FieldTypeContext type) {
         if (type.booleanFieldType() != null) {
@@ -116,18 +126,19 @@ public class GrammarMapping {
         } else if (type.blobFieldType() != null) {
             setKindOfBlobType(javaProperty, type.blobFieldType().blobTypes());
         } else if (type.numericFieldType() != null) {
-            javaProperty.setNumber(true);
             setKindOfNumeric(javaProperty, type.numericFieldType().numericTypes());
         } else if (type.stringFieldType() != null) {
-            javaProperty.setLiteral(true);
+            javaProperty.setString(true);
         }
     }
 
     /**
      * Sets the kind of numeric.
      *
-     * @param javaProperty the java property
-     * @param type the type
+     * @param javaProperty
+     *            the java property
+     * @param type
+     *            the type
      */
     private static void setKindOfNumeric(JavaProperty javaProperty, NumericTypesContext type) {
         if (type.BIG_DECIMAL() != null) {
@@ -138,12 +149,20 @@ public class GrammarMapping {
     /**
      * Sets the kind of blob type.
      *
-     * @param property the property
-     * @param ctx the ctx
+     * @param property
+     *            the property
+     * @param ctx
+     *            the ctx
      */
     private static void setKindOfBlobType(JavaProperty property, BlobTypesContext ctx) {
-        if (ctx.BLOB() != null || ctx.ANY_BLOB() != null || ctx.IMAGE_BLOB() != null) {
+        if (ctx.BLOB() != null) {
             property.setBlob(true);
+        } else if (ctx.ANY_BLOB() != null) {
+            property.setBlob(true);
+            property.setAnyBlob(true);
+        } else if (ctx.IMAGE_BLOB() != null) {
+            property.setBlob(true);
+            property.setImageBlob(true);
         } else if (ctx.TEXT_BLOB() != null) {
             property.setClob(true);
         }
@@ -152,8 +171,10 @@ public class GrammarMapping {
     /**
      * Sets the kind of date type.
      *
-     * @param property the property
-     * @param type the type
+     * @param property
+     *            the property
+     * @param type
+     *            the type
      */
     private static void setKindOfDateType(JavaProperty property, DateTypesContext type) {
         if (type.ZONED_DATETIME() != null) {
@@ -168,7 +189,8 @@ public class GrammarMapping {
     /**
      * createSingleDataModelGroupList.
      *
-     * @param visitor the visitor
+     * @param visitor
+     *            the visitor
      * @return the list
      */
     public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
@@ -182,8 +204,10 @@ public class GrammarMapping {
     /**
      * createSingleDataModelGroupList.
      *
-     * @param visitor the visitor
-     * @param file the file
+     * @param visitor
+     *            the visitor
+     * @param file
+     *            the file
      * @return the list
      */
     public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor, File file) {
@@ -197,11 +221,14 @@ public class GrammarMapping {
     /**
      * createSingleDataModelGroupList.
      *
-     * @param visitor the visitor
-     * @param textFile the text file
+     * @param visitor
+     *            the visitor
+     * @param textFile
+     *            the text file
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor, String textFile) {
+    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor,
+            String textFile) {
         DomainModelContext tree = GrammarUtil.getDomainModelContext(textFile, true);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
         dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));
@@ -211,7 +238,8 @@ public class GrammarMapping {
     /**
      * Gets the property type.
      *
-     * @param type the type
+     * @param type
+     *            the type
      * @return the property type
      */
     public static Optional<GrammarFieldType> getPropertyType(String type) {

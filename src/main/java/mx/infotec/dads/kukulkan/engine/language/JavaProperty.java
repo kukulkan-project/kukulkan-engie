@@ -99,6 +99,11 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     private boolean bigDecimal;
 
+    private boolean integer;
+
+    private boolean doubleType;
+
+    private boolean floatType;
     /**
      * The local date.
      */
@@ -119,15 +124,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     private boolean booleanType;
 
-    /**
-     * The number.
-     */
-    private boolean number;
-
-    /**
-     * The literal.
-     */
-    private boolean literal;
+    private boolean longType;
 
     /**
      * The large object.
@@ -143,6 +140,10 @@ public class JavaProperty implements Property<JavaProperty> {
      * The has constraints.
      */
     private boolean hasConstraints;
+
+    private boolean textBlob;
+
+    private boolean string;
 
     /**
      * The java equivalent class.
@@ -168,7 +169,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the big decimal.
      *
-     * @param bigDecimal the new big decimal
+     * @param bigDecimal
+     *            the new big decimal
      */
     public void setBigDecimal(boolean bigDecimal) {
         this.bigDecimal = bigDecimal;
@@ -197,7 +199,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the instant.
      *
-     * @param instant the new instant
+     * @param instant
+     *            the new instant
      */
     public void setInstant(boolean instant) {
         this.instant = instant;
@@ -207,7 +210,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the local date.
      *
-     * @param localDate the new local date
+     * @param localDate
+     *            the new local date
      */
     public void setLocalDate(boolean localDate) {
         this.localDate = localDate;
@@ -227,7 +231,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the zone date time.
      *
-     * @param zoneDateTime the new zone date time
+     * @param zoneDateTime
+     *            the new zone date time
      */
     public void setZoneDateTime(boolean zoneDateTime) {
         this.zoneDateTime = zoneDateTime;
@@ -262,7 +267,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the blob.
      *
-     * @param blob the new blob
+     * @param blob
+     *            the new blob
      */
     public void setBlob(boolean blob) {
         this.blob = blob;
@@ -281,7 +287,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the blob.
      *
-     * @param imageBlob the new blob
+     * @param imageBlob
+     *            the new blob
      */
     public void setImageBlob(boolean imageBlob) {
         this.imageBlob = imageBlob;
@@ -300,7 +307,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the blob.
      *
-     * @param anyBlob the new blob
+     * @param anyBlob
+     *            the new blob
      */
     public void setAnyBlob(boolean anyBlob) {
         this.anyBlob = anyBlob;
@@ -319,7 +327,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the boolean.
      *
-     * @param booleanType the new boolean
+     * @param booleanType
+     *            the new boolean
      */
     public void setBoolean(boolean booleanType) {
         this.booleanType = booleanType;
@@ -333,17 +342,6 @@ public class JavaProperty implements Property<JavaProperty> {
     @Override
     public boolean isTime() {
         return isLocalDate() || isZoneDateTime() || isInstant();
-    }
-
-    /**
-     * Sets the time.
-     *
-     * @param time the new time
-     * @deprecated Use setLocaleDate, setZoneDateTime or setInstant
-     */
-    @Deprecated
-    public void setTime(boolean time) {
-        //Un used
     }
 
     /*
@@ -485,7 +483,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the name.
      *
-     * @param name the new name
+     * @param name
+     *            the new name
      */
     protected void setName(String name) {
         this.name = name;
@@ -494,7 +493,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the type.
      *
-     * @param type the new type
+     * @param type
+     *            the new type
      */
     protected void setType(String type) {
         this.type = type;
@@ -503,7 +503,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the qualified name.
      *
-     * @param qualifiedName the new qualified name
+     * @param qualifiedName
+     *            the new qualified name
      */
     protected void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
@@ -512,7 +513,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the column name.
      *
-     * @param columnName the new column name
+     * @param columnName
+     *            the new column name
      */
     protected void setColumnName(String columnName) {
         this.columnName = columnName;
@@ -521,7 +523,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the column type.
      *
-     * @param columnType the new column type
+     * @param columnType
+     *            the new column type
      */
     protected void setColumnType(String columnType) {
         this.columnType = columnType;
@@ -530,7 +533,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the clob.
      *
-     * @param clob the new clob
+     * @param clob
+     *            the new clob
      */
     public void setClob(boolean clob) {
         this.clob = clob;
@@ -539,7 +543,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the constraint.
      *
-     * @param constraint the new constraint
+     * @param constraint
+     *            the new constraint
      */
     public void setConstraint(Constraint constraint) {
         this.constraint = constraint;
@@ -566,7 +571,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With java equivalent class.
          *
-         * @param javaEquivalentClass the java equivalent class
+         * @param javaEquivalentClass
+         *            the java equivalent class
          * @return the java property builder
          */
         public JavaPropertyBuilder withJavaEquivalentClass(Class<?> javaEquivalentClass) {
@@ -577,7 +583,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is sizeValidation.
          *
-         * @param sizeValidation the sizeValidation
+         * @param sizeValidation
+         *            the sizeValidation
          * @return the java property builder
          */
         public JavaPropertyBuilder hasSizeValidation(boolean sizeValidation) {
@@ -588,7 +595,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With name.
          *
-         * @param propertyName the property name
+         * @param propertyName
+         *            the property name
          * @return the java property builder
          */
         public JavaPropertyBuilder withName(String propertyName) {
@@ -599,7 +607,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With type.
          *
-         * @param propertyType the property type
+         * @param propertyType
+         *            the property type
          * @return the java property builder
          */
         public JavaPropertyBuilder withType(String propertyType) {
@@ -610,7 +619,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With propertyType.
          *
-         * @param propertyType the property type
+         * @param propertyType
+         *            the property type
          * @return the java property builder
          */
         public JavaPropertyBuilder withPropertyType(GrammarFieldType propertyType) {
@@ -626,7 +636,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With type.
          *
-         * @param optional the optional
+         * @param optional
+         *            the optional
          * @return the java property builder
          */
         public JavaPropertyBuilder withType(Optional<GrammarFieldType> optional) {
@@ -639,7 +650,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With qualified name.
          *
-         * @param qualifiedName the qualified name
+         * @param qualifiedName
+         *            the qualified name
          * @return the java property builder
          */
         public JavaPropertyBuilder withQualifiedName(String qualifiedName) {
@@ -650,7 +662,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With column name.
          *
-         * @param columnName the column name
+         * @param columnName
+         *            the column name
          * @return the java property builder
          */
         public JavaPropertyBuilder withColumnName(String columnName) {
@@ -661,7 +674,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * With column type.
          *
-         * @param columnType the column type
+         * @param columnType
+         *            the column type
          * @return the java property builder
          */
         public JavaPropertyBuilder withColumnType(String columnType) {
@@ -672,7 +686,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is nullable.
          *
-         * @param nullable the nullable
+         * @param nullable
+         *            the nullable
          * @return the java property builder
          */
         public JavaPropertyBuilder isNullable(boolean nullable) {
@@ -683,7 +698,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is primary key.
          *
-         * @param isPrimaryKey the is primary key
+         * @param isPrimaryKey
+         *            the is primary key
          * @return the java property builder
          */
         public JavaPropertyBuilder isPrimaryKey(boolean isPrimaryKey) {
@@ -694,7 +710,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is indexed.
          *
-         * @param indexed the indexed
+         * @param indexed
+         *            the indexed
          * @return the java property builder
          */
         public JavaPropertyBuilder isIndexed(boolean indexed) {
@@ -705,7 +722,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Adds the type.
          *
-         * @param type the type
+         * @param type
+         *            the type
          * @return the java property builder
          */
         public JavaPropertyBuilder addType(ColumnType type) {
@@ -716,7 +734,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Adds the type.
          *
-         * @param type the type
+         * @param type
+         *            the type
          * @return the java property builder
          */
         public JavaPropertyBuilder addType(FieldTypeContext type) {
@@ -725,20 +744,10 @@ public class JavaProperty implements Property<JavaProperty> {
         }
 
         /**
-         * Checks if is literal.
-         *
-         * @param literal the literal
-         * @return the java property builder
-         */
-        public JavaPropertyBuilder isLiteral(boolean literal) {
-            javaProperty.setLiteral(literal);
-            return this;
-        }
-
-        /**
          * Checks if is big decimal.
          *
-         * @param bigDecimal the big decimal
+         * @param bigDecimal
+         *            the big decimal
          * @return the java property builder
          */
         public JavaPropertyBuilder isBigDecimal(boolean bigDecimal) {
@@ -749,7 +758,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is local date.
          *
-         * @param localDate the local date
+         * @param localDate
+         *            the local date
          * @return the java property builder
          */
         public JavaPropertyBuilder isLocalDate(boolean localDate) {
@@ -760,7 +770,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is zone date time.
          *
-         * @param zoneDateTime the zone date time
+         * @param zoneDateTime
+         *            the zone date time
          * @return the java property builder
          */
         public JavaPropertyBuilder isZoneDateTime(boolean zoneDateTime) {
@@ -771,7 +782,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is instance.
          *
-         * @param instant the instant
+         * @param instant
+         *            the instant
          * @return the java property builder
          */
         public JavaPropertyBuilder isInstance(boolean instant) {
@@ -782,7 +794,8 @@ public class JavaProperty implements Property<JavaProperty> {
         /**
          * Checks if is large object.
          *
-         * @param largeObject the large object
+         * @param largeObject
+         *            the large object
          * @return the java property builder
          */
         public JavaPropertyBuilder isLargeObject(boolean largeObject) {
@@ -808,16 +821,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     @Override
     public boolean isNumber() {
-        return number;
-    }
-
-    /**
-     * Sets the number.
-     *
-     * @param number the new number
-     */
-    public void setNumber(boolean number) {
-        this.number = number;
+        return isBigDecimal() || isLong() || isDouble() || isInteger() || isFloat();
     }
 
     /*
@@ -827,16 +831,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     @Override
     public boolean isLiteral() {
-        return literal;
-    }
-
-    /**
-     * Sets the literal.
-     *
-     * @param literal the new literal
-     */
-    public void setLiteral(boolean literal) {
-        this.literal = literal;
+        return isString() || isTextBlob();
     }
 
     /*
@@ -853,7 +848,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the large object.
      *
-     * @param largeObject the new large object
+     * @param largeObject
+     *            the new large object
      */
     public void setLargeObject(boolean largeObject) {
         this.largeObject = largeObject;
@@ -862,7 +858,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the size validation.
      *
-     * @param sizeValidation the new size validation
+     * @param sizeValidation
+     *            the new size validation
      */
     public void setSizeValidation(boolean sizeValidation) {
         this.sizeValidation = sizeValidation;
@@ -886,7 +883,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     @Override
     public boolean isLong() {
-        return getJavaEquivalentClass().equals(Long.class);
+        return this.longType;
     }
 
     /*
@@ -896,7 +893,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     @Override
     public boolean isInteger() {
-        return getJavaEquivalentClass().equals(Integer.class);
+        return this.integer;
     }
 
     /*
@@ -906,7 +903,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     @Override
     public boolean isDouble() {
-        return getJavaEquivalentClass().equals(Double.class);
+        return this.doubleType;
     }
 
     /*
@@ -916,7 +913,7 @@ public class JavaProperty implements Property<JavaProperty> {
      */
     @Override
     public boolean isFloat() {
-        return getJavaEquivalentClass().equals(Float.class);
+        return this.floatType;
     }
 
     /**
@@ -931,7 +928,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the java equivalent class.
      *
-     * @param javaEquivalentClass the new java equivalent class
+     * @param javaEquivalentClass
+     *            the new java equivalent class
      */
     public void setJavaEquivalentClass(Class<?> javaEquivalentClass) {
         this.javaEquivalentClass = javaEquivalentClass;
@@ -940,7 +938,8 @@ public class JavaProperty implements Property<JavaProperty> {
     /**
      * Sets the checks for constraints.
      *
-     * @param hasConstraints the new checks for constraints
+     * @param hasConstraints
+     *            the new checks for constraints
      */
     public void setHasConstraints(boolean hasConstraints) {
         this.hasConstraints = hasConstraints;
@@ -956,4 +955,35 @@ public class JavaProperty implements Property<JavaProperty> {
     public boolean isHasConstraints() {
         return hasConstraints;
     }
+
+    @Override
+    public boolean isString() {
+        return this.string;
+    }
+
+    public void setString(boolean string) {
+        this.string = string;
+    }
+
+    @Override
+    public boolean isTextBlob() {
+        return this.textBlob;
+    }
+
+    public void setLong(boolean longType) {
+        this.longType = longType;
+    }
+
+    public void setInteger(boolean integer) {
+        this.integer = integer;
+    }
+
+    public void setDouble(boolean doubleType) {
+        this.doubleType = doubleType;
+    }
+
+    public void setFloat(boolean floatType) {
+        this.floatType = floatType;
+    }
+
 }

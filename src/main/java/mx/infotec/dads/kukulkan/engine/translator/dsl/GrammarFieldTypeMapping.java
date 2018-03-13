@@ -172,6 +172,18 @@ public class GrammarFieldTypeMapping {
         case BIG_DECIMAL:
             javaProperty.setBigDecimal(true);
             break;
+        case LONG:
+            javaProperty.setLong(true);
+            break;
+        case INTEGER:
+            javaProperty.setInteger(true);
+            break;
+        case DOUBLE:
+            javaProperty.setDouble(true);
+            break;
+        case FLOAT:
+            javaProperty.setFloat(true);
+            break;
         case ANY_BLOB:
             javaProperty.setAnyBlob(true);
             break;

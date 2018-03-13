@@ -203,7 +203,6 @@ public class GrammarUtil {
                 .isPrimaryKey(false)
                 .isIndexed(false)
                 .isLargeObject(false)
-                .isLiteral(true)
                 .hasSizeValidation(false)
                 .withJavaEquivalentClass(String.class).build();
     }
