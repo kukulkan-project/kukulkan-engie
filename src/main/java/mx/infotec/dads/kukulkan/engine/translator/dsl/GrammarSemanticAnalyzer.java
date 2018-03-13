@@ -28,6 +28,7 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addMetaData;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
+import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -48,6 +49,7 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +65,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      * The logger class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GrammarSemanticAnalyzer.class);
-    
+
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
 
@@ -277,9 +279,10 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
             GrammarFieldType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType);
+            javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType,
+                    pConf.getDatabase().getDatabaseType());
             entity.addProperty(javaProperty);
-            addContentType(entity, propertyName, grammarPropertyType);
+            addContentType(entity, propertyName,pConf.getDatabase().getDatabaseType(), grammarPropertyType);
             GrammarMapping.addImports(entity.getImports(), javaProperty);
             DataBaseMapping.fillModelMetaData(entity, javaProperty);
         }

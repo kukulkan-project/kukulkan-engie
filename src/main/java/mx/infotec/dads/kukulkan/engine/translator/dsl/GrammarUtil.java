@@ -24,6 +24,7 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
+import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +44,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
+import mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
@@ -68,7 +70,8 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param file the file
+     * @param file
+     *            the file
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(String file) {
@@ -85,8 +88,10 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param file the file
-     * @param isText the is text
+     * @param file
+     *            the file
+     * @param isText
+     *            the is text
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(String file, boolean isText) {
@@ -107,7 +112,8 @@ public class GrammarUtil {
     /**
      * Gets the domain model context.
      *
-     * @param lexer the lexer
+     * @param lexer
+     *            the lexer
      * @return the domain model context
      */
     public static kukulkanParser.DomainModelContext getDomainModelContext(kukulkanLexer lexer) {
@@ -119,9 +125,11 @@ public class GrammarUtil {
     /**
      * Gets the kukulkan lexer.
      *
-     * @param file the file
+     * @param file
+     *            the file
      * @return the kukulkan lexer
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public static kukulkanLexer getKukulkanLexer(String file) throws IOException {
         return new kukulkanLexer(new ANTLRFileStream(file));
@@ -130,9 +138,11 @@ public class GrammarUtil {
     /**
      * Gets the kukulkan lexer.
      *
-     * @param is the is
+     * @param is
+     *            the is
      * @return the kukulkan lexer
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public static kukulkanLexer getKukulkanLexer(InputStream is) throws IOException {
         return new kukulkanLexer(new ANTLRInputStream(is));
@@ -141,66 +151,72 @@ public class GrammarUtil {
     /**
      * Adds the meta data.
      *
-     * @param entity the entity
-     * @param dme the dme
-     * @param dbType the database type
+     * @param entityContext
+     *            the entity
+     * @param entity
+     *            the dme
+     * @param dbType
+     *            the database type
      */
-    public static void addMetaData(EntityContext entity, Entity dme, DatabaseType dbType) {
-        String singularName = InflectorProcessor.getInstance().singularize(entity.name.getText());
-        dme.setTableName(entity.name.getText().toUpperCase());
-        dme.setName(entity.name.getText());
-        dme.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-        dme.setCamelCasePluralFormat(InflectorProcessor.getInstance().pluralize(dme.getCamelCaseFormat()));
-        dme.setPrimaryKey(createDefaultPrimaryKey(dbType));
+    public static void addMetaData(EntityContext entityContext, Entity entity, DatabaseType dbType) {
+        String singularName = InflectorProcessor.getInstance().singularize(entityContext.name.getText());
+        entity.setTableName(entityContext.name.getText().toLowerCase());
+        entity.setName(entityContext.name.getText());
+        entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
+        entity.setCamelCasePluralFormat(InflectorProcessor.getInstance().pluralize(entity.getCamelCaseFormat()));
+        entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
 
     /**
      * Adds the content type.
      *
-     * @param dme the dme
-     * @param propertyName the property name
-     * @param propertyType the property type
+     * @param dme
+     *            the dme
+     * @param propertyName
+     *            the property name
+     * @param propertyType
+     *            the property type
      */
-    public static void addContentType(Entity dme, String propertyName, GrammarFieldType propertyType) {
+    public static void addContentType(Entity entity, String propertyName, DatabaseType dbType,
+            GrammarFieldType propertyType) {
         if (propertyType.isBinary()) {
-            dme.addProperty(createContentTypeProperty(propertyName));
+            entity.addProperty(createContentTypeProperty(propertyName, dbType));
         }
     }
 
     /**
      * Creates the java property.
      *
-     * @param field the field
-     * @param propertyName the property name
-     * @param propertyType the property type
+     * @param field
+     *            the field
+     * @param propertyName
+     *            the property name
+     * @param propertyType
+     *            the property type
      * @return the java property
      */
     public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
-            GrammarFieldType propertyType) {
-        return JavaProperty.builder().withName(propertyName)
-                .withPropertyType(propertyType)
-                .withColumnName(propertyName)
-                .isNullable(true)
-                .isPrimaryKey(false)
-                .isIndexed(false)
-                .addType(field.type).build();
+            GrammarFieldType propertyType, DatabaseType dbType) {
+        return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
+                .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
+                .isIndexed(false).addType(field.type).build();
     }
 
     /**
      * Creates the content type property.
      *
-     * @param propertyName the property name
+     * @param propertyName
+     *            the property name
      * @return the java property
      */
-    public static JavaProperty createContentTypeProperty(String propertyName) {
+    public static JavaProperty createContentTypeProperty(String propertyName, DatabaseType dbType) {
         return JavaProperty.builder()
                 .withName(propertyName + "ContentType")
                 .withType("String")
-                .withColumnName(propertyName + "ContentType")
+                .withColumnName(toDataBaseNameConvention(dbType, propertyName+"ContentType"))
                 .withColumnType("TextBlob")
                 .withQualifiedName("java.lang.String")
-                .isNullable(true)
-                .isPrimaryKey(false)
+                .isNullable(true).isPrimaryKey(false)
                 .isIndexed(false)
                 .isLargeObject(false)
                 .hasSizeValidation(false)

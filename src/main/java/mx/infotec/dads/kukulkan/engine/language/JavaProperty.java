@@ -970,6 +970,10 @@ public class JavaProperty implements Property<JavaProperty> {
         return this.textBlob;
     }
 
+    public void setTextBlob(boolean textBlob) {
+        this.textBlob = textBlob;
+    }
+
     public void setLong(boolean longType) {
         this.longType = longType;
     }

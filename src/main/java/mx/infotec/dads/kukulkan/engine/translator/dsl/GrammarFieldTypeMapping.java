@@ -193,6 +193,9 @@ public class GrammarFieldTypeMapping {
         case BLOB:
             javaProperty.setBlob(true);
             break;
+        case TEXT_BLOB:
+            javaProperty.setTextBlob(true);
+            break;
         default:
             break;
         }
