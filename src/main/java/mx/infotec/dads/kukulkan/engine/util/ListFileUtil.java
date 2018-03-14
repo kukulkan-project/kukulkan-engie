@@ -1,3 +1,26 @@
+/*
+ *  
+ * The MIT License (MIT)
+ * Copyright (c) 2016 Daniel Cortes Pichardo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package mx.infotec.dads.kukulkan.engine.util;
 
 import java.io.File;
@@ -28,6 +51,7 @@ public final class ListFileUtil {
 
     /**
      * List files in clazz source (this can be jar o source dir)
+     *
      * @param clazz Class to inspect.
      * @return List in class source.
      */
@@ -37,6 +61,7 @@ public final class ListFileUtil {
 
     /**
      * List files in clazz source (this can be jar o source dir) with pattern.
+     *
      * @param clazz Class to inspect.
      * @param pattern Regular expresion to match file name.
      * @return List in class source.
@@ -44,34 +69,39 @@ public final class ListFileUtil {
     public static List<String> listFiles(Class clazz, String pattern) {
         return listFiles(clazz, null, pattern);
     }
-    
+
     /**
      * List files in clazz source (this can be jar o source dir) with pattern.
+     *
      * @param clazz Class to inspect.
      * @param subDir Subdir in source.
      * @param pattern Regular expresion to match file name.
-     * @return List in class source.
+     * @return List in class source; is clazz is null, return null.
      */
     public static List<String> listFiles(Class clazz, String subDir, String pattern) {
-        CodeSource cs = clazz.getProtectionDomain().getCodeSource();
-
-        if (cs != null) {
-            URL url = cs.getLocation();
-
-            LOGGER.debug("Soucer: {}", url.toString());
-
-            if (url.toString().endsWith(".jar")) {
-                return listFilesFromJar(url, fixSubDir(subDir), pattern);
-            } else {
-                return listFilesFromDir(url, fixSubDir(subDir), pattern);
-            }
+        if (clazz == null) {
+            return null;
         } else {
-            LOGGER.warn("Can't get source for class");
-        }
+            CodeSource cs = clazz.getProtectionDomain().getCodeSource();
 
-        return new ArrayList<>(0);
+            if (cs != null) {
+                URL url = cs.getLocation();
+
+                LOGGER.debug("Soucer: {}", url.toString());
+
+                if (url.toString().endsWith(".jar")) {
+                    return listFilesFromJar(url, fixSubDir(subDir), pattern);
+                } else {
+                    return listFilesFromDir(url, fixSubDir(subDir), pattern);
+                }
+            } else {
+                LOGGER.warn("Can't get source for class");
+            }
+
+            return new ArrayList<>(0);
+        }
     }
-    
+
     private static List<String> listFilesFromJar(URL url, String subDir, String pattern) {
         ZipEntry entry;
 
@@ -93,7 +123,7 @@ public final class ListFileUtil {
         } catch (IOException ex) {
             LOGGER.error("Can't read file list", ex);
         }
-        
+
         return new ArrayList<>(0);
     }
 
@@ -114,45 +144,45 @@ public final class ListFileUtil {
             return subDir + '/';
         }
     }
-    
+
     private static List<String> listFilesFromDir(URL url, String subDir, String pattern) {
         File dir = new File(url.getFile());
-        
+
         List<String> res = new ArrayList<>();
-        
+
         String subDirExtra;
-        
+
         if (subDir == null) {
             subDirExtra = null;
         } else {
             subDirExtra = dir.getPath() + '/' + subDir;
         }
-        
+
         int idx = getIdx(subDirExtra);
-        
+
         addFiles(dir, res, subDirExtra, pattern, idx);
-        
+
         return res;
     }
-    
+
     private static void addFiles(File dir, List<String> res, String subDir, String pattern, int idx) {
         String path = dir.getPath();
-        
+
         if (isValid(path, subDir, pattern)) {
             res.add(fixName(path, idx));
         }
-        
+
         if (dir.isDirectory()) {
             for (File f : dir.listFiles()) {
                 addFiles(f, res, subDir, pattern, idx);
             }
         }
     }
-    
+
     private static boolean isValid(String path, String subDir, String pattern) {
         return (subDir == null || path.startsWith(subDir)) && (pattern == null || path.matches(pattern));
     }
-    
+
     private static String fixName(String path, int index) {
         if (index == -1) {
             return path;
@@ -160,5 +190,5 @@ public final class ListFileUtil {
             return path.substring(index);
         }
     }
-    
+
 }
