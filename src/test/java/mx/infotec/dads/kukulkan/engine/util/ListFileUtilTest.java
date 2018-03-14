@@ -35,9 +35,9 @@ import org.slf4j.LoggerFactory;
  */
 public class ListFileUtilTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ListFileUtilTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListFileUtilTest.class);
 
-    private final static String PATTERN = ".*class";
+    private static final String PATTERN = null;
 
     /**
      * Make a simple test for listFiles method.
@@ -79,7 +79,7 @@ public class ListFileUtilTest {
 
             list.forEach((s) -> sb.append(s).append('\n'));
 
-            LOGGER.debug("List:\n{}", sb.toString());
+            LOGGER.debug("List:\n{}", sb);
         }
 
         return !list.isEmpty();

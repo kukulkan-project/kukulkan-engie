@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class ListFileUtil {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ListFileUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListFileUtil.class);
 
     /**
      * Because is a util class, contructor is private.
@@ -76,18 +76,16 @@ public final class ListFileUtil {
      * @param clazz Class to inspect.
      * @param subDir Subdir in source.
      * @param pattern Regular expresion to match file name.
-     * @return List in class source; is clazz is null, return null.
+     * @return List of files in the source.
      */
     public static List<String> listFiles(Class clazz, String subDir, String pattern) {
-        if (clazz == null) {
-            return null;
-        } else {
+        if (clazz != null) {
             CodeSource cs = clazz.getProtectionDomain().getCodeSource();
 
             if (cs != null) {
                 URL url = cs.getLocation();
 
-                LOGGER.debug("Soucer: {}", url.toString());
+                LOGGER.debug("Soucer: {}", url);
 
                 if (url.toString().endsWith(".jar")) {
                     return listFilesFromJar(url, fixSubDir(subDir), pattern);
@@ -98,8 +96,9 @@ public final class ListFileUtil {
                 LOGGER.warn("Can't get source for class");
             }
 
-            return new ArrayList<>(0);
         }
+
+        return new ArrayList<>(0);
     }
 
     private static List<String> listFilesFromJar(URL url, String subDir, String pattern) {
@@ -114,7 +113,7 @@ public final class ListFileUtil {
             while ((entry = zip.getNextEntry()) != null) {
                 name = entry.getName();
 
-                if (isValid(name, subDir, pattern)) {
+                if (!entry.isDirectory() && isValid(name, subDir, pattern)) {
                     res.add(fixName(name, idx));
                 }
             }
@@ -168,11 +167,11 @@ public final class ListFileUtil {
     private static void addFiles(File dir, List<String> res, String subDir, String pattern, int idx) {
         String path = dir.getPath();
 
-        if (isValid(path, subDir, pattern)) {
-            res.add(fixName(path, idx));
-        }
-
-        if (dir.isDirectory()) {
+        if (!dir.isDirectory()) {
+            if (isValid(path, subDir, pattern)) {
+                res.add(fixName(path, idx));
+            }
+        } else {
             for (File f : dir.listFiles()) {
                 addFiles(f, res, subDir, pattern, idx);
             }
