@@ -44,7 +44,6 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
-import mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**

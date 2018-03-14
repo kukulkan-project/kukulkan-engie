@@ -28,7 +28,6 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addMetaData;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
-import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -49,7 +48,6 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
-import mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
