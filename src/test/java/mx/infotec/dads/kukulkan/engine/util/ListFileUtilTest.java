@@ -37,7 +37,27 @@ public class ListFileUtilTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ListFileUtilTest.class);
 
-    private static final String PATTERN = null;
+    private static final String PATTERN = ".*class";
+
+    /**
+     * Make a simple test for listFiles method.
+     */
+    @Test
+    public void listWithNull() {
+        List<String> list = ListFileUtil.listFiles(null);
+        assert list != null : "List is null object";
+        assert list.isEmpty() : "Spec empty list";
+    }
+
+    /**
+     * Make a simple test for listFiles method.
+     */
+    @Test
+    public void listAllFiles() {
+        List<String> list = ListFileUtil.listFiles(Test.class);
+        assert list != null : "List is null object";
+        assert !list.isEmpty() : "Can't list files";
+    }
 
     /**
      * Make a simple test for listFiles method.
@@ -60,7 +80,7 @@ public class ListFileUtilTest {
      */
     @Test
     public void listFilesTestFromJarWithSubDir() {
-        assert test(Test.class, "org/junit/runners") : "Can't list files from jar";
+        assert test(Test.class, "org/junit/runners/") : "Can't list files from jar";
     }
 
     /**
@@ -74,15 +94,19 @@ public class ListFileUtilTest {
     private boolean test(Class clazz, String subDir) {
         List<String> list = ListFileUtil.listFiles(clazz, subDir, PATTERN);
 
-        if (LOGGER.isDebugEnabled()) {
-            StringBuilder sb = new StringBuilder();
+        if (list != null) {
+            if (LOGGER.isDebugEnabled()) {
+                StringBuilder sb = new StringBuilder();
 
-            list.forEach((s) -> sb.append(s).append('\n'));
+                list.forEach((s) -> sb.append(s).append('\n'));
 
-            LOGGER.debug("List:\n{}", sb);
+                LOGGER.debug("List:\n{}", sb);
+            }
+
+            return !list.isEmpty();
+        } else {
+            return false;
         }
-
-        return !list.isEmpty();
     }
 
 }
