@@ -87,9 +87,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>mx.infotec.dads.inflector</groupId>
+        	<groupId>mx.infotec.dads.nlp</groupId>
         	<artifactId>inflector</artifactId>
-        	<version>0.0.1-SNAPSHOT</version>
+        	<version>1.0.0</version>
         </dependency>
     </dependencies>
 

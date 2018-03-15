@@ -3,13 +3,13 @@ package mx.infotec.dads.kukulkan.engine.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.inflector.core.Inflector;
+import mx.infotec.dads.nlp.inflector.core.Inflector;
 
 @Service("defaultInflectorService")
-public class InflectorServiceImpl implements InflectorService{
-	
+public class InflectorServiceImpl implements InflectorService {
+
 	@Autowired
-	Inflector inflector;
+	private Inflector inflector;
 
 	@Override
 	public String singularize(String word) {

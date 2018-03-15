@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import mx.infotec.dads.inflector.core.Dictionary;
-import mx.infotec.dads.inflector.service.SpanishInflector;
+import mx.infotec.dads.nlp.inflector.core.Dictionary;
+import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 
 @Configuration
-@Import(mx.infotec.dads.inflector.config.InflectorConfiguration.class)
+@Import(mx.infotec.dads.nlp.inflector.config.InflectorConfiguration.class)
 public class InflectorConf {
 
 	@Bean
