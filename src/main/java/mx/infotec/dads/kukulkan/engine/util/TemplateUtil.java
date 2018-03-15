@@ -70,8 +70,10 @@ public class TemplateUtil {
      * Get a template by name using the configuration object. This method handle
      * the IOexception that the configuration object could throws.
      *
-     * @param config the config
-     * @param templateName the template name
+     * @param config
+     *            the config
+     * @param templateName
+     *            the template name
      * @return the optional
      */
     public static Optional<Template> get(Configuration config, String templateName) {
@@ -87,8 +89,10 @@ public class TemplateUtil {
     /**
      * It process a template and transform it into a GeneratedElement object.
      *
-     * @param template the template
-     * @param context the context
+     * @param template
+     *            the template
+     * @param context
+     *            the context
      * @return GeneratedElement from a Template
      */
     public static GeneratedElement processTemplate(Template template, ModelContext context) {
@@ -102,8 +106,10 @@ public class TemplateUtil {
     /**
      * It process a Template and fill it with the model object,.
      *
-     * @param model the model
-     * @param template the template
+     * @param model
+     *            the model
+     * @param template
+     *            the template
      * @return the string
      */
     public static String processTemplate(Object model, Template template) {
@@ -118,9 +124,12 @@ public class TemplateUtil {
     /**
      * It process a Template and save it into the specified path.
      *
-     * @param model the model
-     * @param template the template
-     * @param pathToSave the path to save
+     * @param model
+     *            the model
+     * @param template
+     *            the template
+     * @param pathToSave
+     *            the path to save
      */
     public static void processTemplate(Object model, Template template, Path pathToSave) {
         try (StringWriter stringWriter = new StringWriter()) {
@@ -129,34 +138,5 @@ public class TemplateUtil {
         } catch (IOException | TemplateException e) {
             throw new MetaModelException("Fill Model Error", e);
         }
-    }
-
-    public static List<TemplateInfo> convertToTemplateInfoList(TemplateType type, List<String> from) {
-        List<TemplateInfo> to = new ArrayList<>();
-        for (String template : from) {
-            to.add(new TemplateInfo(type, template));
-        }
-        return to;
-    }
-
-    public static String createTemplatePath(String projectid, String newPackaging, Path parent, Path outputPath,
-            TemplateInfo template) {
-        return parent.toString()
-                .replaceAll(template.getType().getTemplatePath(),
-                        outputPath + Matcher.quoteReplacement(File.separator) + projectid)
-                .replaceAll("package", newPackaging);
-    }
-
-    public static Path createToSavePath(BaseContext context, TemplateInfo template) {
-        return createPath(template, context.getPackaging(), context.getId(), context.getOutputDir());
-    }
-
-    public static Path createPath(TemplateInfo template, String packaging, String projectid, Path outputPath) {
-        String newPackaging = StringFormater.replaceDotByFileSeparator(packaging);
-        Path temp = Paths.get(template.getStringPath());
-        Path parent = temp.getParent();
-        String newTemplate = TemplateUtil.createTemplatePath(projectid, newPackaging, parent, outputPath, template);
-        Path targetPath = Paths.get(newTemplate, temp.getFileName().toString().replaceAll(".ftl", ""));
-        return FileUtil.createOutputPath(projectid, targetPath);
     }
 }
