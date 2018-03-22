@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import mx.infotec.dads.nlp.inflector.core.Dictionary;
+import mx.infotec.dads.nlp.inflector.core.Inflector;
+import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
 import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 
 @Configuration
@@ -13,7 +15,12 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 public class InflectorConf {
 
 	@Bean
-	public SpanishInflector inflectorSpanish(@Qualifier(value = "spanishDict") Dictionary dict) {
+	public Inflector inflectorSpanish(@Qualifier(value = "spanishDict") Dictionary dict) {
 		return new SpanishInflector(dict);
 	}
+	
+	@Bean
+        public Inflector inflectorEnglish(@Qualifier(value = "englishDict") Dictionary dict) {
+                return new EnglishInflector(dict);
+        }
 }

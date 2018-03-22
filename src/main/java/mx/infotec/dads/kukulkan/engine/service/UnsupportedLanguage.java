@@ -24,14 +24,15 @@
 
 package mx.infotec.dads.kukulkan.engine.service;
 
-import java.util.Locale;
+public class UnsupportedLanguage extends Exception {
 
-import mx.infotec.dads.nlp.inflector.core.Inflector;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-public interface InflectorService extends Inflector {
-
-    public String singularize(String word, Locale language) throws UnsupportedLanguage;
-
-    public String pluralize(String word, Locale language) throws UnsupportedLanguage;
+    public UnsupportedLanguage(String message) {
+        super(message);
+    }
 
 }

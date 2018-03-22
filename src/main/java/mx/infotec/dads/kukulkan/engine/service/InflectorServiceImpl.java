@@ -1,24 +1,115 @@
+/*
+ *  
+ * The MIT License (MIT)
+ * Copyright (c) 2018 Roberto Villarejo Martínez <roberto.villarejo@infotec.mx>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package mx.infotec.dads.kukulkan.engine.service;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 
+/**
+ * The multi-language inflector service
+ * 
+ * @author Roberto Villarejo Martínez <roberto.villarejo@infotec.mx>
+ *
+ */
 @Service("defaultInflectorService")
 public class InflectorServiceImpl implements InflectorService {
 
-	@Autowired
-	private Inflector inflector;
+    @Autowired
+    @Qualifier("inflectorEnglish")
+    private Inflector englishInflector;
 
-	@Override
-	public String singularize(String word) {
-		return inflector.singularize(word);
-	}
+    @Autowired
+    @Qualifier("inflectorSpanish")
+    private Inflector spanishInflector;
 
-	@Override
-	public String pluralize(String word) {
-		return inflector.pluralize(word);
-	}
+    /**
+     * Singularize the word in Spanish
+     */
+    @Override
+    public String singularize(String word) {
+        return spanishInflector.singularize(word);
+    }
+
+    /**
+     * Pluralize the word in Spanish
+     */
+    @Override
+    public String pluralize(String word) {
+        return spanishInflector.pluralize(word);
+    }
+
+    /**
+     * Singularize the word in given language
+     */
+    @Override
+    public String singularize(String word, Locale locale) throws UnsupportedLanguage {
+        Inflector inflector = inflectorSelector(locale);
+        return inflector.singularize(word);
+    }
+
+    /**
+     * Pluralize the word in given language
+     */
+    @Override
+    public String pluralize(String word, Locale locale) throws UnsupportedLanguage {
+        Inflector inflector = inflectorSelector(locale);
+        return inflector.pluralize(word);
+    }
+
+    /**
+     * Selects an inflector for the given locale
+     * 
+     * @param locale
+     * @return
+     * @throws UnsupportedLanguage
+     */
+    private Inflector inflectorSelector(Locale locale) throws UnsupportedLanguage {
+        Inflector inflector = null;
+        String language = locale.getLanguage();
+        switch (language) {
+        case "en":
+            inflector = englishInflector;
+            break;
+
+        case "es":
+            inflector = spanishInflector;
+            break;
+
+        default:
+            break;
+        }
+
+        if (inflector != null)
+            return inflector;
+        throw new UnsupportedLanguage("Unsupported language " + language);
+
+    }
 
 }
