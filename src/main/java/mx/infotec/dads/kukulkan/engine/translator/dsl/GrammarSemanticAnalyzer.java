@@ -26,13 +26,17 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping.getDateType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping.getNumericType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addMetaData;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
+import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
+import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.AssociationFieldContext;
@@ -46,11 +50,10 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
  * KukulkanGrammarVisitor implements the.
@@ -83,8 +86,11 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     private ProjectConfiguration pConf = null;
 
-    public GrammarSemanticAnalyzer(ProjectConfiguration pConf) {
+    private InflectorService inflectorService;
+
+    public GrammarSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
         this.pConf = pConf;
+        this.inflectorService = inflectorService;
     }
 
     /*
@@ -280,9 +286,18 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
             javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType,
                     pConf.getDatabase().getDatabaseType());
             entity.addProperty(javaProperty);
-            addContentType(entity, propertyName,pConf.getDatabase().getDatabaseType(), grammarPropertyType);
+            addContentType(entity, propertyName, pConf.getDatabase().getDatabaseType(), grammarPropertyType);
             GrammarMapping.addImports(entity.getImports(), javaProperty);
             DataBaseMapping.fillModelMetaData(entity, javaProperty);
         }
+    }
+
+    public void addMetaData(EntityContext entityContext, Entity entity, DatabaseType dbType) {
+        String singularName = inflectorService.singularize(entityContext.name.getText());
+        entity.setTableName(entityContext.name.getText().toLowerCase());
+        entity.setName(entityContext.name.getText());
+        entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
+        entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
+        entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
 }

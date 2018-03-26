@@ -23,7 +23,6 @@
  */
 package mx.infotec.dads.kukulkan.engine.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,11 +31,9 @@ import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Table;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.PrimaryKey;
-import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
@@ -102,54 +99,6 @@ public class DataBaseMapping {
      */
     private DataBaseMapping() {
 
-    }
-
-    /**
-     * Create a DataModelGroup Class.
-     *
-     * @param tables
-     *            the tables
-     * @param excludedTables
-     *            the excluded tables
-     * @return DataModelGroup
-     */
-    public static DomainModelGroup createDefaultDataModelGroup(List<Table> tables, List<String> excludedTables) {
-        DomainModelGroup dmg = new DomainModelGroup();
-        dmg.setName("");
-        dmg.setDescription(DAFAULT_PACKAGE_DESC);
-        dmg.setBriefDescription(DAFAULT_PACKAGE_DESC);
-        dmg.setEntities(new ArrayList<>());
-        List<Entity> dmeList = new ArrayList<>();
-        createDataModelElement(excludedTables, tables, dmeList);
-        dmg.setEntities(dmeList);
-        return dmg;
-    }
-
-    /**
-     * Creates the data model element.
-     *
-     * @param tablesToProcess
-     *            the tables to process
-     * @param tables
-     *            the tables
-     * @param dmeList
-     *            the dme list
-     */
-    private static void createDataModelElement(List<String> tablesToProcess, List<Table> tables, List<Entity> dmeList) {
-        tables.forEach(table -> {
-            if ((tablesToProcess.contains(table.getName()) || tablesToProcess.isEmpty())
-                    && hasPrimaryKey(table.getPrimaryKeys())) {
-                Entity dme = Entity.createOrderedDataModel();
-                String singularName = InflectorProcessor.getInstance().singularize(table.getName());
-                dme.setTableName(table.getName());
-                dme.setName(SchemaPropertiesParser.parseToClassName(singularName));
-                dme.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-                dme.setCamelCasePluralFormat(InflectorProcessor.getInstance().pluralize(dme.getCamelCaseFormat()));
-                extractPrimaryKey(dme, singularName, table.getPrimaryKeys());
-                extractProperties(dme, table);
-                dmeList.add(dme);
-            }
-        });
     }
 
     /**
@@ -453,22 +402,4 @@ public class DataBaseMapping {
             property.setClob(true);
         }
     }
-
-    /**
-     * Create a List of DataModelGroup into a single group from a DataContext
-     * Element.
-     *
-     * @param tables
-     *            the tables
-     * @param excludedTables
-     *            the excluded tables
-     * @return the list
-     */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(List<Table> tables,
-            List<String> excludedTables) {
-        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-        dataModelGroupList.add(createDefaultDataModelGroup(tables, excludedTables));
-        return dataModelGroupList;
-    }
-
 }

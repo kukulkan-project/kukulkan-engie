@@ -23,7 +23,6 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
-import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.io.IOException;
@@ -38,13 +37,10 @@ import org.slf4j.LoggerFactory;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
-import mx.infotec.dads.kukulkan.metamodel.util.InflectorProcessor;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
-import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
  * Grammar Util, It is used to performe common operation in the grammar.
@@ -145,25 +141,6 @@ public class GrammarUtil {
      */
     public static kukulkanLexer getKukulkanLexer(InputStream is) throws IOException {
         return new kukulkanLexer(new ANTLRInputStream(is));
-    }
-
-    /**
-     * Adds the meta data.
-     *
-     * @param entityContext
-     *            the entity
-     * @param entity
-     *            the dme
-     * @param dbType
-     *            the database type
-     */
-    public static void addMetaData(EntityContext entityContext, Entity entity, DatabaseType dbType) {
-        String singularName = InflectorProcessor.getInstance().singularize(entityContext.name.getText());
-        entity.setTableName(entityContext.name.getText().toLowerCase());
-        entity.setName(entityContext.name.getText());
-        entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-        entity.setCamelCasePluralFormat(InflectorProcessor.getInstance().pluralize(entity.getCamelCaseFormat()));
-        entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
 
     /**
