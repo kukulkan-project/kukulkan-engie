@@ -40,11 +40,11 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import mx.infotec.dads.kukulkan.engine.model.ModelContext;
+import mx.infotec.dads.kukulkan.engine.service.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.context.BaseContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
 import mx.infotec.dads.kukulkan.metamodel.template.TemplateInfo;
 import mx.infotec.dads.kukulkan.metamodel.template.TemplateType;
-import mx.infotec.dads.kukulkan.metamodel.util.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 import mx.infotec.dads.kukulkan.metamodel.util.StringFormater;
 

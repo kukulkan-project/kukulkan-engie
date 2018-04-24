@@ -14,13 +14,14 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 @Import(mx.infotec.dads.nlp.inflector.config.InflectorConfiguration.class)
 public class InflectorConf {
 
-	@Bean
-	public Inflector inflectorSpanish(@Qualifier(value = "spanishDict") Dictionary dict) {
-		return new SpanishInflector(dict);
-	}
-	
-	@Bean
-        public Inflector inflectorEnglish(@Qualifier(value = "englishDict") Dictionary dict) {
-                return new EnglishInflector(dict);
-        }
+    @Bean
+    public Inflector inflectorSpanish(@Qualifier(value = "spanishDict") Dictionary dict) {
+        return new SpanishInflector(dict);
+    }
+
+    @Bean
+    public Inflector inflectorEnglish(@Qualifier(value = "englishDict") Dictionary dict) {
+        return new EnglishInflector(dict);
+    }
+
 }
