@@ -138,7 +138,6 @@ public final class ListFileUtil {
                 }
                 
                 if (zipEntry != null) {
-                    System.out.println("15");
                     try (ZipInputStream zis = new ZipInputStream(zip.getInputStream(zipEntry))) {
                         return listZip(zis, subDir, pattern);
                     }
