@@ -24,12 +24,16 @@
 package mx.infotec.dads.kukulkan.engine.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,9 +89,12 @@ public final class ListFileUtil {
             if (cs != null) {
                 URL url = cs.getLocation();
 
-                LOGGER.debug("Soucer: {}", url);
+                String tmp = url.toString();
+                LOGGER.debug("Soucer: {}", tmp);
 
-                if (url.toString().endsWith(".jar")) {
+                if (tmp.endsWith("jar!/")) {
+                    return listFilesFromDoubleJar(tmp, fixSubDir(subDir), pattern);
+                } else if (tmp.endsWith(".jar")) {
                     return listFilesFromJar(url, fixSubDir(subDir), pattern);
                 } else {
                     return listFilesFromDir(url, fixSubDir(subDir), pattern);
@@ -101,29 +108,75 @@ public final class ListFileUtil {
         return new ArrayList<>(0);
     }
 
+    protected static List<String> listFilesFromDoubleJar(String jarPath, String subDir, String pattern) {
+        if (jarPath.startsWith("jar:file:")) {
+            return listFilesFromDoubleJar(jarPath.substring(9), subDir, pattern);
+        } else if (jarPath.startsWith("file:")){
+            return listFilesFromDoubleJar(jarPath.substring(5), subDir, pattern);
+        } else {
+            int index = jarPath.indexOf(".jar!") + 5;
+
+            String first = jarPath.substring(0, index - 1);
+            String second = jarPath.substring(index);
+
+            if (second.endsWith("!/")) {
+                second = second.substring(0, second.length() - 2);
+            } else if (second.endsWith("!")) {
+                second = second.substring(0, second.length() - 1);
+            }
+
+            try (ZipFile zip = new ZipFile(first)) {
+                Enumeration files = zip.entries();
+                ZipEntry zipEntry = null;
+                
+                while(files.hasMoreElements()) {
+                    zipEntry = (ZipEntry) files.nextElement();
+                    
+                    if(zipEntry.getName().equals(second)) {
+                        break;
+                    }
+                }
+                
+                if (zipEntry != null) {
+                    System.out.println("15");
+                    try (ZipInputStream zis = new ZipInputStream(zip.getInputStream(zipEntry))) {
+                        return listZip(zis, subDir, pattern);
+                    }
+                }
+            } catch (IOException ex) {
+                LOGGER.error("Cant read file", ex);
+            }
+
+            return new ArrayList<>(0);
+        }
+    }
+
     private static List<String> listFilesFromJar(URL url, String subDir, String pattern) {
+        try (ZipInputStream zip = new ZipInputStream(url.openStream())) {
+            return listZip(zip, subDir, pattern);
+        } catch (IOException ex) {
+            LOGGER.error("Can't read file list", ex);
+        }
+
+        return new ArrayList<>(0);
+    }
+
+    private static List<String> listZip(ZipInputStream zip, String subDir, String pattern) throws IOException {
         ZipEntry entry;
 
         List<String> res = new ArrayList<>();
         String name;
         int idx = getIdx(subDir);
 
-        try (ZipInputStream zip = new ZipInputStream(url.openStream())) {
+        while ((entry = zip.getNextEntry()) != null) {
+            name = entry.getName();
 
-            while ((entry = zip.getNextEntry()) != null) {
-                name = entry.getName();
-
-                if (!entry.isDirectory() && isValid(name, subDir, pattern)) {
-                    res.add(fixName(name, idx));
-                }
+            if (!entry.isDirectory() && isValid(name, subDir, pattern)) {
+                res.add(fixName(name, idx));
             }
-
-            return res;
-        } catch (IOException ex) {
-            LOGGER.error("Can't read file list", ex);
         }
 
-        return new ArrayList<>(0);
+        return res;
     }
 
     private static int getIdx(String subDir) {
