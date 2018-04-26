@@ -125,32 +125,21 @@ public final class ListFileUtil {
 
             try (ZipFile zip = new ZipFile(first)) {
                 Enumeration files = zip.entries();
-                ZipEntry zipEntry = null;
-                boolean find = false;
+                ZipEntry zipEntry;
 
                 while (files.hasMoreElements()) {
                     zipEntry = (ZipEntry) files.nextElement();
 
                     if (zipEntry.getName().equals(second)) {
-                        find = true;
-                        break;
-                    }
-                }
-
-                if (find) {
-                    if (zipEntry != null) {
                         try (ZipInputStream zis = new ZipInputStream(zip.getInputStream(zipEntry))) {
                             return listZip(zis, subDir, pattern);
                         }
-                    } else {
-                        LOGGER.error("ZipEntry is null");
                     }
-                } else {
-                    LOGGER.error("Can't find jar {} inside {}", second, first);
                 }
 
+                LOGGER.error("Can't find jar {} inside {}", second, first);
             } catch (IOException ex) {
-                LOGGER.error("Cant read file", ex);
+                LOGGER.error("Cant read jar", ex);
             }
 
             return new ArrayList<>(0);
