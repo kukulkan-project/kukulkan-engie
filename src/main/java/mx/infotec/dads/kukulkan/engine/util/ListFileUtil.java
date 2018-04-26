@@ -24,9 +24,7 @@
 package mx.infotec.dads.kukulkan.engine.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -111,12 +109,12 @@ public final class ListFileUtil {
     protected static List<String> listFilesFromDoubleJar(String jarPath, String subDir, String pattern) {
         if (jarPath.startsWith("jar:file:")) {
             return listFilesFromDoubleJar(jarPath.substring(9), subDir, pattern);
-        } else if (jarPath.startsWith("file:")){
+        } else if (jarPath.startsWith("file:")) {
             return listFilesFromDoubleJar(jarPath.substring(5), subDir, pattern);
         } else {
-            int index = jarPath.indexOf(".jar!") + 5;
+            int index = jarPath.indexOf(".jar!/") + 6;
 
-            String first = jarPath.substring(0, index - 1);
+            String first = jarPath.substring(0, index - 2);
             String second = jarPath.substring(index);
 
             if (second.endsWith("!/")) {
@@ -128,20 +126,29 @@ public final class ListFileUtil {
             try (ZipFile zip = new ZipFile(first)) {
                 Enumeration files = zip.entries();
                 ZipEntry zipEntry = null;
-                
-                while(files.hasMoreElements()) {
+                boolean find = false;
+
+                while (files.hasMoreElements()) {
                     zipEntry = (ZipEntry) files.nextElement();
-                    
-                    if(zipEntry.getName().equals(second)) {
+
+                    if (zipEntry.getName().equals(second)) {
+                        find = true;
                         break;
                     }
                 }
-                
-                if (zipEntry != null) {
-                    try (ZipInputStream zis = new ZipInputStream(zip.getInputStream(zipEntry))) {
-                        return listZip(zis, subDir, pattern);
+
+                if (find) {
+                    if (zipEntry != null) {
+                        try (ZipInputStream zis = new ZipInputStream(zip.getInputStream(zipEntry))) {
+                            return listZip(zis, subDir, pattern);
+                        }
+                    } else {
+                        LOGGER.error("ZipEntry is null");
                     }
+                } else {
+                    LOGGER.error("Can't find jar {} inside {}", second, first);
                 }
+
             } catch (IOException ex) {
                 LOGGER.error("Cant read file", ex);
             }
