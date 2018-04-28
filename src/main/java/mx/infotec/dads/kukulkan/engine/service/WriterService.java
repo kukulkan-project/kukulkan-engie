@@ -27,6 +27,7 @@ package mx.infotec.dads.kukulkan.engine.service;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.function.Function;
 
 public interface WriterService {
 
@@ -37,15 +38,32 @@ public interface WriterService {
     public Optional<File> copyTemplate(String template, Path path, String relative, Object model);
 
     /**
+     * Fill the template with the model and save to path resolved to relative. The
+     * relative is processed as a template
+     */
+    public Optional<File> copyTemplate(String template, Path path, Function<String, String> function, Object model);
+
+    /**
      * Copy the resource to the path resolved to relative
      */
     public Optional<File> copy(String resource, Path path, String relative);
+
+    /**
+     * Copy the resource to the path resolved to relative returned by the function
+     */
+    public Optional<File> copy(String resource, Path path, Function<String, String> function);
 
     /**
      * Copy the resource path resolved to relative. The relative is processed as a
      * template.
      */
     public Optional<File> copy(String resource, Path path, String relative, Object model);
+
+    /**
+     * Copy the resource to path resolved to relative returned by the function. The
+     * relative is processed as a template.
+     */
+    public Optional<File> copy(String resource, Path path, Function<String, String> function, Object model);
 
     /**
      * Search in jar containing the class, then copy the files in directory matching
@@ -80,5 +98,10 @@ public interface WriterService {
      * TODO
      */
     public void copySmart(String template, Path path, String relative, Object model);
+
+    /**
+     * TODO
+     */
+    public Optional<File> copySmart(String template, Path path, Function<String, String> function, Object model);
 
 }

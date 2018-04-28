@@ -33,6 +33,7 @@ import java.io.StringReader;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,6 +132,34 @@ public class WriterServiceImpl implements WriterService {
     @Override
     public Optional<File> copy(String resource, Path path, String toSave, Object model) {
         return copy(resource, path, processString(toSave, model));
+    }
+
+    @Override
+    public Optional<File> copyTemplate(String template, Path path, Function<String, String> function, Object model) {
+        return copyTemplate(template, path, function.apply(template), model);
+    }
+
+    @Override
+    public Optional<File> copy(String resource, Path path, Function<String, String> function) {
+        return copy(resource, path, function.apply(resource));
+    }
+
+    @Override
+    public Optional<File> copy(String resource, Path path, Function<String, String> function, Object model) {
+        if (model == null) {
+            return copy(resource, path, function.apply(resource));
+        } else {
+            return copy(resource, path, function.apply(resource), model);
+        }
+    }
+
+    @Override
+    public Optional<File> copySmart(String template, Path path, Function<String, String> function, Object model) {
+        if (template.endsWith(".ftl")) {
+            return copyTemplate(template, path, function, model);
+        } else {
+            return copy(template, path, function, model);
+        }
     }
 
 }
