@@ -32,14 +32,36 @@ import java.util.function.Function;
 public interface WriterService {
 
     /**
-     * Fill the template with the model and save to path resolved to relative. The
-     * relative is processed as a template
+     * Save the content to the given path
+     * 
+     * @param path
+     * @param content
+     * @return the file if saved
+     */
+    public Optional<File> save(Path path, String content);
+
+    /**
+     * Fill the template with the model. The relative is processed as a template.
+     * And finally save to path resolved to processed relative
+     * 
+     * @param template
+     * @param path
+     * @param relative
+     * @param model
+     * @return the file if saved
      */
     public Optional<File> copyTemplate(String template, Path path, String relative, Object model);
 
     /**
-     * Fill the template with the model and save to path resolved to relative. The
-     * relative is processed as a template
+     * Fill the template with the model. The function is applied to template string
+     * to get the relative. And finally save to path resolved to the relative (the
+     * string returned string by function).
+     * 
+     * @param template
+     * @param path
+     * @param function
+     * @param model
+     * @return the file if saved
      */
     public Optional<File> copyTemplate(String template, Path path, Function<String, String> function, Object model);
 
@@ -50,57 +72,111 @@ public interface WriterService {
 
     /**
      * Copy the resource to the path resolved to relative returned by the function
+     * 
+     * @param resource
+     * @param path
+     * @param function
+     * @return the file if saved
      */
     public Optional<File> copy(String resource, Path path, Function<String, String> function);
 
     /**
      * Copy the resource path resolved to relative. The relative is processed as a
      * template.
+     * 
+     * @param resource
+     * @param path
+     * @param relative
+     * @param model
+     * @return the file if saved
      */
     public Optional<File> copy(String resource, Path path, String relative, Object model);
 
     /**
      * Copy the resource to path resolved to relative returned by the function. The
      * relative is processed as a template.
+     * 
+     * @param resource
+     * @param path
+     * @param function
+     * @param model
+     * @return the file if saved
      */
     public Optional<File> copy(String resource, Path path, Function<String, String> function, Object model);
 
     /**
      * Search in jar containing the class, then copy the files in directory matching
-     * with the pattern and save into current path of navigator resolved to relative
+     * with the pattern and save to the path resolved to relative
      * 
+     * @param clazz
+     * @param directory
+     * @param pattern
+     * @param path
+     * @param relative
      */
     public void copyDir(Class clazz, String directory, String pattern, Path path, String relative);
 
     /**
-     * Search in jar containing the class, then copy all files in directory and save
-     * them into current path of navigator resolved to relative
+     * Search in jar containing the class, then copy ALL FILES in directory and save
+     * them to the path resolved to relative
+     * 
+     * @param clazz
+     * @param directory
+     * @param path
+     * @param relative
      */
     public void copyDir(Class clazz, String directory, Path path, String relative);
 
     /**
      * Search in jar containing the class, then copy all files in directory and save
-     * them into current path of navigator resolved to relative
+     * them to path resolved to relative
      * 
      * The relative is processed as a template
+     * 
+     * @param clazz
+     * @param directory
+     * @param path
+     * @param relative
+     * @param model
      */
     public void copyDir(Class clazz, String directory, Path path, String relative, Object model);
 
     /**
      * Search in jar containing the class, then copy the files in directory matching
-     * with the pattern and save into current path of navigator resolved to relative
+     * with the pattern and save to path resolved to relative
      * 
      * The relative is processed as a template
+     * 
+     * @param clazz
+     * @param directory
+     * @param pattern
+     * @param path
+     * @param relative
+     * @param model
      */
     public void copyDir(Class clazz, String directory, String pattern, Path path, String relative, Object model);
 
     /**
-     * TODO
+     * If resourceOrTemplate ends with '.ftl' then calls the copyTemplate method
+     * Else calls the copy method
+     * 
+     * @param resourceOrTemplate
+     * @param path
+     * @param relative
+     * @param model
+     * @return the file if created
      */
-    public void copySmart(String template, Path path, String relative, Object model);
+    public Optional<File> copySmart(String resourceOrTemplate, Path path, String relative, Object model);
 
     /**
-     * TODO
+     * If resourceOrTemplate ends with '.ftl' then calls the copyTemplate method
+     * Else calls the copy method
+     * 
+     * @param template
+     * @param path
+     * @param function
+     * @param model
+     * @return the file if created
      */
     public Optional<File> copySmart(String template, Path path, Function<String, String> function, Object model);
 

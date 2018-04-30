@@ -54,11 +54,13 @@ import mx.infotec.dads.kukulkan.engine.util.TemplateUtil;
 @Service
 public class WriterServiceImpl implements WriterService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WriterServiceImpl.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(WriterServiceImpl.class);
 
     private static final String ALL_FILES_PATTERN = ".*";
 
     private static final String TEMPLATES_DIR = "templates/";
+
+    private static final String TEMPLATE_EXTENSION = ".ftl";
 
     @Autowired
     private TemplateService templateService;
@@ -110,11 +112,11 @@ public class WriterServiceImpl implements WriterService {
     }
 
     @Override
-    public void copySmart(String resource, Path path, String toSave, Object model) {
-        if (resource.endsWith(".ftl")) {
-            copyTemplate(resource, path, toSave, model);
+    public Optional<File> copySmart(String resource, Path path, String toSave, Object model) {
+        if (resource.endsWith(TEMPLATE_EXTENSION)) {
+            return copyTemplate(resource, path, toSave, model);
         } else {
-            copy(resource, path, toSave);
+            return copy(resource, path, toSave, model);
         }
     }
 
@@ -155,11 +157,19 @@ public class WriterServiceImpl implements WriterService {
 
     @Override
     public Optional<File> copySmart(String template, Path path, Function<String, String> function, Object model) {
-        if (template.endsWith(".ftl")) {
+        if (template.endsWith(TEMPLATE_EXTENSION)) {
             return copyTemplate(template, path, function, model);
         } else {
             return copy(template, path, function, model);
         }
+    }
+
+    @Override
+    public Optional<File> save(Path path, String content) {
+        if (FileUtil.saveToFile(path, content)) {
+            return Optional.of(path.toFile());
+        }
+        return Optional.empty();
     }
 
 }
