@@ -230,4 +230,27 @@ public class GrammarMapping {
     public static Optional<GrammarFieldType> getPropertyType(String type) {
         return Optional.of(GrammarFieldTypeMapping.getPropertyType(type));
     }
+    
+    /**
+     * createSingleDataModelGroupList.
+     *
+     * @param visitor
+     *            the visitor
+     * @return the list
+     */
+    public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
+        String program = "src/test/resources/grammar/single-entity." + "3k";
+        DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
+        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
+        dataModelGroupList.add(GrammarMapping.createDefaultDataModelGroup(tree, visitor));
+        return dataModelGroupList;
+    }
+
+    public static List<DomainModelGroup> createRelationshipTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
+        String program = "src/test/resources/grammar/relationship-entity." + "3k";
+        DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
+        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
+        dataModelGroupList.add(GrammarMapping.createDefaultDataModelGroup(tree, visitor));
+        return dataModelGroupList;
+    }
 }
