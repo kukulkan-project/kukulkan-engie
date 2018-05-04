@@ -76,7 +76,7 @@ public class GrammarUtil {
             lexer = new kukulkanLexer(new ANTLRFileStream(file));
             return getDomainModelContext(lexer);
         } catch (IOException e) {
-            throw new MetaModelException("getDomainModelContext Error: ", e);
+            throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);
         }
     }
 
@@ -186,16 +186,10 @@ public class GrammarUtil {
      * @return the java property
      */
     public static JavaProperty createContentTypeProperty(String propertyName, DatabaseType dbType) {
-        return JavaProperty.builder()
-                .withName(propertyName + "ContentType")
-                .withType("String")
-                .withColumnName(toDataBaseNameConvention(dbType, propertyName+"ContentType"))
-                .withColumnType("TextBlob")
-                .withQualifiedName("java.lang.String")
-                .isNullable(true).isPrimaryKey(false)
-                .isIndexed(false)
-                .isLargeObject(false)
-                .hasSizeValidation(false)
-                .withJavaEquivalentClass(String.class).build();
+        return JavaProperty.builder().withName(propertyName + "ContentType").withType("String")
+                .withColumnName(toDataBaseNameConvention(dbType, propertyName + "ContentType"))
+                .withColumnType("TextBlob").withQualifiedName("java.lang.String").isNullable(true).isPrimaryKey(false)
+                .isIndexed(false).isLargeObject(false).hasSizeValidation(false).withJavaEquivalentClass(String.class)
+                .build();
     }
 }
