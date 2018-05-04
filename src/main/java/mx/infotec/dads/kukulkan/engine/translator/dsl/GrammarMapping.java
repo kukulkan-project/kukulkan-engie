@@ -191,21 +191,6 @@ public class GrammarMapping {
      *
      * @param visitor
      *            the visitor
-     * @return the list
-     */
-    public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
-        String program = "src/test/resources/grammar/single-entity." + "3k";
-        DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
-        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-        dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));
-        return dataModelGroupList;
-    }
-
-    /**
-     * createSingleDataModelGroupList.
-     *
-     * @param visitor
-     *            the visitor
      * @param file
      *            the file
      * @return the list
