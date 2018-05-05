@@ -23,10 +23,13 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
+import static mx.infotec.dads.kukulkan.engine.translator.dsl.RelationshipMapping.mapRelationships;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
@@ -36,6 +39,8 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DomainModelContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
+import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
+import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 
 /**
@@ -88,7 +93,7 @@ public class GrammarMapping {
     private static void createDataModelElement(DomainModelContext dmc, GrammarSemanticAnalyzer visitor,
             List<Entity> dmeList) {
         visitor.visit(dmc);
-        dmeList.addAll(visitor.getVctx().getElements());
+        dmeList.addAll(mapRelationships(visitor.getVctx()));
     }
 
     /**
@@ -230,7 +235,7 @@ public class GrammarMapping {
     public static Optional<GrammarFieldType> getPropertyType(String type) {
         return Optional.of(GrammarFieldTypeMapping.getPropertyType(type));
     }
-    
+
     /**
      * createSingleDataModelGroupList.
      *
@@ -252,5 +257,20 @@ public class GrammarMapping {
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
         dataModelGroupList.add(GrammarMapping.createDefaultDataModelGroup(tree, visitor));
         return dataModelGroupList;
+    }
+
+    public static AssociationType resolveAssociationType(String type) {
+        Objects.requireNonNull(type);
+        if ("OneToOne".equals(type)) {
+            return AssociationType.ONE_TO_ONE;
+        } else if ("OneToMany".equals(type)) {
+            return AssociationType.ONE_TO_MANY;
+        } else if ("ManyToOne".equals(type)) {
+            return AssociationType.MANY_TO_ONE;
+        } else if ("ManyToMany".equals(type)) {
+            return AssociationType.MANY_TO_MANY;
+        }
+        throw new MetaModelException(
+                "Expected neither OneToOne, OneToMany, ManyToOne or ManyToMany but found ->" + type);
     }
 }

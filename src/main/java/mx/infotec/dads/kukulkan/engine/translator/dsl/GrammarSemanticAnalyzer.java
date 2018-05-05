@@ -25,6 +25,7 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping.getDateType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping.getNumericType;
+import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping.resolveAssociationType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
@@ -68,10 +69,12 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     private static final Logger LOGGER = LoggerFactory.getLogger(GrammarSemanticAnalyzer.class);
 
     /** The vctx. */
-    private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
+    private final VisitorContext vctx = new VisitorContext(new ArrayList<>(), new ArrayList<>());
 
     /** The entity. */
     private Entity entity = null;
+
+    private Association association = null;
 
     private PrimitiveFieldContext pfc = null;
 
@@ -113,13 +116,14 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     @Override
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
-        LOGGER.debug(ctx.getText());
+        association = new Association(entity.getName(), ctx.targetEntity.getText());
         return super.visitAssociationField(ctx);
     }
 
     @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
-        LOGGER.debug(ctx.getText());
+        association.setType(resolveAssociationType(ctx.getText()));
+        getVctx().getAssociations().add(association);
         return super.visitCardinality(ctx);
     }
 
