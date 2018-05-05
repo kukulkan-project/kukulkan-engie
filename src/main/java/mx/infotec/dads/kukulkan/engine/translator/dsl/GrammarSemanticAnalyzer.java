@@ -33,6 +33,7 @@ import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefault
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.antlr.v4.runtime.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,9 +115,14 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         return vctx;
     }
 
+    /**
+     * Visit Association
+     */
     @Override
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
         association = new Association(entity.getName(), ctx.targetEntity.getText());
+        association.setSourcePropertyName(ctx.id);
+        association.setTargetPropertyName(ctx.targetPropertyName);
         return super.visitAssociationField(ctx);
     }
 

@@ -1,5 +1,7 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
+import org.antlr.v4.runtime.Token;
+
 import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 
@@ -15,7 +17,9 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 class Association {
 
     private String source;
+    private String sourcePropertyName;
     private String target;
+    private String targetPropertyName;
 
     private AssociationType type;
 
@@ -28,16 +32,8 @@ class Association {
         return source;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
     public String getTarget() {
         return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
     }
 
     public AssociationType getType() {
@@ -48,8 +44,36 @@ class Association {
         this.type = type;
     }
 
+    public String getSourcePropertyName() {
+        return sourcePropertyName;
+    }
+
+    public void setSourcePropertyName(Token id) {
+        this.sourcePropertyName = id.getText();
+    }
+
+    public String getTargetPropertyName() {
+        return targetPropertyName;
+    }
+
+    public void setTargetPropertyName(String targetPropertyName) {
+        this.targetPropertyName = targetPropertyName;
+    }
+
+    public void setTargetPropertyName(Token token) {
+        if (token != null) {
+            this.targetPropertyName = token.getText();
+        }
+    }
+
+    public boolean isBidirectional() {
+        return targetPropertyName != null;
+    }
+
     @Override
     public String toString() {
-        return "[source: " + source + ", " + "target: " + target + ", " + "type: " + type + "]";
+        return "[source: " + source + ", " + "propertyName: " + sourcePropertyName + "], " + "[target: " + target + ", "
+                + "propertyName: " + targetPropertyName + "], " + "[type: " + type + "]";
     }
+
 }
