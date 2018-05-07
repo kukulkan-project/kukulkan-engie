@@ -37,9 +37,6 @@ public class VisitorContext {
     /** The elements. */
     private List<Entity> elements;
 
-    /** The elements. */
-    private List<Association> associations;
-
     /**
      * Instantiates a new visitor context.
      *
@@ -48,17 +45,6 @@ public class VisitorContext {
      */
     public VisitorContext(List<Entity> dmeList) {
         this.elements = dmeList;
-    }
-
-    /**
-     * Instantiates a new visitor context.
-     *
-     * @param dmeList
-     *            the dme list
-     */
-    public VisitorContext(List<Entity> dmeList, List<Association> associations) {
-        this.elements = dmeList;
-        this.associations = associations;
     }
 
     /**
@@ -79,13 +65,4 @@ public class VisitorContext {
     public void setElements(List<Entity> elements) {
         this.elements = elements;
     }
-
-    public List<Association> getAssociations() {
-        return associations;
-    }
-
-    public void setAssociations(List<Association> associations) {
-        this.associations = associations;
-    }
-
 }

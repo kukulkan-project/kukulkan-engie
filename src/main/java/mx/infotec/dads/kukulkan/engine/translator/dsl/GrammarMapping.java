@@ -23,8 +23,6 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.RelationshipMapping.mapRelationships;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -93,7 +91,7 @@ public class GrammarMapping {
     private static void createDataModelElement(DomainModelContext dmc, GrammarSemanticAnalyzer visitor,
             List<Entity> dmeList) {
         visitor.visit(dmc);
-        dmeList.addAll(mapRelationships(visitor.getVctx()));
+        dmeList.addAll(visitor.getVctx().getElements());
     }
 
     /**
