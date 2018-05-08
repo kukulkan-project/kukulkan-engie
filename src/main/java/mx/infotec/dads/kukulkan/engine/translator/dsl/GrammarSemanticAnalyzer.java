@@ -31,12 +31,7 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJ
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
@@ -66,15 +61,10 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
  */
 public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorContext> {
 
-    /**
-     * The logger class.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GrammarSemanticAnalyzer.class);
-
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
 
-    private Map<String, Entity> entityMap = new HashMap<>();
+    private EntityHolder entityHolder = new EntityHolder();
 
     /** The entity. */
     private Entity sourceEntity = null;
@@ -103,7 +93,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
-        sourceEntity = getEntity(ctx.name.getText());
+        sourceEntity = entityHolder.getEntity(ctx.name.getText());
         addMetaData(ctx, sourceEntity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
         return super.visitEntity(ctx);
@@ -124,7 +114,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
-        Entity targetEntity = getEntity(ctx.targetEntity.getText());
+        Entity targetEntity = entityHolder.getEntity(ctx.targetEntity.getText());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setSourcePropertyName(ctx.id.getText());
         if (ctx.targetPropertyName != null) {
@@ -257,12 +247,4 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
 
-    private Entity getEntity(String entityName) {
-        Entity source = entityMap.get(entityName);
-        if (source == null) {
-            source = Entity.createDomainModelElement();
-            source.setName(entityName);
-        }
-        return source;
-    }
 }

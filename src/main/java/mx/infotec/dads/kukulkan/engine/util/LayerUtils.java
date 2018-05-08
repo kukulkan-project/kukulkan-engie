@@ -145,6 +145,10 @@ public class LayerUtils {
     public static final String PROJECT_CONFIGURATION_PROPERTY = "project";
 
     public static final String TIME_STAMP = "timestamp";
+    
+    public static final String OWNER_ASSOCIATIONS = "ownerAssociations";
+    
+    public static final String NOT_OWNER_ASSOCIATIONS = "notOwnerAssociations";
 
     /**
      * Instantiates a new layer utils.
@@ -232,6 +236,8 @@ public class LayerUtils {
         dme.getPrimaryKey().setGenerationType(conf.getDatabase().getGlobalGenerationType());
         map.put(PRIMARY_KEY_PROPERTY, dme.getPrimaryKey());
         map.put(PROPERTIES_PROPERTY, dme.getProperties());
+        map.put(OWNER_ASSOCIATIONS, dme.getOwnerAssociations());
+        map.put(NOT_OWNER_ASSOCIATIONS, dme.getNotOwnerAssociations());
     }
 
     /**
