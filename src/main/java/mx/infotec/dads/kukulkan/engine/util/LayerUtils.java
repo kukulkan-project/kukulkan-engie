@@ -78,6 +78,14 @@ public class LayerUtils {
     /** The Constant HAS_TIME_PROPERTIES_PROPERTY. */
     public static final String HAS_TIME_PROPERTIES_PROPERTY = "hasTimeProperties";
 
+    public static final String HAS_ONE_TO_ONE = "hasOneToOne";
+
+    public static final String HAS_ONE_TO_MANY = "hasOneToMany";
+
+    public static final String HAS_MANY_TO_ONE = "hasManyToOne";
+
+    public static final String HAS_MANY_TO_MANY = "hasManyToMany";
+
     /** The Constant HAS_BIG_DECIMAL_PROPERTY. */
     public static final String HAS_BIG_DECIMAL_PROPERTY = "hasBigDecimal";
 
@@ -145,9 +153,9 @@ public class LayerUtils {
     public static final String PROJECT_CONFIGURATION_PROPERTY = "project";
 
     public static final String TIME_STAMP = "timestamp";
-    
+
     public static final String OWNER_ASSOCIATIONS = "ownerAssociations";
-    
+
     public static final String NOT_OWNER_ASSOCIATIONS = "notOwnerAssociations";
 
     /**
@@ -238,6 +246,10 @@ public class LayerUtils {
         map.put(PROPERTIES_PROPERTY, dme.getProperties());
         map.put(OWNER_ASSOCIATIONS, dme.getOwnerAssociations());
         map.put(NOT_OWNER_ASSOCIATIONS, dme.getNotOwnerAssociations());
+        map.put(HAS_ONE_TO_ONE, dme.isHasOneToOne());
+        map.put(HAS_ONE_TO_MANY, dme.isHasOneToMany());
+        map.put(HAS_MANY_TO_ONE, dme.isHasManyToOne());
+        map.put(HAS_MANY_TO_MANY, dme.isHasManyToMany());
     }
 
     /**

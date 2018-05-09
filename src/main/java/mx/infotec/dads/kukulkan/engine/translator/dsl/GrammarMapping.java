@@ -257,15 +257,19 @@ public class GrammarMapping {
         return dataModelGroupList;
     }
 
-    public static AssociationType resolveAssociationType(String type) {
+    public static AssociationType resolveAssociationType(Entity sourceEntity, String type) {
         Objects.requireNonNull(type);
         if ("OneToOne".equals(type)) {
+            sourceEntity.setHasOneToOne(true);
             return AssociationType.ONE_TO_ONE;
         } else if ("OneToMany".equals(type)) {
+            sourceEntity.setHasOneToMany(true);
             return AssociationType.ONE_TO_MANY;
         } else if ("ManyToOne".equals(type)) {
+            sourceEntity.setHasManyToOne(true);
             return AssociationType.MANY_TO_ONE;
         } else if ("ManyToMany".equals(type)) {
+            sourceEntity.setHasManyToMany(true);
             return AssociationType.MANY_TO_MANY;
         }
         throw new MetaModelException(

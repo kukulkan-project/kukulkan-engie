@@ -29,6 +29,9 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping.reso
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
+import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
+import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToLowerCaseFirstChar;
+import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToPropertyName;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -47,11 +50,13 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
+import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
@@ -93,7 +98,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
-        sourceEntity = entityHolder.getEntity(ctx.name.getText());
+        sourceEntity = entityHolder.getEntity(ctx.name.getText(), pConf.getDatabase().getDatabaseType());
         addMetaData(ctx, sourceEntity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
         return super.visitEntity(ctx);
@@ -114,7 +119,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
-        Entity targetEntity = entityHolder.getEntity(ctx.targetEntity.getText());
+        Entity targetEntity = entityHolder.getEntity(ctx.targetEntity.getText(), pConf.getDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setSourcePropertyName(ctx.id.getText());
         if (ctx.targetPropertyName != null) {
@@ -127,7 +132,11 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
-        entityAssociation.setType(resolveAssociationType(ctx.getText()));
+        entityAssociation.setType(resolveAssociationType(sourceEntity, ctx.getText()));
+        if (entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
+                && entityAssociation.getTargetPropertyName() == null) {
+            entityAssociation.setTargetPropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
+        }
         return super.visitCardinality(ctx);
     }
 
@@ -240,11 +249,10 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     public void addMetaData(EntityContext entityContext, Entity entity, DatabaseType dbType) {
         String singularName = inflectorService.singularize(entityContext.name.getText());
-        entity.setTableName(entityContext.name.getText().toLowerCase());
+        entity.setTableName(toDataBaseNameConvention(dbType, entityContext.name.getText()));
         entity.setName(entityContext.name.getText());
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
-
 }
