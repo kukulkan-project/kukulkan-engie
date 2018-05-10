@@ -29,6 +29,7 @@ public class EntityHolder {
             source = Entity.createDomainModelElement();
             source.setName(entityName);
             source.setTableName(toDataBaseNameConvention(type, entityName));
+            entityMap.put(source.getName(), source);
         }
         return source;
     }

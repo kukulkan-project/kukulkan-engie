@@ -31,7 +31,6 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJ
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToLowerCaseFirstChar;
-import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToPropertyName;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -56,7 +55,6 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
-import mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
@@ -66,6 +64,10 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
  */
 public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorContext> {
 
+    private static final String JAVA_UTIL_HASH_SET = "java.util.HashSet";
+    private static final String JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
+    private static final String JAVA_UTIL_COLLECTION = "java.util.Set";
+
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
 
@@ -73,6 +75,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     /** The entity. */
     private Entity sourceEntity = null;
+
+    private Entity targetEntity = null;
 
     private EntityAssociation entityAssociation = null;
 
@@ -119,14 +123,12 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
      */
     @Override
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
-        Entity targetEntity = entityHolder.getEntity(ctx.targetEntity.getText(), pConf.getDatabase().getDatabaseType());
+        targetEntity = entityHolder.getEntity(ctx.targetEntity.getText(), pConf.getDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setSourcePropertyName(ctx.id.getText());
         if (ctx.targetPropertyName != null) {
             entityAssociation.setTargetPropertyName(ctx.targetPropertyName.getText());
         }
-        sourceEntity.getAssociations().add(entityAssociation);
-        targetEntity.getAssociations().add(entityAssociation);
         return super.visitAssociationField(ctx);
     }
 
@@ -137,7 +139,34 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
                 && entityAssociation.getTargetPropertyName() == null) {
             entityAssociation.setTargetPropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
         }
+        entityAssociation.setSourcePropertyNamePlural(pluralize(entityAssociation.getSourcePropertyName()));
+        entityAssociation.setTargetPropertyNamePlural(pluralize(entityAssociation.getTargetPropertyName()));
+        assignAssociation(sourceEntity, targetEntity, entityAssociation);
+        resolveImports(sourceEntity, targetEntity, entityAssociation);
         return super.visitCardinality(ctx);
+    }
+
+    private void resolveImports(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
+        switch (entityAssociation.getType()) {
+        case ONE_TO_ONE:
+            break;
+        case ONE_TO_MANY:
+            sourceEntity.getImports().add(JAVA_UTIL_COLLECTION);
+            sourceEntity.getImports().add(JAVA_UTIL_HASH_SET);
+            sourceEntity.getImports().add(JSON_IGNORE);
+            break;
+        case MANY_TO_ONE:
+            break;
+        case MANY_TO_MANY:
+            sourceEntity.getImports().add(JAVA_UTIL_COLLECTION);
+            sourceEntity.getImports().add(JAVA_UTIL_HASH_SET);
+            targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
+            targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
+            targetEntity.getImports().add(JSON_IGNORE);
+            break;
+        default:
+            break;
+        }
     }
 
     @Override
@@ -248,11 +277,47 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     }
 
     public void addMetaData(EntityContext entityContext, Entity entity, DatabaseType dbType) {
-        String singularName = inflectorService.singularize(entityContext.name.getText());
-        entity.setTableName(toDataBaseNameConvention(dbType, entityContext.name.getText()));
+        String singularName = singularize(entityContext.name.getText());
+        if (singularName == null) {
+            singularName = entityContext.name.getText();
+        }
+        entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityContext.name.getText())));
         entity.setName(entityContext.name.getText());
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-        entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
+        entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
+    }
+
+    private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
+        sourceEntity.getAssociations().add(entityAssociation);
+        // if association is a cycle, then sourceEntity already have the
+        // association so it is not necessary added to it
+        if (!entityAssociation.isCycle()) {
+            targetEntity.getAssociations().add(entityAssociation);
+        }
+    }
+
+    public String singularize(String word) {
+        if (word == null) {
+            return null;
+        }
+        String singularize = inflectorService.singularize(word);
+        if (singularize == null) {
+            return word;
+        } else {
+            return singularize;
+        }
+    }
+
+    public String pluralize(String word) {
+        if (word == null) {
+            return null;
+        }
+        String pluralize = inflectorService.pluralize(word);
+        if (pluralize == null) {
+            return word;
+        } else {
+            return pluralize;
+        }
     }
 }
