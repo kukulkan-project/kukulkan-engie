@@ -125,9 +125,9 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     public VisitorContext visitAssociationField(AssociationFieldContext ctx) {
         targetEntity = entityHolder.getEntity(ctx.targetEntity.getText(), pConf.getDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
-        entityAssociation.setSourcePropertyName(ctx.id.getText());
-        if (ctx.targetPropertyName != null) {
-            entityAssociation.setTargetPropertyName(ctx.targetPropertyName.getText());
+        entityAssociation.setToTargetPropertyName(ctx.id.getText());
+        if (ctx.toSourcePropertyName != null) {
+            entityAssociation.setToSourcePropertyName(ctx.toSourcePropertyName.getText());
         }
         return super.visitAssociationField(ctx);
     }
@@ -136,11 +136,11 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     public VisitorContext visitCardinality(CardinalityContext ctx) {
         entityAssociation.setType(resolveAssociationType(sourceEntity, ctx.getText()));
         if (entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
-                && entityAssociation.getTargetPropertyName() == null) {
-            entityAssociation.setTargetPropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
+                && entityAssociation.getToSourcePropertyName() == null) {
+            entityAssociation.setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
         }
-        entityAssociation.setSourcePropertyNamePlural(pluralize(entityAssociation.getSourcePropertyName()));
-        entityAssociation.setTargetPropertyNamePlural(pluralize(entityAssociation.getTargetPropertyName()));
+        entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
+        entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
         resolveImports(sourceEntity, targetEntity, entityAssociation);
         return super.visitCardinality(ctx);
