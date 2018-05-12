@@ -182,7 +182,7 @@ public class GrammarMapping {
     private static void setKindOfDateType(JavaProperty property, DateTypesContext type) {
         if (type.ZONED_DATETIME() != null) {
             property.setZoneDateTime(true);
-        } else if (type.DATE() != null || type.LOCAL_DATE() != null) {
+        } else if (type.LOCAL_DATE() != null) {
             property.setLocalDate(true);
         } else if (type.INSTANT() != null) {
             property.setInstant(true);

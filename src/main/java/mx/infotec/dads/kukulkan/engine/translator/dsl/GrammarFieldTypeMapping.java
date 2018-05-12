@@ -145,9 +145,7 @@ public class GrammarFieldTypeMapping {
      * @return the date type
      */
     public static String getDateType(DateTypesContext dataTypes) {
-        if (dataTypes.DATE() != null) {
-            return dataTypes.DATE().getText();
-        } else if (dataTypes.INSTANT() != null) {
+        if (dataTypes.INSTANT() != null) {
             return dataTypes.INSTANT().getText();
         } else if (dataTypes.LOCAL_DATE() != null) {
             return dataTypes.LOCAL_DATE().getText();
