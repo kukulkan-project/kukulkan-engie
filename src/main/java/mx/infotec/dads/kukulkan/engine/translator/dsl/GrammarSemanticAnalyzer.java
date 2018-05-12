@@ -289,11 +289,11 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     }
 
     private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
-        sourceEntity.getAssociations().add(entityAssociation);
+        sourceEntity.addAssociation(entityAssociation);
         // if association is a cycle, then sourceEntity already have the
         // association so it is not necessary added to it
         if (!entityAssociation.isCycle()) {
-            targetEntity.getAssociations().add(entityAssociation);
+            targetEntity.addAssociation(entityAssociation);
         }
     }
 

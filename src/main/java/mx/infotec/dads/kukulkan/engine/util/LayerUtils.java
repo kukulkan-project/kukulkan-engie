@@ -236,7 +236,7 @@ public class LayerUtils {
                 formatToImportStatement(bPackage, NameConventions.DOMAIN_LAYER_NAME, dme.getName()));
         importPrimaryKeyIfComposed(conf, map, bPackage, dme);
         map.put(ENTITY_CAMEL_CASE_PROPERTY, dme.getCamelCaseFormat());
-        map.put(ENTITY_PROPERTY, dme.getName());
+        map.put(ENTITY_PROPERTY, dme);
         map.put(ENTITY_HYPHEN_NOTATION_PROPERTY, camelCaseToHyphens(dme.getCamelCaseFormat()));
         map.put(ENTITY_HYPHEN_NOTATION_PLURAL_PROPERTY, camelCaseToHyphens(dme.getCamelCasePluralFormat()));
         map.put(ENTITY_CAMEL_CASE_PLURAL_PROPERTY, dme.getCamelCasePluralFormat());

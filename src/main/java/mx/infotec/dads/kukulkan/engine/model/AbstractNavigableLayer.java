@@ -27,6 +27,7 @@ import static mx.infotec.dads.kukulkan.engine.util.LayerUtils.addAuthoringData;
 import static mx.infotec.dads.kukulkan.engine.util.LayerUtils.addCommonDataModelElements;
 import static mx.infotec.dads.kukulkan.metamodel.util.Validator.requiredNotEmpty;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
@@ -73,8 +74,7 @@ public abstract class AbstractNavigableLayer implements NavigableLayer {
     public void doForEachDataModelGroupTemplate(ProjectConfiguration pConf, Collection<DomainModelGroup> dmGroup,
             final Map<String, Object> propertiesMap) {
         for (DomainModelGroup dataModelGroup : dmGroup) {
-            doForEachEntity(pConf, dataModelGroup.getEntities(), propertiesMap,
-                    dataModelGroup.getName());
+            doForEachEntity(pConf, dataModelGroup.getEntities(), propertiesMap, dataModelGroup.getName());
         }
     }
 
@@ -87,11 +87,13 @@ public abstract class AbstractNavigableLayer implements NavigableLayer {
      * java.lang.String)
      */
     @Override
-    public void doForEachEntity(ProjectConfiguration pConf,
-            Collection<Entity> dmElementCollection, final Map<String, Object> propertiesMap,
-            String dmgName) {
+    public void doForEachEntity(ProjectConfiguration pConf, Collection<Entity> dmElementCollection,
+            final Map<String, Object> propertiesMap, String dmgName) {
         String basePackage = pConf.getPackaging() + dmgName;
+        LocalDateTime entityTimestamp = pConf.getTimestamp();
         for (Entity dmElement : dmElementCollection) {
+            entityTimestamp = entityTimestamp.plusSeconds(1L);
+            dmElement.setTimestamp(entityTimestamp);
             addCommonDataModelElements(pConf, propertiesMap, basePackage, dmElement);
             visitEntity(pConf, dmElementCollection, propertiesMap, dmgName, dmElement, basePackage);
         }
