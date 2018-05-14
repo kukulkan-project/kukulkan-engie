@@ -137,7 +137,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         entityAssociation.setType(resolveAssociationType(sourceEntity, ctx.getText()));
         if (entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
                 && entityAssociation.getToSourcePropertyName() == null) {
-            entityAssociation.setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
+            entityAssociation
+                    .setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
         }
         entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
