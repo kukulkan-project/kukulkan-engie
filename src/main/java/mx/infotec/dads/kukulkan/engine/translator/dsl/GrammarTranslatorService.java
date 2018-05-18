@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
+import mx.infotec.dads.kukulkan.engine.service.ModelValidator;
 import mx.infotec.dads.kukulkan.engine.translator.Source;
 import mx.infotec.dads.kukulkan.engine.translator.TranslatorService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
@@ -22,6 +23,9 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  */
 @Service
 public class GrammarTranslatorService implements TranslatorService {
+    
+    @Autowired
+    private ModelValidator validator;
 
     @Autowired
     private InflectorService inflectorService;
@@ -34,6 +38,8 @@ public class GrammarTranslatorService implements TranslatorService {
             List<DomainModelGroup> dmgList = GrammarMapping.createSingleDataModelGroupList(semanticAnalyzer, file);
             domainModel.setDomainModelGroup(dmgList);
         });
+        validator.validateModel(domainModel);
+//        DomainModelValidator.validateModel(domainModel);
         return domainModel;
     }
 }
