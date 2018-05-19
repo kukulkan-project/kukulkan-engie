@@ -23,7 +23,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  */
 @Service
 public class GrammarTranslatorService implements TranslatorService {
-    
+
     @Autowired
     private ModelValidator validator;
 
@@ -39,7 +39,6 @@ public class GrammarTranslatorService implements TranslatorService {
             domainModel.setDomainModelGroup(dmgList);
         });
         validator.validateModel(domainModel);
-//        DomainModelValidator.validateModel(domainModel);
         return domainModel;
     }
 }
