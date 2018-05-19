@@ -8,7 +8,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.ModelValidationException;
 
 /**
- * Grammar Validator
+ * DefaultModelValidator
  * 
  * @author Daniel Cortes Pichardo
  *
