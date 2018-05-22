@@ -135,7 +135,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
         entityAssociation.setType(resolveAssociationType(sourceEntity, ctx.getText()));
-        if (entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
+        if ((entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
+                || entityAssociation.getType().equals(AssociationType.MANY_TO_MANY))
                 && entityAssociation.getToSourcePropertyName() == null) {
             entityAssociation
                     .setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
