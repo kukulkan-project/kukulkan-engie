@@ -65,7 +65,7 @@ public class EngineGenerator implements Generator {
     public void process(GeneratorContext context) {
         ProjectConfiguration configuration = requiredNotEmpty(context.get(ProjectConfiguration.class));
         layers.stream()
-                .filter(layer -> configuration.containsLayer(layer.getName()))
+                .filter(layer -> configuration.isLayerToProcess(layer.getName()))
                 .collect(Collectors.toList())
                 .forEach(layer -> layer.process(context));
     }
