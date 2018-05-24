@@ -24,7 +24,6 @@
 package mx.infotec.dads.kukulkan.engine.util;
 
 import static mx.infotec.dads.kukulkan.metamodel.util.JavaFileNameParser.formatToImportStatement;
-import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.camelCaseToHyphens;
 import static mx.infotec.dads.kukulkan.metamodel.util.Validator.requiredNotEmpty;
 
 import java.util.HashMap;
@@ -237,8 +236,8 @@ public class LayerUtils {
         importPrimaryKeyIfComposed(conf, map, bPackage, dme);
         map.put(ENTITY_CAMEL_CASE_PROPERTY, dme.getCamelCaseFormat());
         map.put(ENTITY_PROPERTY, dme);
-        map.put(ENTITY_HYPHEN_NOTATION_PROPERTY, camelCaseToHyphens(dme.getCamelCaseFormat()));
-        map.put(ENTITY_HYPHEN_NOTATION_PLURAL_PROPERTY, camelCaseToHyphens(dme.getCamelCasePluralFormat()));
+        map.put(ENTITY_HYPHEN_NOTATION_PROPERTY, dme.getHyphensFormat());
+        map.put(ENTITY_HYPHEN_NOTATION_PLURAL_PROPERTY, dme.getHyphensPluralFormat());
         map.put(ENTITY_CAMEL_CASE_PLURAL_PROPERTY, dme.getCamelCasePluralFormat());
         map.put(ID_PROPERTY, dme.getPrimaryKey().getType());
         dme.getPrimaryKey().setGenerationType(conf.getDatabase().getGlobalGenerationType());

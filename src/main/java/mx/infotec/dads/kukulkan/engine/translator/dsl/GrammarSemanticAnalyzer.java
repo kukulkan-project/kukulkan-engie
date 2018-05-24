@@ -30,6 +30,7 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addCont
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
+import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToHyphens;
 import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToLowerCaseFirstChar;
 
 import java.util.ArrayList;
@@ -287,6 +288,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         entity.setName(entityContext.name.getText());
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
         entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
+        entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
+        entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
     }
 
