@@ -40,6 +40,7 @@ import java.util.Map;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
+import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.fieldType;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**

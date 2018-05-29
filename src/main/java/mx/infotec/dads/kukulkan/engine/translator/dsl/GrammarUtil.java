@@ -38,6 +38,7 @@ import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
+import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.primitiveField;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -176,6 +177,26 @@ public class GrammarUtil {
         return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
                 .isIndexed(false).addType(field.type).build();
+    }
+    
+    /**
+     * Creates the java property.
+     *
+     * @param field
+     *            the field
+     * @param propertyName
+     *            the property name
+     * @param propertyType
+     *            the property type
+     * @return the java property
+     */
+    public static JavaProperty createJavaProperty(primitiveField field, String propertyName,
+            GrammarFieldType propertyType, DatabaseType dbType) {
+        return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
+                .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
+                .isIndexed(false)
+                //.addType(field.type)
+                .build();
     }
 
     /**
