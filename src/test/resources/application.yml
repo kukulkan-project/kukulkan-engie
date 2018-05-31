@@ -1,0 +1,9 @@
+spring:
+ main:
+    banner-mode: "off"
+    logging:
+        level:
+            root: info
+            org.springframework.web: ERROR
+            guru.springframework.controllers: ERROR
+            mx.infotec.dads.kukulkan.engine: INFO
