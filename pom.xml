@@ -23,6 +23,7 @@
         <metamodel.version>5.0-RC4</metamodel.version>
         <cucumber.version>1.2.4</cucumber.version>
         <mongobee.version>0.12</mongobee.version>
+        <jgit.version>4.11.0.201803080745-r</jgit.version>
     </properties>
 
     <dependencies>
@@ -65,6 +66,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit.junit</artifactId>
+            <version>${jgit.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
