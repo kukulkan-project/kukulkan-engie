@@ -298,6 +298,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
             singularName = entityContext.name.getText();
         }
         entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityContext.name.getText())));
+        entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
         entity.setName(entityContext.name.getText());
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
         entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
