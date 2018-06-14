@@ -144,13 +144,17 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         }
         entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
-        
-        entityAssociation.setToTargetPropertyNameUnderscore(SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToTargetPropertyName()));
-        entityAssociation.setToSourcePropertyNameUnderscore(SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToSourcePropertyName()));
-        
-        entityAssociation.setToTargetPropertyNameUnderscorePlural(SchemaPropertiesParser.parseToUnderscore(pluralize(entityAssociation.getToTargetPropertyName())));
-        entityAssociation.setToSourcePropertyNameUnderscorePlural(SchemaPropertiesParser.parseToUnderscore(pluralize(entityAssociation.getToSourcePropertyName())));
-        
+
+        entityAssociation.setToTargetPropertyNameUnderscore(
+                SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToTargetPropertyName()));
+        entityAssociation.setToSourcePropertyNameUnderscore(
+                SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToSourcePropertyName()));
+
+        entityAssociation.setToTargetPropertyNameUnderscorePlural(
+                SchemaPropertiesParser.parseToUnderscore(pluralize(entityAssociation.getToTargetPropertyName())));
+        entityAssociation.setToSourcePropertyNameUnderscorePlural(
+                SchemaPropertiesParser.parseToUnderscore(pluralize(entityAssociation.getToSourcePropertyName())));
+
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
         resolveImports(sourceEntity, targetEntity, entityAssociation);
         return super.visitCardinality(ctx);
@@ -166,6 +170,8 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
             sourceEntity.getImports().add(JSON_IGNORE);
             break;
         case MANY_TO_ONE:
+            targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
+            targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
             break;
         case MANY_TO_MANY:
             sourceEntity.getImports().add(JAVA_UTIL_COLLECTION);
