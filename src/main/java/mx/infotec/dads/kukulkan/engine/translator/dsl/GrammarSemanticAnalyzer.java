@@ -128,7 +128,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setToTargetPropertyName(ctx.id.getText());
         if (ctx.toSourcePropertyName != null) {
-            entityAssociation.setToSourcePropertyName(ctx.toSourcePropertyName.getText());
+            entityAssociation.setBidirectional(true);
         }
         return super.visitAssociationField(ctx);
     }
@@ -136,12 +136,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
         entityAssociation.setType(resolveAssociationType(sourceEntity, ctx.getText()));
-        if ((entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
-                || entityAssociation.getType().equals(AssociationType.MANY_TO_MANY))
-                && entityAssociation.getToSourcePropertyName() == null) {
-            entityAssociation
-                    .setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
-        }
+        entityAssociation.setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
         entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
 
