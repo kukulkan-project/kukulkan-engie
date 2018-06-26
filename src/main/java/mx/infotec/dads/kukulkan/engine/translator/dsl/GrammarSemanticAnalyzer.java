@@ -50,7 +50,6 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
-import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
@@ -169,15 +168,19 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
             sourceEntity.getImports().add(JSON_IGNORE);
             break;
         case MANY_TO_ONE:
-            targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
-            targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
+            if (entityAssociation.isBidirectional()) {
+                targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
+                targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
+            }
             break;
         case MANY_TO_MANY:
             sourceEntity.getImports().add(JAVA_UTIL_COLLECTION);
             sourceEntity.getImports().add(JAVA_UTIL_HASH_SET);
-            targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
-            targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
-            targetEntity.getImports().add(JSON_IGNORE);
+            if (entityAssociation.isBidirectional()) {
+                targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
+                targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
+                targetEntity.getImports().add(JSON_IGNORE);
+            }
             break;
         default:
             break;
