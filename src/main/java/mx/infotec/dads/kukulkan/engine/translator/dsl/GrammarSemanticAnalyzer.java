@@ -44,11 +44,13 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.AssociationFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BooleanFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.CardinalityContext;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParser.CoreEntityAssociationFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.EntityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericFieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.StringFieldTypeContext;
+import mx.infotec.dads.kukulkan.grammar.kukulkanParser.UserCardinalityContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParserBaseVisitor;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
@@ -63,6 +65,11 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
  * @author Daniel Cortes Pichardo
  */
 public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorContext> {
+
+    private static final String CORE_USER = "CoreUser";
+    private static final String ENTITY_USER = "User";
+    private static final String CORE_USER_TABLE_NAME = "core_user";
+    private static final String CORE_USER_COLLECTION_NAME = "users";
 
     private static final String JAVA_UTIL_HASH_SET = "java.util.HashSet";
     private static final String JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
@@ -102,8 +109,10 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
     @Override
     public VisitorContext visitEntity(EntityContext ctx) {
+        String entityName = ctx.name.getText();
         sourceEntity = entityHolder.getEntity(ctx.name.getText(), pConf.getDatabase().getDatabaseType());
-        addMetaData(ctx, sourceEntity, pConf.getDatabase().getDatabaseType());
+        String tableName = ctx.tableName != null ? ctx.tableName.getText() : null;
+        addMetaData(entityName, tableName, sourceEntity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
         return super.visitEntity(ctx);
     }
@@ -138,8 +147,32 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     }
 
     @Override
+    public VisitorContext visitCoreEntityAssociationField(CoreEntityAssociationFieldContext ctx) {
+        String associableEntity = ctx.targetEntity.getText();
+        if (CORE_USER.equals(associableEntity)) {
+            targetEntity = Entity.createDomainModelElement();
+            addMetaData(ENTITY_USER, determineUserCorePhysicalName(pConf), targetEntity,
+                    pConf.getDatabase().getDatabaseType());
+            entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
+            entityAssociation.setToTargetPropertyName(ctx.id.getText());
+        }
+        return super.visitCoreEntityAssociationField(ctx);
+    }
+
+    @Override
+    public VisitorContext visitUserCardinality(UserCardinalityContext ctx) {
+        genericVisitCardinality(ctx.getText());
+        return super.visitUserCardinality(ctx);
+    }
+
+    @Override
     public VisitorContext visitCardinality(CardinalityContext ctx) {
-        entityAssociation.setType(resolveAssociationType(sourceEntity, ctx.getText()));
+        genericVisitCardinality(ctx.getText());
+        return super.visitCardinality(ctx);
+    }
+
+    private void genericVisitCardinality(String type) {
+        entityAssociation.setType(resolveAssociationType(sourceEntity, type));
         entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
 
@@ -155,7 +188,6 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
 
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
         resolveImports(sourceEntity, targetEntity, entityAssociation);
-        return super.visitCardinality(ctx);
     }
 
     private void resolveImports(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
@@ -294,14 +326,18 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         }
     }
 
-    public void addMetaData(EntityContext entityContext, Entity entity, DatabaseType dbType) {
-        String singularName = singularize(entityContext.name.getText());
+    public void addMetaData(String entityName, String physicalName, Entity entity, DatabaseType dbType) {
+        String singularName = singularize(entityName);
         if (singularName == null) {
-            singularName = entityContext.name.getText();
+            singularName = entityName;
         }
-        entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityContext.name.getText())));
+        if (physicalName == null || "".equals(physicalName)) {
+            entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityName)));
+        } else {
+            entity.setTableName(physicalName);
+        }
         entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
-        entity.setName(entityContext.name.getText());
+        entity.setName(entityName);
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
         entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
@@ -315,6 +351,14 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
         // association so it is not necessary added to it
         if (!entityAssociation.isCycle()) {
             targetEntity.addAssociation(entityAssociation);
+        }
+    }
+
+    private String determineUserCorePhysicalName(ProjectConfiguration pConf) {
+        if (DatabaseType.SQL_MYSQL.equals(pConf.getDatabase().getDatabaseType())) {
+            return CORE_USER_TABLE_NAME;
+        } else {
+            return CORE_USER_COLLECTION_NAME;
         }
     }
 
