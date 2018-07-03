@@ -13,19 +13,22 @@ import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
  * @author Daniel Cortes Pichardo
  *
  */
-public class DataBaseSource {
+public class DataBaseSource implements Source {
 
     private DataStore dataStore;
-    
 
-//    @Override
-//    public <T> Optional<T> getSource(Class<T> clazz) {
-//        Objects.requireNonNull(clazz);
-//        if (!File.class.equals(clazz)) {
-//            throw new MetaModelException(
-//                    "incompatibility types, excepted java.io.File, but encontered" + clazz.toString());
-//        }
-//        return Optional.of(clazz.cast(source));
-//    }
+    public DataBaseSource(DataStore dataStore) {
+        this.dataStore = dataStore;
+    }
+
+    @Override
+    public <T> Optional<T> getSource(Class<T> clazz) {
+        Objects.requireNonNull(clazz);
+        if (!File.class.equals(clazz)) {
+            throw new MetaModelException(
+                    "incompatibility types, excepted java.io.File, but encontered" + clazz.toString());
+        }
+        return Optional.of(clazz.cast(dataStore));
+    }
 
 }
