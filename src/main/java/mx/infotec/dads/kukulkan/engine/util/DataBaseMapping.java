@@ -34,6 +34,7 @@ import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.PrimaryKey;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
@@ -151,7 +152,13 @@ public class DataBaseMapping {
             pk.setQualifiedLabel(STRING_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
         }
+        pk.addProperty(createIdJavaProperty());
         return pk;
+    }
+
+    public static Property<JavaProperty> createIdJavaProperty() {
+        return JavaProperty.builder().withColumnName(ID_DEFAULT_NAME).withName(ID_DEFAULT_NAME)
+                .addType(ColumnType.BIGINT).isIndexed(true).isNullable(false).isPrimaryKey(true).build();
     }
 
     /**
