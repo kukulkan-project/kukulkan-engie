@@ -18,6 +18,7 @@ public class DataBaseSource implements Source {
     private DataStore dataStore;
 
     public DataBaseSource(DataStore dataStore) {
+        Objects.requireNonNull(dataStore, "The <<DataStore>> Can not be null");
         this.dataStore = dataStore;
     }
 
@@ -30,5 +31,4 @@ public class DataBaseSource implements Source {
         }
         return Optional.of(clazz.cast(dataStore));
     }
-
 }

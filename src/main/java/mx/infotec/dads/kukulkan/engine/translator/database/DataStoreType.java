@@ -33,31 +33,44 @@ public enum DataStoreType {
     /**
      * SQL DataStoreType
      */
-    SQL,
+    SQL("jdbc"),
 
     /**
      * NO SQL DataStoreType
      */
-    NO_SQL,
+    NO_SQL(""),
 
     /**
      * CSV DataStoreType
      */
-    CSV,
+    CSV("csv"),
 
     /**
      * EXCEL DataStoreType
      */
-    EXCEL,
+    EXCEL("excel"),
 
     /**
      * XML DataStoreType
      */
-    XML,
+    XML("xml"),
 
     /**
      * JSON DataStoreType
      */
-    JSON
-    
+    JSON("json");
+
+    private final String text;
+
+    /**
+     * @param text
+     */
+    DataStoreType(final String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }
