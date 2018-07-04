@@ -31,17 +31,17 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class })
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+//@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class })
 public class TranslatorServiceTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TranslatorServiceTest.class);
 
-    @Autowired
+  //  @Autowired
     private DataBaseTranslatorService translatorService;
 
-    @BeforeClass
+    //@BeforeClass
     public static void runOnceBeforeClass() {
         H2FileDatabaseConfiguration.run();
     }
