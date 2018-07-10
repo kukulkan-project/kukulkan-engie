@@ -21,9 +21,6 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 @Service
 public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
-    @Autowired
-    private InflectorService inflectorService;
-
     @Override
     public void processTable(SchemaAnalyzerContext context, Entity entity, Table table) {
         

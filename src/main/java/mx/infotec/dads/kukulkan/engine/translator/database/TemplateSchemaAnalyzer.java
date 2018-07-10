@@ -1,5 +1,10 @@
 package mx.infotec.dads.kukulkan.engine.translator.database;
 
+import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
+import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createIdJavaProperty;
+import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
+import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToHyphens;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +17,9 @@ import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
@@ -29,6 +36,9 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
  */
 public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
+    @Autowired
+    protected InflectorService inflectorService;
+
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
         Schema schema = getDefaultSchema(context);
@@ -37,6 +47,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
             DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
             Entity entity = entityHolder.getEntity(entityName, databaseType);
+            addMetaData(entityName, table.getName(), entity, databaseType);
             processTable(context, entity, table);
             for (Column column : table.getColumns()) {
                 if (column.isPrimaryKey()) {
@@ -87,6 +98,50 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         domainModelGroupList.add(dmg);
         domainModel.setDomainModelGroup(domainModelGroupList);
         return domainModel;
+    }
+
+    private void addMetaData(String entityName, String tableName, Entity entity, DatabaseType dbType) {
+        String singularName = singularize(entityName);
+        if (singularName == null) {
+            singularName = entityName;
+        }
+        if (tableName == null || "".equals(tableName)) {
+            entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityName)));
+        } else {
+            entity.setTableName(tableName);
+        }
+        entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
+        entity.setName(entityName);
+        entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
+        entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
+        entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
+        entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
+        entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
+        entity.setDisplayField(createIdJavaProperty());
+    }
+
+    public String singularize(String word) {
+        if (word == null) {
+            return null;
+        }
+        String singularize = inflectorService.singularize(word);
+        if (singularize == null) {
+            return word;
+        } else {
+            return singularize;
+        }
+    }
+
+    public String pluralize(String word) {
+        if (word == null) {
+            return null;
+        }
+        String pluralize = inflectorService.pluralize(word);
+        if (pluralize == null) {
+            return word;
+        } else {
+            return pluralize;
+        }
     }
 
     public abstract void processTable(final SchemaAnalyzerContext context, final Entity entity, final Table table);
