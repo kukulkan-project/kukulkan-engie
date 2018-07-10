@@ -6,10 +6,10 @@ import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 
 /**
@@ -18,20 +18,15 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
  * @author Daniel Cortes Pichardo
  *
  */
+@Service
 public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
 
     @Override
-    public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void processTable(SchemaAnalyzerContext context, Entity entity, Table table) {
-        // TODO Auto-generated method stub
+        
         
     }
 
@@ -42,8 +37,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     }
 
     @Override
-    public void processRelationships(SchemaAnalyzerContext context, EntityHolder entityHolder,
-            Collection<Relationship> relationships) {
+    public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
         // TODO Auto-generated method stub
         
     }
@@ -80,6 +74,13 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Override
     public void processBinaryColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void processRelationships(SchemaAnalyzerContext context, EntityHolder entityHolder,
+            Collection<Relationship> relationships) {
         // TODO Auto-generated method stub
         
     }

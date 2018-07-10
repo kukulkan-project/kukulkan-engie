@@ -19,6 +19,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
+import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
  * SchemaAnalyzers
@@ -34,7 +35,8 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         EntityHolder entityHolder = new EntityHolder();
         for (Table table : schema.getTables()) {
             DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
-            Entity entity = entityHolder.getEntity(table.getName(), databaseType);
+            String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
+            Entity entity = entityHolder.getEntity(entityName, databaseType);
             processTable(context, entity, table);
             for (Column column : table.getColumns()) {
                 if (column.isPrimaryKey()) {
@@ -87,14 +89,11 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         return domainModel;
     }
 
-    public abstract void processPrimaryKey(SchemaAnalyzerContext context, final Entity entity, Column column);
-
     public abstract void processTable(final SchemaAnalyzerContext context, final Entity entity, final Table table);
 
     public abstract void processColumn(final SchemaAnalyzerContext context, final Entity entity, final Column column);
 
-    public abstract void processRelationships(final SchemaAnalyzerContext context, final EntityHolder entityHolder,
-            final Collection<Relationship> relationships);
+    public abstract void processPrimaryKey(SchemaAnalyzerContext context, final Entity entity, Column column);
 
     public abstract void processTimeBasedColumn(final SchemaAnalyzerContext context, final Entity entity,
             final Column column);
@@ -113,4 +112,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     public abstract void processBinaryColumn(final SchemaAnalyzerContext context, final Entity entity,
             final Column column);
+
+    public abstract void processRelationships(final SchemaAnalyzerContext context, final EntityHolder entityHolder,
+            final Collection<Relationship> relationships);
 }
