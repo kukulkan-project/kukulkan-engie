@@ -4,10 +4,12 @@ import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTransl
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
+import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.junit.BeforeClass;
@@ -31,19 +33,19 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(webEnvironment = WebEnvironment.NONE)
-//@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class })
 public class TranslatorServiceTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TranslatorServiceTest.class);
 
-  //  @Autowired
+    @Autowired
     private DataBaseTranslatorService translatorService;
 
-    //@BeforeClass
+    @BeforeClass
     public static void runOnceBeforeClass() {
-        H2FileDatabaseConfiguration.run();
+        H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
     public void databaseTranslatorService() {
@@ -54,16 +56,24 @@ public class TranslatorServiceTest {
         DomainModel model = translatorService.translate(pConf, dataBaseSource);
     }
 
-//    @Test
+    @Test
     public void databaseTranslatorServiceTemp() {
         DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
         DataContextProperties properties = createDataContextProperties(dataStore);
         DataContext dataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
         dataContext.getSchemaNames().forEach(data -> System.out.println(data));
         Schema schema = dataContext.getDefaultSchema();
+        System.out.println("Schema Name :: " + schema.getName());
+        System.out.println("**********************************");
         List<Table> tables = schema.getTables();
         for (Table table : tables) {
+            System.out.println("Table Name :: " + table.getName());
+            
+            for (Relationship relationship : table.getRelationships()) {
+                System.out.println("Relationship :: " + relationship.toString());
+            }
             
         }
+        System.out.println("**********************************");
     }
 }

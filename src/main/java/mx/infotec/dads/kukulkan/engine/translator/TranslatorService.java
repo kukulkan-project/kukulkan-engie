@@ -9,6 +9,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  * @author Daniel Cortes Pichardo
  *
  */
+@FunctionalInterface
 public interface TranslatorService {
 
     DomainModel translate(ProjectConfiguration pConf, Source from);
