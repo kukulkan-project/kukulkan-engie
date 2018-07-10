@@ -2,19 +2,16 @@ package mx.infotec.dads.kukulkan.engine.translator.database;
 
 import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorUtil.createDataContextProperties;
 
-import java.util.List;
+import java.util.Optional;
 
-import org.apache.metamodel.DataContext;
-import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.infotec.dads.kukulkan.engine.translator.Source;
 import mx.infotec.dads.kukulkan.engine.translator.TranslatorService;
-import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
-import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
  * TranslatorService for Database elements
@@ -24,14 +21,18 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
  */
 public class DataBaseTranslatorService implements TranslatorService {
 
+    @Autowired
+    private SchemaAnalyzer analyzer;
+
     @Override
     public DomainModel translate(ProjectConfiguration pConf, Source from) {
-        DomainModel domainModel = new JavaDomainModel();
-        from.getSource(DataStore.class).ifPresent(dataStore -> {
-            DataContextProperties properties = createDataContextProperties(dataStore);
-            List<DomainModelGroup> dmgList = DataBaseMapping.createSingleDataModelGroupList(pConf, properties);
-            domainModel.setDomainModelGroup(dmgList);
-        });
-        return domainModel;
+        Optional<DataStore> dataStoreOptional = from.getSource(DataStore.class);
+        if (dataStoreOptional.isPresent()) {
+            DataContextProperties properties = createDataContextProperties(dataStoreOptional.get());
+            return analyzer.analyse(new SchemaAnalyzerContext(properties, pConf));
+        } else {
+            throw new MetaModelException("<DataStore> can not be null");
+        }
+
     }
 }

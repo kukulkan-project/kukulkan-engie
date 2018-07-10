@@ -1,7 +1,7 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 /**
- * {@link SemanticAnalyzerException}
+ * {@link SchemaAnalyzerException}
  * 
  * @author Daniel Cortes Pichardo
  *

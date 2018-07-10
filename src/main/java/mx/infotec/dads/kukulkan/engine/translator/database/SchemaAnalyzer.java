@@ -1,9 +1,6 @@
 package mx.infotec.dads.kukulkan.engine.translator.database;
 
-import org.apache.metamodel.DataContext;
-
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
-import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
 /**
  * SchemaAnalyzers
@@ -14,5 +11,5 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 @FunctionalInterface
 public interface SchemaAnalyzer {
 
-    public DomainModel process(DataContext context, ProjectConfiguration configuration);
+    public DomainModel analyse(SchemaAnalyzerContext context);
 }
