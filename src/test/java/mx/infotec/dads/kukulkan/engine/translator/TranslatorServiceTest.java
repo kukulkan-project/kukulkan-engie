@@ -4,7 +4,6 @@ import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTransl
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
@@ -20,22 +19,34 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import mx.infotec.dads.kukulkan.engine.config.InflectorConf;
+import mx.infotec.dads.kukulkan.engine.service.InflectorService;
+import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseSource;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorService;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStore;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStoreType;
+import mx.infotec.dads.kukulkan.engine.translator.database.DefaultSchemaAnalyzer;
+import mx.infotec.dads.kukulkan.engine.translator.database.SchemaAnalyzer;
 import mx.infotec.dads.kukulkan.engine.util.EntityFactory;
 import mx.infotec.dads.kukulkan.engine.util.H2FileDatabaseConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.nlp.inflector.core.Inflector;
+import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
+import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class })
+@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class, SchemaAnalyzer.class,
+        DefaultSchemaAnalyzer.class, InflectorService.class, InflectorServiceImpl.class, Inflector.class,
+        SpanishInflector.class, EnglishInflector.class })
+@Import({InflectorConf.class})
 public class TranslatorServiceTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TranslatorServiceTest.class);
@@ -68,11 +79,11 @@ public class TranslatorServiceTest {
         List<Table> tables = schema.getTables();
         for (Table table : tables) {
             System.out.println("Table Name :: " + table.getName());
-            
+
             for (Relationship relationship : table.getRelationships()) {
                 System.out.println("Relationship :: " + relationship.toString());
             }
-            
+
         }
         System.out.println("**********************************");
     }
