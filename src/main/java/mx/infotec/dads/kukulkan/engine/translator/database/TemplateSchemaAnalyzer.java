@@ -37,7 +37,7 @@ import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     @Autowired
-    protected InflectorService inflectorService;
+    private InflectorService inflectorService;
 
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
@@ -97,26 +97,6 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         domainModelGroupList.add(dmg);
         domainModel.setDomainModelGroup(domainModelGroupList);
         return domainModel;
-    }
-
-    private void addMetaData(String entityName, String tableName, Entity entity, DatabaseType dbType) {
-        String singularName = singularize(entityName);
-        if (singularName == null) {
-            singularName = entityName;
-        }
-        if (tableName == null || "".equals(tableName)) {
-            entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityName)));
-        } else {
-            entity.setTableName(tableName);
-        }
-        entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
-        entity.setName(entityName);
-        entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-        entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
-        entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
-        entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
-        entity.setDisplayField(createIdJavaProperty());
     }
 
     public String singularize(String word) {
