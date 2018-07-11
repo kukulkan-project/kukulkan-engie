@@ -11,21 +11,20 @@ import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.par
 import java.util.ArrayList;
 import java.util.Optional;
 
+import mx.infotec.dads.kukulkan.dsl.kukulkan.AssociationField;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobValidators;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericValidators;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.StringValidators;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.util.KukulkanSwitch;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.associationField;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.blobFieldType;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.blobValidators;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.booleanFieldType;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.dateFieldType;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.entity;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.numericFieldType;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.numericValidators;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.primitiveField;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.stringFieldType;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.stringValidators;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.util.KukulkanSwitch;
 import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
@@ -52,7 +51,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private EntityAssociation entityAssociation = null;
 
-    private primitiveField pfc = null;
+    private PrimitiveField pfc = null;
 
     /** The property name. */
     private String propertyName = null;
@@ -73,7 +72,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     @Override
-    public VisitorContext caseassociationField(associationField object) {
+    public VisitorContext caseAssociationField(AssociationField object) {
         targetEntity = entityHolder.getEntity(object.getTargetEntity().getName(),
                 pConf.getDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
@@ -82,47 +81,47 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             entityAssociation.setToSourcePropertyName(object.getToSourcePropertyName());
         }
         visitCardinality(object.getType());
-        return super.caseassociationField(object);
+        return super.caseAssociationField(object);
     }
 
     @Override
-    public VisitorContext caseblobFieldType(blobFieldType object) {
+    public VisitorContext caseBlobFieldType(BlobFieldType object) {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
         processFieldType(optional);
-        return super.caseblobFieldType(object);
+        return super.caseBlobFieldType(object);
     }
 
     @Override
-    public VisitorContext casebooleanFieldType(booleanFieldType object) {
+    public VisitorContext caseBooleanFieldType(BooleanFieldType object) {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
         processFieldType(optional);
-        return super.casebooleanFieldType(object);
+        return super.caseBooleanFieldType(object);
     }
 
     @Override
-    public VisitorContext casedateFieldType(dateFieldType object) {
+    public VisitorContext caseDateFieldType(DateFieldType object) {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getType()));
         processFieldType(optional);
-        return super.casedateFieldType(object);
+        return super.caseDateFieldType(object);
     }
 
     @Override
-    public VisitorContext caseentity(entity object) {
+    public VisitorContext caseEntity(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity object) {
         sourceEntity = entityHolder.getEntity(object.getName(), pConf.getDatabase().getDatabaseType());
         addMetaData(object, sourceEntity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
-        return super.caseentity(object);
+        return super.caseEntity(object);
     }
 
     @Override
-    public VisitorContext casenumericFieldType(numericFieldType object) {
+    public VisitorContext caseNumericFieldType(NumericFieldType object) {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
         processFieldType(optional);
-        return super.casenumericFieldType(object);
+        return super.caseNumericFieldType(object);
     }
 
     @Override
-    public VisitorContext caseprimitiveField(primitiveField object) {
+    public VisitorContext casePrimitiveField(PrimitiveField object) {
         pfc = object;
         propertyName = object.getId();
         constraint = new Constraint();
@@ -132,14 +131,14 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     @Override
-    public VisitorContext casestringFieldType(stringFieldType object) {
+    public VisitorContext caseStringFieldType(StringFieldType object) {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
         processFieldType(optional);
-        return super.casestringFieldType(object);
+        return super.caseStringFieldType(object);
     }
 
     @Override
-    public VisitorContext casestringValidators(stringValidators object) {
+    public VisitorContext caseStringValidators(StringValidators object) {
         if (object.getRequired() != null) {
             handleRequiredField();
         }
@@ -155,11 +154,11 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         if (object.getMaxLenght() != null) {
             handleMaxLenght(object.getMaxLenght());
         }
-        return super.casestringValidators(object);
+        return super.caseStringValidators(object);
     }
 
     @Override
-    public VisitorContext caseblobValidators(blobValidators object) {
+    public VisitorContext caseBlobValidators(BlobValidators object) {
         if (object.getRequired() != null) {
             handleRequiredField();
         }
@@ -169,11 +168,11 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         if (object.getMaxBytesValue() != null) {
             handleMaxLenght(object.getMaxBytesValue());
         }
-        return super.caseblobValidators(object);
+        return super.caseBlobValidators(object);
     }
 
     @Override
-    public VisitorContext casenumericValidators(numericValidators object) {
+    public VisitorContext caseNumericValidators(NumericValidators object) {
         if (object.getRequired() != null) {
             handleRequiredField();
         }
@@ -183,7 +182,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         if (object.getMaxValue() != null) {
             handleMaxLenght(object.getMaxValue());
         }
-        return super.casenumericValidators(object);
+        return super.caseNumericValidators(object);
     }
 
     private void handleRequiredField() {
@@ -259,7 +258,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         }
     }
 
-    public void addMetaData(entity entityContext, Entity entity, DatabaseType dbType) {
+    public void addMetaData(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity entityContext, Entity entity, DatabaseType dbType) {
         String singularName = singularize(entityContext.getName());
         if (singularName == null) {
             singularName = entityContext.getName();

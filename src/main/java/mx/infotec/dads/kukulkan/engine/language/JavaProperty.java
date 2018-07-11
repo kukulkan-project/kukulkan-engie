@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import org.apache.metamodel.schema.ColumnType;
 
+import mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
@@ -739,6 +740,18 @@ public class JavaProperty implements Property<JavaProperty> {
          * @return the java property builder
          */
         public JavaPropertyBuilder addType(FieldTypeContext type) {
+            GrammarMapping.addType(javaProperty, type);
+            return this;
+        }
+        
+        /**
+         * Adds the type.
+         *
+         * @param type
+         *            the type
+         * @return the java property builder
+         */
+        public JavaPropertyBuilder addType(FieldType type) {
             GrammarMapping.addType(javaProperty, type);
             return this;
         }

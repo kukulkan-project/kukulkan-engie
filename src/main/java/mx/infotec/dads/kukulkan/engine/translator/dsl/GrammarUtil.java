@@ -34,11 +34,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.primitiveField;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -178,7 +178,7 @@ public class GrammarUtil {
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
                 .isIndexed(false).addType(field.type).build();
     }
-    
+
     /**
      * Creates the java property.
      *
@@ -190,13 +190,11 @@ public class GrammarUtil {
      *            the property type
      * @return the java property
      */
-    public static JavaProperty createJavaProperty(primitiveField field, String propertyName,
+    public static JavaProperty createJavaProperty(PrimitiveField field, String propertyName,
             GrammarFieldType propertyType, DatabaseType dbType) {
         return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false)
-                //.addType(field.type)
-                .build();
+                .isIndexed(false).addType(field.getType()).build();
     }
 
     /**

@@ -36,11 +36,10 @@ import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DomainModelContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
-import mx.infotec.dads.kukulkan.kukulkangrammar.kukulkan.fieldType;
-import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
-import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
+import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
  * DataMapping utility class.
@@ -134,6 +133,17 @@ public class GrammarMapping {
         } else if (type.stringFieldType() != null) {
             javaProperty.setString(true);
         }
+    }
+    
+    /**
+     * Adds the type.
+     *
+     * @param javaProperty
+     *            the java property
+     * @param type
+     *            the type
+     */
+    public static void addType(JavaProperty javaProperty, mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType type) {
     }
 
     /**
