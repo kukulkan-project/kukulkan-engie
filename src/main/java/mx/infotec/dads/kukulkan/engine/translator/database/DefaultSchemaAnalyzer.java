@@ -5,10 +5,8 @@ import java.util.Collection;
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Table;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 

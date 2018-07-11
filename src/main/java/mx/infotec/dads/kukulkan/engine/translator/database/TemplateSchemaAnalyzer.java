@@ -47,7 +47,6 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
             DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
             Entity entity = entityHolder.getEntity(entityName, databaseType);
-            addMetaData(entityName, table.getName(), entity, databaseType);
             processTable(context, entity, table);
             for (Column column : table.getColumns()) {
                 if (column.isPrimaryKey()) {
@@ -144,7 +143,25 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         }
     }
 
-    public abstract void processTable(final SchemaAnalyzerContext context, final Entity entity, final Table table);
+    public void processTable(final SchemaAnalyzerContext context, final Entity entity, final Table table) {
+        DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
+        String singularName = singularize(entity.getName());
+        if (singularName == null) {
+            singularName = entity.getName();
+        }
+        if (table.getName() == null || "".equals(table.getName())) {
+            entity.setTableName(toDataBaseNameConvention(databaseType, pluralize(entity.getName())));
+        } else {
+            entity.setTableName(table.getName());
+        }
+        entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
+        entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
+        entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
+        entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
+        entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
+        entity.setPrimaryKey(createDefaultPrimaryKey(databaseType));
+        entity.setDisplayField(createIdJavaProperty());
+    }
 
     public abstract void processColumn(final SchemaAnalyzerContext context, final Entity entity, final Column column);
 
