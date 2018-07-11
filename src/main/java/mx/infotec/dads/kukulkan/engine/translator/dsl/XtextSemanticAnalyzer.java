@@ -258,7 +258,8 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         }
     }
 
-    public void addMetaData(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity entityContext, Entity entity, DatabaseType dbType) {
+    public void addMetaData(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity entityContext, Entity entity,
+            DatabaseType dbType) {
         String singularName = singularize(entityContext.getName());
         if (singularName == null) {
             singularName = entityContext.getName();

@@ -30,6 +30,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
+import mx.infotec.dads.kukulkan.dsl.parser.antlr.KukulkanParser;
+import mx.infotec.dads.kukulkan.dsl.services.KukulkanGrammarAccess;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobTypesContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
@@ -134,7 +141,7 @@ public class GrammarMapping {
             javaProperty.setString(true);
         }
     }
-    
+
     /**
      * Adds the type.
      *
@@ -144,6 +151,20 @@ public class GrammarMapping {
      *            the type
      */
     public static void addType(JavaProperty javaProperty, mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType type) {
+        if (type instanceof BooleanFieldType) {
+            javaProperty.setBoolean(true);
+        } else if (type instanceof DateFieldType) {
+            DateFieldType dateFieldType = (DateFieldType) type;
+            setKindOfDateType(javaProperty, dateFieldType.getType());
+        } else if (type instanceof BlobFieldType) {
+            BlobFieldType blobFieldType = (BlobFieldType) type;
+            setKindOfBlobType(javaProperty, blobFieldType.getName());
+        } else if (type instanceof NumericFieldType) {
+            NumericFieldType numericFieldType = (NumericFieldType) type;
+            setKindOfNumeric(javaProperty, numericFieldType.getName());
+        } else if (type instanceof StringFieldType) {
+            javaProperty.setString(true);
+        }
     }
 
     /**
@@ -156,6 +177,20 @@ public class GrammarMapping {
      */
     private static void setKindOfNumeric(JavaProperty javaProperty, NumericTypesContext type) {
         if (type.BIG_DECIMAL() != null) {
+            javaProperty.setBigDecimal(true);
+        }
+    }
+
+    /**
+     * Sets the kind of numeric.
+     *
+     * @param javaProperty
+     *            the java property
+     * @param type
+     *            the type
+     */
+    private static void setKindOfNumeric(JavaProperty javaProperty, String type) {
+        if ("BigDecimal".equals(type)) {
             javaProperty.setBigDecimal(true);
         }
     }
@@ -183,6 +218,28 @@ public class GrammarMapping {
     }
 
     /**
+     * Sets the kind of blob type.
+     *
+     * @param property
+     *            the property
+     * @param ctx
+     *            the ctx
+     */
+    private static void setKindOfBlobType(JavaProperty property, String type) {
+        if ("Blob".equals(type)) {
+            property.setBlob(true);
+        } else if ("AnyBlob".equals(type)) {
+            property.setBlob(true);
+            property.setAnyBlob(true);
+        } else if ("ImageBlob".equals(type)) {
+            property.setBlob(true);
+            property.setImageBlob(true);
+        } else if ("TextBlob".equals(type)) {
+            property.setClob(true);
+        }
+    }
+
+    /**
      * Sets the kind of date type.
      *
      * @param property
@@ -196,6 +253,24 @@ public class GrammarMapping {
         } else if (type.LOCAL_DATE() != null) {
             property.setLocalDate(true);
         } else if (type.INSTANT() != null) {
+            property.setInstant(true);
+        }
+    }
+
+    /**
+     * Sets the kind of date type.
+     *
+     * @param property
+     *            the property
+     * @param type
+     *            the type
+     */
+    private static void setKindOfDateType(JavaProperty property, String dateType) {
+        if ("ZonedDateTime".equals(dateType)) {
+            property.setZoneDateTime(true);
+        } else if ("LocalDate".equals(dateType)) {
+            property.setLocalDate(true);
+        } else if ("Instant".equals(dateType)) {
             property.setInstant(true);
         }
     }
