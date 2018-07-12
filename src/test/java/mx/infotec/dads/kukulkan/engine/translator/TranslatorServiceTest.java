@@ -11,6 +11,7 @@ import org.apache.metamodel.factory.DataContextProperties;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -91,6 +92,7 @@ public class TranslatorServiceTest {
     }
 
     @Test
+    @Ignore
     public void grammarTranslatorServiceWithXtextSemanticAnalyzer() {
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
         Source fileSource = new FileSource("src/test/resources/domain-model.3k");

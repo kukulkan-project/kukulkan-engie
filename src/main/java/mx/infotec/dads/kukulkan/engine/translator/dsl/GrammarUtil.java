@@ -37,9 +37,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import mx.infotec.dads.kukulkan.dsl.KukulkanStandaloneSetupGenerated;
+import mx.infotec.dads.kukulkan.dsl.KukulkanStandaloneSetup;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
@@ -98,11 +99,11 @@ public class GrammarUtil {
     public static DomainModel getDomainModelAST(String file) {
         try {
             LOGGER.debug("Interpreting file {}", file);
-            Injector injector = new KukulkanStandaloneSetupGenerated().createInjectorAndDoEMFRegistration();
-            ResourceSet rs = injector.getInstance(ResourceSet.class);
-            Resource r = rs.getResource(URI.createFileURI(file), true);
-            r.load(null);
-            return (DomainModel) r.getContents().get(0);
+            Injector injector = new KukulkanStandaloneSetup().createInjectorAndDoEMFRegistration();
+            ResourceSet resourceSet = injector.getInstance(ResourceSet.class);
+            Resource resource = resourceSet.getResource(URI.createFileURI(file), true);
+            resource.load(null);
+            return (DomainModel) resource.getContents().get(0);
         } catch (IOException e) {
             throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);
         }
