@@ -3,7 +3,11 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping.resolveAssociationType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
+import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.CORE_USER;
+import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.ENTITY_USER;
+import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.determineUserCorePhysicalName;
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
+import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createIdJavaProperty;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToHyphens;
 import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToLowerCaseFirstChar;
@@ -11,10 +15,13 @@ import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.par
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.util.StringUtils;
+
 import mx.infotec.dads.kukulkan.dsl.kukulkan.AssociationField;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobValidators;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.CoreEntityAssociationField;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericValidators;
@@ -25,7 +32,6 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.util.KukulkanSwitch;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
@@ -66,22 +72,29 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private InflectorService inflectorService;
 
+    private boolean isPropertyToShow = false;
+
     public XtextSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
         this.pConf = pConf;
         this.inflectorService = inflectorService;
     }
 
     @Override
-    public VisitorContext caseAssociationField(AssociationField object) {
-        targetEntity = entityHolder.getEntity(object.getTargetEntity().getName(),
+    public VisitorContext caseAssociationField(AssociationField associationField) {
+        targetEntity = entityHolder.getEntity(associationField.getTargetEntity().getName(),
                 pConf.getDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
-        entityAssociation.setToTargetPropertyName(object.getId());
-        if (object.getToSourcePropertyName() != null) {
-            entityAssociation.setToSourcePropertyName(object.getToSourcePropertyName());
+        entityAssociation.setToTargetPropertyName(associationField.getId());
+        if (StringUtils.isEmpty(associationField.getToSourcePropertyName())) {
+            entityAssociation.setBidirectional(true);
+            entityAssociation.setToSourcePropertyName(associationField.getToSourcePropertyName());
+        } else {
+            entityAssociation.setBidirectional(false);
+            entityAssociation
+                    .setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
         }
-        visitCardinality(object.getType());
-        return super.caseAssociationField(object);
+        genericVisitCardinality(associationField.getType());
+        return super.caseAssociationField(associationField);
     }
 
     @Override
@@ -99,6 +112,20 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     @Override
+    public VisitorContext caseCoreEntityAssociationField(CoreEntityAssociationField coreEntityAssociationField) {
+        String associableEntity = coreEntityAssociationField.getTargetEntity();
+        if (CORE_USER.equals(associableEntity)) {
+            targetEntity = Entity.createDomainModelElement();
+            addMetaData(ENTITY_USER, determineUserCorePhysicalName(pConf), targetEntity,
+                    pConf.getDatabase().getDatabaseType());
+            entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
+            entityAssociation.setToTargetPropertyName(coreEntityAssociationField.getId());
+        }
+        genericVisitCardinality(coreEntityAssociationField.getType());
+        return super.caseCoreEntityAssociationField(coreEntityAssociationField);
+    }
+
+    @Override
     public VisitorContext caseDateFieldType(DateFieldType object) {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getType()));
         processFieldType(optional);
@@ -107,8 +134,10 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext caseEntity(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity object) {
+        String entityName = object.getName();
         sourceEntity = entityHolder.getEntity(object.getName(), pConf.getDatabase().getDatabaseType());
-        addMetaData(object, sourceEntity, pConf.getDatabase().getDatabaseType());
+        String tableName = StringUtils.isEmpty(object.getTableName()) ? object.getTableName() : null;
+        addMetaData(entityName, tableName, sourceEntity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
         return super.caseEntity(object);
     }
@@ -121,20 +150,23 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     @Override
-    public VisitorContext casePrimitiveField(PrimitiveField object) {
-        pfc = object;
-        propertyName = object.getId();
+    public VisitorContext casePrimitiveField(PrimitiveField primitiveField) {
+        pfc = primitiveField;
+        propertyName = primitiveField.getId();
         constraint = new Constraint();
-        super.doSwitch(object);
+        handlePrimitiveFieldMarkers(primitiveField.getMarkers());
+        super.doSwitch(primitiveField);
         javaProperty.setConstraint(constraint);
+        setPropertyToShow();
         return vctx;
     }
 
     @Override
-    public VisitorContext caseStringFieldType(StringFieldType object) {
-        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
+    public VisitorContext caseStringFieldType(StringFieldType stringFieldType) {
+        Optional<GrammarFieldType> optional = Optional
+                .of(GrammarFieldTypeMapping.getMap().get(stringFieldType.getName()));
         processFieldType(optional);
-        return super.caseStringFieldType(object);
+        return super.caseStringFieldType(stringFieldType);
     }
 
     @Override
@@ -206,6 +238,12 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         javaProperty.setSizeValidation(true);
     }
 
+    private void handlePrimitiveFieldMarkers(String marker) {
+        if ("->".equals(marker) && javaProperty.isString()) {
+            isPropertyToShow = true;
+        }
+    }
+
     /**
      * Gets the vctx.
      *
@@ -215,14 +253,8 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         return vctx;
     }
 
-    private void visitCardinality(String cardinality) {
-        entityAssociation.setType(resolveAssociationType(sourceEntity, cardinality));
-        if ((entityAssociation.getType().equals(AssociationType.ONE_TO_MANY)
-                || entityAssociation.getType().equals(AssociationType.MANY_TO_MANY))
-                && entityAssociation.getToSourcePropertyName() == null) {
-            entityAssociation
-                    .setToSourcePropertyName(parseToLowerCaseFirstChar(entityAssociation.getSource().getName()));
-        }
+    private void genericVisitCardinality(String type) {
+        entityAssociation.setType(resolveAssociationType(sourceEntity, type));
         entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
 
@@ -258,19 +290,24 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         }
     }
 
-    public void addMetaData(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity entityContext, Entity entity,
-            DatabaseType dbType) {
-        String singularName = singularize(entityContext.getName());
+    public void addMetaData(String entityName, String physicalName, Entity entity, DatabaseType dbType) {
+        String singularName = singularize(entityName);
         if (singularName == null) {
-            singularName = entityContext.getName();
+            singularName = entityName;
         }
-        entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityContext.getName())));
-        entity.setName(entityContext.getName());
+        if (physicalName == null || "".equals(physicalName)) {
+            entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityName)));
+        } else {
+            entity.setTableName(physicalName);
+        }
+        entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
+        entity.setName(entityName);
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
         entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
+        entity.setDisplayField(createIdJavaProperty());
     }
 
     private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
@@ -279,6 +316,13 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         // association so it is not necessary added to it
         if (!entityAssociation.isCycle()) {
             targetEntity.addAssociation(entityAssociation);
+        }
+    }
+
+    private void setPropertyToShow() {
+        if (isPropertyToShow) {
+            sourceEntity.setDisplayField(javaProperty);
+            isPropertyToShow = false;
         }
     }
 
@@ -316,13 +360,19 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             sourceEntity.getImports().add(JSON_IGNORE);
             break;
         case MANY_TO_ONE:
+            if (entityAssociation.isBidirectional()) {
+                targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
+                targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
+            }
             break;
         case MANY_TO_MANY:
             sourceEntity.getImports().add(JAVA_UTIL_COLLECTION);
             sourceEntity.getImports().add(JAVA_UTIL_HASH_SET);
-            targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
-            targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
-            targetEntity.getImports().add(JSON_IGNORE);
+            if (entityAssociation.isBidirectional()) {
+                targetEntity.getImports().add(JAVA_UTIL_COLLECTION);
+                targetEntity.getImports().add(JAVA_UTIL_HASH_SET);
+                targetEntity.getImports().add(JSON_IGNORE);
+            }
             break;
         default:
             break;
