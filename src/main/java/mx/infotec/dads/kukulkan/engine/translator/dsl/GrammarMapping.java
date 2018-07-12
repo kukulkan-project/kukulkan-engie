@@ -33,10 +33,9 @@ import java.util.Optional;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
-import mx.infotec.dads.kukulkan.dsl.parser.antlr.KukulkanParser;
-import mx.infotec.dads.kukulkan.dsl.services.KukulkanGrammarAccess;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobTypesContext;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
@@ -85,6 +84,27 @@ public class GrammarMapping {
     }
 
     /**
+     * Create a DataModelGroup Class.
+     *
+     * @param dmc
+     *            the dmc
+     * @param visitor
+     *            the visitor
+     * @return DataModelGroup
+     */
+    public static DomainModelGroup createDefaultDataModelGroup(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch) {
+        DomainModelGroup dmg = new DomainModelGroup();
+        dmg.setName("");
+        dmg.setDescription("Default package");
+        dmg.setBriefDescription("Default package");
+        dmg.setEntities(new ArrayList<>());
+        List<Entity> dmeList = new ArrayList<>();
+        createDataModelElement(dm, kukulkanSwitch, dmeList);
+        dmg.setEntities(dmeList);
+        return dmg;
+    }
+
+    /**
      * createDataModelElement is used for map the KukulkanGrammar to
      * DataModelElement.
      *
@@ -99,6 +119,23 @@ public class GrammarMapping {
             List<Entity> dmeList) {
         visitor.visit(dmc);
         dmeList.addAll(visitor.getVctx().getElements());
+    }
+
+    /**
+     * createDataModelElement is used for map the KukulkanGrammar to
+     * DataModelElement.
+     *
+     * @param dmc
+     *            the dmc
+     * @param visitor
+     *            the visitor
+     * @param dmeList
+     *            the dme list
+     */
+    private static void createDataModelElement(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch,
+            List<Entity> dmeList) {
+        kukulkanSwitch.caseDomainModel(dm);
+        dmeList.addAll(kukulkanSwitch.getVctx().getElements());
     }
 
     /**
@@ -289,6 +326,24 @@ public class GrammarMapping {
         DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
         dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));
+        return dataModelGroupList;
+    }
+
+    /**
+     * createSingleDataModelGroupList.
+     *
+     * @param visitor
+     *            the visitor
+     * @param file
+     *            the file
+     * @return the list
+     */
+    public static List<DomainModelGroup> createSingleDataModelGroupList(XtextSemanticAnalyzer kukulkanSwitch,
+            File file) {
+        String program = file.getAbsolutePath();
+        DomainModel ast = GrammarUtil.getDomainModelAST(program);
+        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
+        dataModelGroupList.add(createDefaultDataModelGroup(ast, kukulkanSwitch));
         return dataModelGroupList;
     }
 

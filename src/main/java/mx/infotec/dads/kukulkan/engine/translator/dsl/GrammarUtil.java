@@ -31,9 +31,16 @@ import java.io.InputStream;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Injector;
+
+import mx.infotec.dads.kukulkan.dsl.KukulkanStandaloneSetupGenerated;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
@@ -76,6 +83,26 @@ public class GrammarUtil {
             kukulkanLexer lexer;
             lexer = new kukulkanLexer(new ANTLRFileStream(file));
             return getDomainModelContext(lexer);
+        } catch (IOException e) {
+            throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);
+        }
+    }
+
+    /**
+     * Gets the domain model context.
+     *
+     * @param file
+     *            the file
+     * @return the domain model context
+     */
+    public static DomainModel getDomainModelAST(String file) {
+        try {
+            LOGGER.debug("Interpreting file {}", file);
+            Injector injector = new KukulkanStandaloneSetupGenerated().createInjectorAndDoEMFRegistration();
+            ResourceSet rs = injector.getInstance(ResourceSet.class);
+            Resource r = rs.getResource(URI.createFileURI(file), true);
+            r.load(null);
+            return (DomainModel) r.getContents().get(0);
         } catch (IOException e) {
             throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);
         }
