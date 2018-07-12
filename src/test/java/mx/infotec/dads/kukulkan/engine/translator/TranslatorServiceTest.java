@@ -8,8 +8,6 @@ import java.util.List;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
-import org.apache.metamodel.schema.Column;
-import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.junit.BeforeClass;
@@ -21,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import mx.infotec.dads.kukulkan.engine.config.InflectorConf;
+import mx.infotec.dads.kukulkan.engine.service.DefaultModelValidator;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseSource;
@@ -33,20 +31,21 @@ import mx.infotec.dads.kukulkan.engine.translator.database.DataStore;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStoreType;
 import mx.infotec.dads.kukulkan.engine.translator.database.DefaultSchemaAnalyzer;
 import mx.infotec.dads.kukulkan.engine.translator.database.SchemaAnalyzer;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.FileSource;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.XtextGrammarTranslatorService;
 import mx.infotec.dads.kukulkan.engine.util.EntityFactory;
 import mx.infotec.dads.kukulkan.engine.util.H2FileDatabaseConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
 import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class, SchemaAnalyzer.class,
-        DefaultSchemaAnalyzer.class, InflectorService.class, InflectorServiceImpl.class, Inflector.class,
-        SpanishInflector.class, EnglishInflector.class })
+@SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = { XtextGrammarTranslatorService.class,
+        DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
+        InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
+        DefaultModelValidator.class })
 @Import({ InflectorConf.class })
 public class TranslatorServiceTest {
 
@@ -55,17 +54,21 @@ public class TranslatorServiceTest {
     @Autowired
     private DataBaseTranslatorService translatorService;
 
+    @Autowired
+    private XtextGrammarTranslatorService grammarTranslatorService;
+
     @BeforeClass
     public static void runOnceBeforeClass() {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
+    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
         DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
         Source dataBaseSource = new DataBaseSource(dataStore);
-        DomainModel model = translatorService.translate(pConf, dataBaseSource);
+        translatorService.translate(pConf, dataBaseSource);
     }
 
     @Test
@@ -86,4 +89,12 @@ public class TranslatorServiceTest {
         }
         System.out.println("**********************************");
     }
+
+    @Test
+    public void grammarTranslatorServiceWithXtextSemanticAnalyzer() {
+        ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
+        Source fileSource = new FileSource("src/test/resources/domain-model.3k");
+        grammarTranslatorService.translate(pConf, fileSource);
+    }
+
 }

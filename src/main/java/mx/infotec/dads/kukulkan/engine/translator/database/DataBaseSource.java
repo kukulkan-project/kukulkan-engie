@@ -25,7 +25,7 @@ public class DataBaseSource implements Source {
     @Override
     public <T> Optional<T> getSource(Class<T> clazz) {
         Objects.requireNonNull(clazz);
-        if (!File.class.equals(clazz)) {
+        if (!DataStore.class.equals(clazz)) {
             throw new MetaModelException(
                     "incompatibility types, excepted java.io.File, but encontered" + clazz.toString());
         }

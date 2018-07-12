@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import mx.infotec.dads.kukulkan.engine.service.DefaultModelValidator;
-import mx.infotec.dads.kukulkan.engine.service.FileUtil;
 
 @RunWith(Parameterized.class)
 public class ModelValidatorTest {
