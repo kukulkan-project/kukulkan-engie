@@ -4,6 +4,7 @@ import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.to
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.metamodel.MetaModelException;
 
@@ -37,7 +38,7 @@ public class EntityHolder {
         }
         return source;
     }
-    
+
     /**
      * Get a entity from entityMap. This method return a default entity if not
      * present
@@ -45,12 +46,12 @@ public class EntityHolder {
      * @param entityName
      * @return
      */
-    public Entity getEntity(String entityName) {
+    public Optional<Entity> findEntity(String entityName) {
         Entity source = entityMap.get(entityName);
         if (source == null) {
-            throw new MetaModelException("The Entity is not registered : " + entityName);
+            return Optional.empty();
         }
-        return source;
+        return Optional.of(source);
     }
 
     /**

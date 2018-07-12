@@ -20,18 +20,6 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Override
-    public void processTable(SchemaAnalyzerContext context, Entity entity, Table table) {
-        
-        
-    }
-
-    @Override
-    public void processColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
         // TODO Auto-generated method stub
         
@@ -79,5 +67,6 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
         // TODO Auto-generated method stub
         
     }
+
 
 }
