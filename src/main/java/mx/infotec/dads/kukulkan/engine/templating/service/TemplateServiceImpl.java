@@ -72,7 +72,7 @@ public class TemplateServiceImpl implements TemplateService {
         if (templateOptional.isPresent()) {
             return Optional.of(processTemplate(templateOptional.get(), context));
         } else {
-            LOGGER.error("Template not foud : {}", context.getTemplatePath());
+            LOGGER.error("Template not found : {}", context.getTemplatePath());
             return Optional.empty();
         }
     }

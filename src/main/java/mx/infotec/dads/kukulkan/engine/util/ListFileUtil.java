@@ -26,6 +26,7 @@ package mx.infotec.dads.kukulkan.engine.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -54,7 +55,8 @@ public final class ListFileUtil {
     /**
      * List files in clazz source (this can be jar o source dir)
      *
-     * @param clazz Class to inspect.
+     * @param clazz
+     *            Class to inspect.
      * @return List in class source.
      */
     public static List<String> listFiles(Class clazz) {
@@ -64,8 +66,10 @@ public final class ListFileUtil {
     /**
      * List files in clazz source (this can be jar o source dir) with pattern.
      *
-     * @param clazz Class to inspect.
-     * @param pattern Regular expresion to match file name.
+     * @param clazz
+     *            Class to inspect.
+     * @param pattern
+     *            Regular expresion to match file name.
      * @return List in class source.
      */
     public static List<String> listFiles(Class clazz, String pattern) {
@@ -75,9 +79,12 @@ public final class ListFileUtil {
     /**
      * List files in clazz source (this can be jar o source dir) with pattern.
      *
-     * @param clazz Class to inspect.
-     * @param subDir Subdir in source.
-     * @param pattern Regular expresion to match file name.
+     * @param clazz
+     *            Class to inspect.
+     * @param subDir
+     *            Subdir in source.
+     * @param pattern
+     *            Regular expresion to match file name.
      * @return List of files in the source.
      */
     public static List<String> listFiles(Class clazz, String subDir, String pattern) {
@@ -198,11 +205,10 @@ public final class ListFileUtil {
         List<String> res = new ArrayList<>();
 
         String subDirExtra;
-
         if (subDir == null) {
             subDirExtra = null;
         } else {
-            subDirExtra = dir.getPath() + '/' + subDir;
+            subDirExtra = Paths.get(dir.getPath()).resolve(subDir).toString();
         }
 
         int idx = getIdx(subDirExtra);

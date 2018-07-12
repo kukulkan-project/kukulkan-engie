@@ -21,9 +21,10 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
-		<metamodel.version>5.0-RC4</metamodel.version>
+		<metamodel.version>5.1.0</metamodel.version>
 		<cucumber.version>1.2.4</cucumber.version>
 		<mongobee.version>0.12</mongobee.version>
+		<jgit.version>4.11.0.201803080745-r</jgit.version>
 		<xtextVersion>2.13.0</xtextVersion>
 	</properties>
 
@@ -124,6 +125,44 @@
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>xtext-antlr-generator</artifactId>
 			<version>[2.1.1, 3)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>${jgit.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit.junit</artifactId>
+			<version>${jgit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mx.infotec.dads.kukulkan</groupId>
+			<artifactId>kukulkan-metamodel</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mx.infotec.dads.nlp</groupId>
+			<artifactId>inflector</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.metamodel</groupId>
+			<artifactId>MetaModel-jdbc</artifactId>
+			<version>${metamodel.version}</version>
 		</dependency>
 	</dependencies>
 

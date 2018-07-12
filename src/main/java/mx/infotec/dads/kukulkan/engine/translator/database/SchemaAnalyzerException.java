@@ -1,4 +1,4 @@
-package mx.infotec.dads.kukulkan.engine.translator.dsl;
+package mx.infotec.dads.kukulkan.engine.translator.database;
 
 /**
  * {@link SchemaAnalyzerException}
@@ -6,7 +6,7 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
  * @author Daniel Cortes Pichardo
  *
  */
-public class SemanticAnalyzerException extends RuntimeException {
+public class SchemaAnalyzerException extends RuntimeException {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class SemanticAnalyzerException extends RuntimeException {
     /**
      * Instantiates a new meta model exception.
      */
-    public SemanticAnalyzerException() {
+    public SchemaAnalyzerException() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class SemanticAnalyzerException extends RuntimeException {
      * @param s
      *            the s
      */
-    public SemanticAnalyzerException(String s) {
+    public SchemaAnalyzerException(String s) {
         super(s);
     }
 
@@ -36,7 +36,7 @@ public class SemanticAnalyzerException extends RuntimeException {
      * @param throwable
      *            the throwable
      */
-    public SemanticAnalyzerException(String s, Throwable throwable) {
+    public SchemaAnalyzerException(String s, Throwable throwable) {
         super(s, throwable);
     }
 
@@ -46,7 +46,7 @@ public class SemanticAnalyzerException extends RuntimeException {
      * @param throwable
      *            the throwable
      */
-    public SemanticAnalyzerException(Throwable throwable) {
+    public SchemaAnalyzerException(Throwable throwable) {
         super(throwable);
     }
 }
