@@ -142,9 +142,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         entity.setPrimaryKey(createDefaultPrimaryKey(databaseType));
         entity.setDisplayField(createIdJavaProperty());
     }
-
-    public abstract void processColumn(final SchemaAnalyzerContext context, final Entity entity, final Column column);
-
+    
     public abstract void processPrimaryKey(SchemaAnalyzerContext context, final Entity entity, Column column);
 
     public abstract void processTimeBasedColumn(final SchemaAnalyzerContext context, final Entity entity,

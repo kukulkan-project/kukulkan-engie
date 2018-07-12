@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
+import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
@@ -46,7 +47,7 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 @ContextConfiguration(classes = { TranslatorService.class, DataBaseTranslatorService.class, SchemaAnalyzer.class,
         DefaultSchemaAnalyzer.class, InflectorService.class, InflectorServiceImpl.class, Inflector.class,
         SpanishInflector.class, EnglishInflector.class })
-@Import({InflectorConf.class})
+@Import({ InflectorConf.class })
 public class TranslatorServiceTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TranslatorServiceTest.class);
@@ -79,11 +80,9 @@ public class TranslatorServiceTest {
         List<Table> tables = schema.getTables();
         for (Table table : tables) {
             System.out.println("Table Name :: " + table.getName());
-
-            for (Relationship relationship : table.getRelationships()) {
-                System.out.println("Relationship :: " + relationship.toString());
-            }
-
+            table.getColumns().forEach(column -> {
+                System.out.println("name[" + column.getName() + "] type[" + column.getType() + "]");
+            });
         }
         System.out.println("**********************************");
     }
