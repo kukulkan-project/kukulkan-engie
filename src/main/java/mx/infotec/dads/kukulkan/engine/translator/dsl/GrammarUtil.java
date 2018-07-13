@@ -26,20 +26,13 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Injector;
-
-import mx.infotec.dads.kukulkan.dsl.KukulkanStandaloneSetup;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
@@ -74,11 +67,9 @@ public class GrammarUtil {
      *            the file
      * @return the domain model context
      */
-    public static DomainModel getDomainModelAST(String file) {
+    public static DomainModel getDomainModelAST(String file, ResourceSet resourceSet) {
         try {
             LOGGER.debug("Interpreting file {}", file);
-            Injector injector = new KukulkanStandaloneSetup().createInjectorAndDoEMFRegistration();
-            ResourceSet resourceSet = injector.getInstance(ResourceSet.class);
             Resource resource = resourceSet.getResource(URI.createFileURI(file), true);
             resource.load(null);
             return (DomainModel) resource.getContents().get(0);

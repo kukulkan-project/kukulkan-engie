@@ -4,6 +4,7 @@ import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTransl
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import mx.infotec.dads.kukulkan.engine.config.InflectorConf;
+import mx.infotec.dads.kukulkan.engine.config.XtextDSLConfiguration;
 import mx.infotec.dads.kukulkan.engine.service.DefaultModelValidator;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
@@ -48,7 +50,7 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
         DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
         InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
         DefaultModelValidator.class })
-@Import({ InflectorConf.class })
+@Import({ InflectorConf.class, XtextDSLConfiguration.class })
 public class TranslatorServiceTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TranslatorServiceTest.class);
@@ -97,7 +99,20 @@ public class TranslatorServiceTest {
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
         Source fileSource = new FileSource("/home/roberto/git/kukulkan-engine/src/test/resources/domain-model.3k");
         DomainModel dm = grammarTranslatorService.translate(pConf, fileSource);
+        getEntity(dm, "Persona").ifPresent(entity -> {
+            assert "id".equals(entity.getDisplayField().getName());
+        });
+        ;
         assert !dm.getDomainModelGroup().get(0).getEntities().isEmpty();
+    }
+
+    private static Optional<Entity> getEntity(DomainModel domainModel, String entityName) {
+        for (Entity entity : domainModel.getDomainModelGroup().get(0).getEntities()) {
+            if (entityName.equals(entity.getName())) {
+                return Optional.of(entity);
+            }
+        }
+        return Optional.empty();
     }
 
 }

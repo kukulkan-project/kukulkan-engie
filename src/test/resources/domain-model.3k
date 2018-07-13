@@ -1,21 +1,22 @@
-entity Monstruo (usuarios){
-    nombre  String required min(3) max(50) pattern(persona),
-    edad  Integer required,
-    -> numero  Long,
-    sueldo  BigDecimal,
-    impuesto  Float,
-    impuestoDetalle  Double,
-    activo  Boolean,
-    fechaLocalDate  LocalDate,
-    fechaZoneDateTime  ZonedDateTime,
-    imagen  Blob,
-    imagenAnyBlob  AnyBlob,
-    imagenBlob  ImageBlob,
-    desc  TextBlob,
-    instante  Instant
+entity Persona (usuarios){
+    nombre : String required min(3) max(50) pattern(persona),
+    edad : Integer required,
+    -> numero : Long,
+    sueldo : BigDecimal,
+    impuesto : Float,
+    impuestoDetalle : Double,
+    activo : Boolean,
+    fechaLocalDate : LocalDate,
+    fechaZoneDateTime : ZonedDateTime,
+    imagen : Blob,
+    imagenAnyBlob : AnyBlob,
+    imagenBlob : ImageBlob,
+    desc : TextBlob,
+    instante : Instant,
+    OneToOne direccion : Direccion
 }
 
-entity Bala (direcciones){
-    calle: String,
-    numero: Integer
+entity Direccion (direcciones){
+    calle : String,
+    numero : Integer
 }

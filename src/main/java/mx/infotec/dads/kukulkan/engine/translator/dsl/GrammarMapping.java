@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
@@ -90,7 +92,7 @@ public class GrammarMapping {
      */
     private static void createDataModelElement(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch,
             List<Entity> dmeList) {
-        kukulkanSwitch.caseDomainModel(dm);
+        kukulkanSwitch.doSwitch(dm);
         dmeList.addAll(kukulkanSwitch.getVctx().getElements());
     }
 
@@ -201,10 +203,10 @@ public class GrammarMapping {
      *            the file
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(XtextSemanticAnalyzer kukulkanSwitch,
-            File file) {
+    public static List<DomainModelGroup> createSingleDataModelGroupList(XtextSemanticAnalyzer kukulkanSwitch, File file,
+            ResourceSet resourceSet) {
         String program = file.getAbsolutePath();
-        DomainModel ast = GrammarUtil.getDomainModelAST(program);
+        DomainModel ast = GrammarUtil.getDomainModelAST(program, resourceSet);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
         dataModelGroupList.add(createDefaultDataModelGroup(ast, kukulkanSwitch));
         return dataModelGroupList;
