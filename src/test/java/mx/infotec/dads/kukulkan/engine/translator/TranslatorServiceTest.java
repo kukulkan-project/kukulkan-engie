@@ -11,7 +11,6 @@ import org.apache.metamodel.factory.DataContextProperties;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -37,6 +36,8 @@ import mx.infotec.dads.kukulkan.engine.translator.dsl.XtextGrammarTranslatorServ
 import mx.infotec.dads.kukulkan.engine.util.EntityFactory;
 import mx.infotec.dads.kukulkan.engine.util.H2FileDatabaseConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
@@ -92,11 +93,11 @@ public class TranslatorServiceTest {
     }
 
     @Test
-    @Ignore
     public void grammarTranslatorServiceWithXtextSemanticAnalyzer() {
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
-        Source fileSource = new FileSource("src/test/resources/domain-model.3k");
-        grammarTranslatorService.translate(pConf, fileSource);
+        Source fileSource = new FileSource("/home/roberto/git/kukulkan-engine/src/test/resources/domain-model.3k");
+        DomainModel dm = grammarTranslatorService.translate(pConf, fileSource);
+        assert !dm.getDomainModelGroup().get(0).getEntities().isEmpty();
     }
 
 }

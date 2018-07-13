@@ -23,21 +23,15 @@
  */
 package mx.infotec.dads.kukulkan.engine.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.metamodel.DataContext;
-import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Table;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarSemanticAnalyzer;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DomainModelContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;

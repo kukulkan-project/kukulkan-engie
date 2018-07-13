@@ -23,6 +23,7 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobValidators;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.CoreEntityAssociationField;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericValidators;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
@@ -75,6 +76,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     private boolean isPropertyToShow = false;
 
     public XtextSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
+        // super();
         this.pConf = pConf;
         this.inflectorService = inflectorService;
     }
@@ -130,6 +132,14 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getType()));
         processFieldType(optional);
         return super.caseDateFieldType(object);
+    }
+
+    @Override
+    public VisitorContext caseDomainModel(DomainModel domainModel) {
+        for (mx.infotec.dads.kukulkan.dsl.kukulkan.Entity entity : domainModel.getEntities()) {
+            doSwitch(entity);
+        }
+        return super.caseDomainModel(domainModel);
     }
 
     @Override

@@ -34,7 +34,6 @@ import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 
@@ -159,8 +158,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBigDecimal()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isBigDecimal()
      */
     @Override
     public boolean isBigDecimal() {
@@ -221,8 +219,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isZoneDateTime()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isZoneDateTime()
      */
     @Override
     public boolean isZoneDateTime() {
@@ -379,8 +376,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getAssociations()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getAssociations()
      */
     @Override
     @SuppressWarnings("rawtypes")
@@ -401,8 +397,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnName()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnName()
      */
     @Override
     public String getColumnName() {
@@ -412,8 +407,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnType()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getColumnType()
      */
     @Override
     public String getColumnType() {
@@ -446,8 +440,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#getConstraint()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#getConstraint()
      */
     @Override
     public Constraint getConstraint() {
@@ -739,18 +732,6 @@ public class JavaProperty implements Property<JavaProperty> {
          *            the type
          * @return the java property builder
          */
-        public JavaPropertyBuilder addType(FieldTypeContext type) {
-            GrammarMapping.addType(javaProperty, type);
-            return this;
-        }
-        
-        /**
-         * Adds the type.
-         *
-         * @param type
-         *            the type
-         * @return the java property builder
-         */
         public JavaPropertyBuilder addType(FieldType type) {
             GrammarMapping.addType(javaProperty, type);
             return this;
@@ -850,8 +831,7 @@ public class JavaProperty implements Property<JavaProperty> {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLargeObject()
+     * @see mx.infotec.dads.kukulkan.metamodel.foundation.Property#isLargeObject()
      */
     @Override
     public boolean isLargeObject() {

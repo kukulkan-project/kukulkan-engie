@@ -38,8 +38,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
@@ -112,48 +110,6 @@ public class GrammarFieldTypeMapping {
      */
     public static GrammarFieldType getPropertyType(String property) {
         return getMap().get(property);
-    }
-
-    /**
-     * Gets the numeric type.
-     *
-     * @param numericTypes
-     *            the numeric types
-     * @return the numeric type
-     */
-    public static String getNumericType(NumericTypesContext numericTypes) {
-        if (numericTypes.LONG() != null) {
-            return numericTypes.LONG().getText();
-        } else if (numericTypes.FLOAT() != null) {
-            return numericTypes.FLOAT().getText();
-        } else if (numericTypes.INTEGER() != null) {
-            return numericTypes.INTEGER().getText();
-        } else if (numericTypes.BIG_DECIMAL() != null) {
-            return numericTypes.BIG_DECIMAL().getText();
-        } else if (numericTypes.DOUBLE() != null) {
-            return numericTypes.DOUBLE().getText();
-        } else {
-            throw new MetaModelException("Numeric Type Not Found for: " + numericTypes.getText());
-        }
-    }
-
-    /**
-     * Gets the date type.
-     *
-     * @param dataTypes
-     *            the data types
-     * @return the date type
-     */
-    public static String getDateType(DateTypesContext dataTypes) {
-        if (dataTypes.INSTANT() != null) {
-            return dataTypes.INSTANT().getText();
-        } else if (dataTypes.LOCAL_DATE() != null) {
-            return dataTypes.LOCAL_DATE().getText();
-        } else if (dataTypes.ZONED_DATETIME() != null) {
-            return dataTypes.ZONED_DATETIME().getText();
-        } else {
-            throw new MetaModelException("Date Type Not Found for: " + dataTypes.getText());
-        }
     }
 
     public static void configurateGrammarFieldType(GrammarFieldType propertyType, JavaProperty javaProperty) {

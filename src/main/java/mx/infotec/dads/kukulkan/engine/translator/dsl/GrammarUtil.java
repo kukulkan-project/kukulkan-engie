@@ -28,25 +28,21 @@ import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.to
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonTokenStream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import mx.infotec.dads.kukulkan.dsl.KukulkanStandaloneSetup;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -78,24 +74,6 @@ public class GrammarUtil {
      *            the file
      * @return the domain model context
      */
-    public static kukulkanParser.DomainModelContext getDomainModelContext(String file) {
-        try {
-            LOGGER.debug("Interpreting file {}", file);
-            kukulkanLexer lexer;
-            lexer = new kukulkanLexer(new ANTLRFileStream(file));
-            return getDomainModelContext(lexer);
-        } catch (IOException e) {
-            throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);
-        }
-    }
-
-    /**
-     * Gets the domain model context.
-     *
-     * @param file
-     *            the file
-     * @return the domain model context
-     */
     public static DomainModel getDomainModelAST(String file) {
         try {
             LOGGER.debug("Interpreting file {}", file);
@@ -107,69 +85,6 @@ public class GrammarUtil {
         } catch (IOException e) {
             throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);
         }
-    }
-
-    /**
-     * Gets the domain model context.
-     *
-     * @param file
-     *            the file
-     * @param isText
-     *            the is text
-     * @return the domain model context
-     */
-    public static kukulkanParser.DomainModelContext getDomainModelContext(String file, boolean isText) {
-        if (isText) {
-            try {
-                LOGGER.debug("Interpreting file {}", file);
-                kukulkanLexer lexer;
-                lexer = new kukulkanLexer(new ANTLRInputStream(file));
-                return getDomainModelContext(lexer);
-            } catch (Exception e) {
-                throw new MetaModelException("getDomainModelContext Error: ", e);
-            }
-        } else {
-            return getDomainModelContext(file);
-        }
-    }
-
-    /**
-     * Gets the domain model context.
-     *
-     * @param lexer
-     *            the lexer
-     * @return the domain model context
-     */
-    public static kukulkanParser.DomainModelContext getDomainModelContext(kukulkanLexer lexer) {
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        kukulkanParser parser = new kukulkanParser(tokens);
-        return parser.domainModel();
-    }
-
-    /**
-     * Gets the kukulkan lexer.
-     *
-     * @param file
-     *            the file
-     * @return the kukulkan lexer
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public static kukulkanLexer getKukulkanLexer(String file) throws IOException {
-        return new kukulkanLexer(new ANTLRFileStream(file));
-    }
-
-    /**
-     * Gets the kukulkan lexer.
-     *
-     * @param is
-     *            the is
-     * @return the kukulkan lexer
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public static kukulkanLexer getKukulkanLexer(InputStream is) throws IOException {
-        return new kukulkanLexer(new ANTLRInputStream(is));
     }
 
     /**
@@ -187,24 +102,6 @@ public class GrammarUtil {
         if (propertyType.isBinary()) {
             entity.addProperty(createContentTypeProperty(propertyName, dbType));
         }
-    }
-
-    /**
-     * Creates the java property.
-     *
-     * @param field
-     *            the field
-     * @param propertyName
-     *            the property name
-     * @param propertyType
-     *            the property type
-     * @return the java property
-     */
-    public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
-            GrammarFieldType propertyType, DatabaseType dbType) {
-        return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
-                .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).addType(field.type).build();
     }
 
     /**

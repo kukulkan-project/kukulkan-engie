@@ -37,11 +37,6 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.BlobTypesContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DateTypesContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DomainModelContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.FieldTypeContext;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.NumericTypesContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
@@ -70,28 +65,6 @@ public class GrammarMapping {
      *            the visitor
      * @return DataModelGroup
      */
-    public static DomainModelGroup createDefaultDataModelGroup(DomainModelContext dmc,
-            GrammarSemanticAnalyzer visitor) {
-        DomainModelGroup dmg = new DomainModelGroup();
-        dmg.setName("");
-        dmg.setDescription("Default package");
-        dmg.setBriefDescription("Default package");
-        dmg.setEntities(new ArrayList<>());
-        List<Entity> dmeList = new ArrayList<>();
-        createDataModelElement(dmc, visitor, dmeList);
-        dmg.setEntities(dmeList);
-        return dmg;
-    }
-
-    /**
-     * Create a DataModelGroup Class.
-     *
-     * @param dmc
-     *            the dmc
-     * @param visitor
-     *            the visitor
-     * @return DataModelGroup
-     */
     public static DomainModelGroup createDefaultDataModelGroup(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch) {
         DomainModelGroup dmg = new DomainModelGroup();
         dmg.setName("");
@@ -102,23 +75,6 @@ public class GrammarMapping {
         createDataModelElement(dm, kukulkanSwitch, dmeList);
         dmg.setEntities(dmeList);
         return dmg;
-    }
-
-    /**
-     * createDataModelElement is used for map the KukulkanGrammar to
-     * DataModelElement.
-     *
-     * @param dmc
-     *            the dmc
-     * @param visitor
-     *            the visitor
-     * @param dmeList
-     *            the dme list
-     */
-    private static void createDataModelElement(DomainModelContext dmc, GrammarSemanticAnalyzer visitor,
-            List<Entity> dmeList) {
-        visitor.visit(dmc);
-        dmeList.addAll(visitor.getVctx().getElements());
     }
 
     /**
@@ -165,28 +121,6 @@ public class GrammarMapping {
      * @param type
      *            the type
      */
-    public static void addType(JavaProperty javaProperty, FieldTypeContext type) {
-        if (type.booleanFieldType() != null) {
-            javaProperty.setBoolean(true);
-        } else if (type.dateFieldType() != null) {
-            setKindOfDateType(javaProperty, type.dateFieldType().type);
-        } else if (type.blobFieldType() != null) {
-            setKindOfBlobType(javaProperty, type.blobFieldType().blobTypes());
-        } else if (type.numericFieldType() != null) {
-            setKindOfNumeric(javaProperty, type.numericFieldType().numericTypes());
-        } else if (type.stringFieldType() != null) {
-            javaProperty.setString(true);
-        }
-    }
-
-    /**
-     * Adds the type.
-     *
-     * @param javaProperty
-     *            the java property
-     * @param type
-     *            the type
-     */
     public static void addType(JavaProperty javaProperty, mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType type) {
         if (type instanceof BooleanFieldType) {
             javaProperty.setBoolean(true);
@@ -212,45 +146,9 @@ public class GrammarMapping {
      * @param type
      *            the type
      */
-    private static void setKindOfNumeric(JavaProperty javaProperty, NumericTypesContext type) {
-        if (type.BIG_DECIMAL() != null) {
-            javaProperty.setBigDecimal(true);
-        }
-    }
-
-    /**
-     * Sets the kind of numeric.
-     *
-     * @param javaProperty
-     *            the java property
-     * @param type
-     *            the type
-     */
     private static void setKindOfNumeric(JavaProperty javaProperty, String type) {
         if ("BigDecimal".equals(type)) {
             javaProperty.setBigDecimal(true);
-        }
-    }
-
-    /**
-     * Sets the kind of blob type.
-     *
-     * @param property
-     *            the property
-     * @param ctx
-     *            the ctx
-     */
-    private static void setKindOfBlobType(JavaProperty property, BlobTypesContext ctx) {
-        if (ctx.BLOB() != null) {
-            property.setBlob(true);
-        } else if (ctx.ANY_BLOB() != null) {
-            property.setBlob(true);
-            property.setAnyBlob(true);
-        } else if (ctx.IMAGE_BLOB() != null) {
-            property.setBlob(true);
-            property.setImageBlob(true);
-        } else if (ctx.TEXT_BLOB() != null) {
-            property.setClob(true);
         }
     }
 
@@ -284,24 +182,6 @@ public class GrammarMapping {
      * @param type
      *            the type
      */
-    private static void setKindOfDateType(JavaProperty property, DateTypesContext type) {
-        if (type.ZONED_DATETIME() != null) {
-            property.setZoneDateTime(true);
-        } else if (type.LOCAL_DATE() != null) {
-            property.setLocalDate(true);
-        } else if (type.INSTANT() != null) {
-            property.setInstant(true);
-        }
-    }
-
-    /**
-     * Sets the kind of date type.
-     *
-     * @param property
-     *            the property
-     * @param type
-     *            the type
-     */
     private static void setKindOfDateType(JavaProperty property, String dateType) {
         if ("ZonedDateTime".equals(dateType)) {
             property.setZoneDateTime(true);
@@ -310,23 +190,6 @@ public class GrammarMapping {
         } else if ("Instant".equals(dateType)) {
             property.setInstant(true);
         }
-    }
-
-    /**
-     * createSingleDataModelGroupList.
-     *
-     * @param visitor
-     *            the visitor
-     * @param file
-     *            the file
-     * @return the list
-     */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor, File file) {
-        String program = file.getAbsolutePath();
-        DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
-        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-        dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));
-        return dataModelGroupList;
     }
 
     /**
@@ -348,23 +211,6 @@ public class GrammarMapping {
     }
 
     /**
-     * createSingleDataModelGroupList.
-     *
-     * @param visitor
-     *            the visitor
-     * @param textFile
-     *            the text file
-     * @return the list
-     */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer visitor,
-            String textFile) {
-        DomainModelContext tree = GrammarUtil.getDomainModelContext(textFile, true);
-        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-        dataModelGroupList.add(createDefaultDataModelGroup(tree, visitor));
-        return dataModelGroupList;
-    }
-
-    /**
      * Gets the property type.
      *
      * @param type
@@ -373,29 +219,6 @@ public class GrammarMapping {
      */
     public static Optional<GrammarFieldType> getPropertyType(String type) {
         return Optional.of(GrammarFieldTypeMapping.getPropertyType(type));
-    }
-
-    /**
-     * createSingleDataModelGroupList.
-     *
-     * @param visitor
-     *            the visitor
-     * @return the list
-     */
-    public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
-        String program = "src/test/resources/grammar/single-entity." + "3k";
-        DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
-        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-        dataModelGroupList.add(GrammarMapping.createDefaultDataModelGroup(tree, visitor));
-        return dataModelGroupList;
-    }
-
-    public static List<DomainModelGroup> createRelationshipTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
-        String program = "src/test/resources/grammar/relationship-entity." + "3k";
-        DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
-        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-        dataModelGroupList.add(GrammarMapping.createDefaultDataModelGroup(tree, visitor));
-        return dataModelGroupList;
     }
 
     public static AssociationType resolveAssociationType(Entity sourceEntity, String type) {

@@ -1,31 +1,18 @@
 package mx.infotec.dads.kukulkan.engine.util;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStore;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStoreType;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarSemanticAnalyzer;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.DomainModelContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Database;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.TableTypes;
 import mx.infotec.dads.kukulkan.metamodel.util.PKGenerationStrategy;
 
 public class EntityFactory {
 
-    /**
-     * createSingleDataModelGroupList.
-     *
-     * @param visitor
-     *            the visitor
-     * @return the list
-     */
+    /*
     public static List<DomainModelGroup> createSingleTestDataModelGroupList(GrammarSemanticAnalyzer visitor) {
         String program = "src/test/resources/grammar/single-entity." + "3k";
         DomainModelContext tree = GrammarUtil.getDomainModelContext(program);
@@ -41,7 +28,7 @@ public class EntityFactory {
         dataModelGroupList.add(GrammarMapping.createDefaultDataModelGroup(tree, visitor));
         return dataModelGroupList;
     }
-
+*/
     public static ProjectConfiguration createProjectConfiguration(DatabaseType type) {
         ProjectConfiguration pConf = new ProjectConfiguration();
         pConf.setId("kukulkan");
