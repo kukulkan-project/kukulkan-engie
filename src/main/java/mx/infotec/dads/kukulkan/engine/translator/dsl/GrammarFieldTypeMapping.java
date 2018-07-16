@@ -183,9 +183,11 @@ public class GrammarFieldTypeMapping {
             javaProperty.setFloat(true);
             break;
         case ANY_BLOB:
+            javaProperty.setBlob(true);
             javaProperty.setAnyBlob(true);
             break;
         case IMAGE_BLOB:
+            javaProperty.setBlob(true);
             javaProperty.setImageBlob(true);
             break;
         case BLOB:
@@ -194,8 +196,15 @@ public class GrammarFieldTypeMapping {
         case TEXT_BLOB:
             javaProperty.setTextBlob(true);
             break;
-        default:
+        case STRING:
+            javaProperty.setString(true);
             break;
+        case BOOLEAN_TYPE:
+            javaProperty.setBoolean(true);
+            break;
+        default:
+            throw new MetaModelException("Property not found : "+propertyType.getFieldType());
+//            break;
         }
     }
 

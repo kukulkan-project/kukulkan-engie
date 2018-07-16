@@ -1,7 +1,5 @@
 package mx.infotec.dads.kukulkan.engine.language;
 
-import java.util.Optional;
-
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;

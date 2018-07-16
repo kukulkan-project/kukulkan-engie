@@ -8,8 +8,6 @@ import java.util.List;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
-import org.apache.metamodel.schema.Column;
-import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.junit.BeforeClass;
