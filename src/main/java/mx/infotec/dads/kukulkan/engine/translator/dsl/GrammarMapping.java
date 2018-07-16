@@ -30,12 +30,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.KukulkanPackage;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
@@ -92,7 +96,10 @@ public class GrammarMapping {
      */
     private static void createDataModelElement(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch,
             List<Entity> dmeList) {
-        kukulkanSwitch.doSwitch(dm);
+        TreeIterator<EObject> treeIt = EcoreUtil.getAllProperContents(dm, true);
+        while (treeIt.hasNext()) {
+            kukulkanSwitch.doSwitch(treeIt.next());
+        }
         dmeList.addAll(kukulkanSwitch.getVctx().getElements());
     }
 

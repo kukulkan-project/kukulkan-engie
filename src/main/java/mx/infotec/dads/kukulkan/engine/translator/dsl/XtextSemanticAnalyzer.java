@@ -136,7 +136,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     public VisitorContext caseEntity(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity object) {
         String entityName = object.getName();
         sourceEntity = entityHolder.getEntity(object.getName(), pConf.getDatabase().getDatabaseType());
-        String tableName = StringUtils.isEmpty(object.getTableName()) ? object.getTableName() : null;
+        String tableName = !StringUtils.isEmpty(object.getTableName()) ? object.getTableName() : null;
         addMetaData(entityName, tableName, sourceEntity, pConf.getDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
         return super.caseEntity(object);
@@ -155,9 +155,6 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         propertyName = primitiveField.getId();
         constraint = new Constraint();
         handlePrimitiveFieldMarkers(primitiveField.getMarkers());
-        super.doSwitch(primitiveField);
-        javaProperty.setConstraint(constraint);
-        setPropertyToShow();
         return vctx;
     }
 
@@ -218,7 +215,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     private void handleRequiredField() {
-        constraint.setNullable(true);
+        constraint.setNullable(false);
         sourceEntity.setHasNotNullElements(true);
         sourceEntity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
@@ -239,7 +236,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     private void handlePrimitiveFieldMarkers(String marker) {
-        if ("->".equals(marker) && javaProperty.isString()) {
+        if ("->".equals(marker)) {
             isPropertyToShow = true;
         }
     }
@@ -283,6 +280,10 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             GrammarFieldType grammarPropertyType = optional.get();
             javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType,
                     pConf.getDatabase().getDatabaseType());
+
+            javaProperty.setConstraint(constraint);
+            setPropertyToShow();
+
             sourceEntity.addProperty(javaProperty);
             addContentType(sourceEntity, propertyName, pConf.getDatabase().getDatabaseType(), grammarPropertyType);
             GrammarMapping.addImports(sourceEntity.getImports(), javaProperty);
@@ -295,7 +296,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         if (singularName == null) {
             singularName = entityName;
         }
-        if (physicalName == null || "".equals(physicalName)) {
+        if (StringUtils.isEmpty(physicalName)) {
             entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityName)));
         } else {
             entity.setTableName(physicalName);
