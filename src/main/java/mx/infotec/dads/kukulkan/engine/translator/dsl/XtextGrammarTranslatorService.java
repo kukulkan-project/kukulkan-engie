@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.ModelValidator;
@@ -15,6 +16,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
+@Service(value = "grammarTranslatorService")
 public class XtextGrammarTranslatorService implements TranslatorService {
 
     @Autowired
