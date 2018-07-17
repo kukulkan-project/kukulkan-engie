@@ -1,5 +1,5 @@
 entity Persona (usuarios){
-    nombre : String required min(3) max(50) pattern(persona),
+    nombre : String required min(3) max(50) pattern("persona"),
     edad : Integer required,
     -> numero : Long,
     sueldo : BigDecimal,

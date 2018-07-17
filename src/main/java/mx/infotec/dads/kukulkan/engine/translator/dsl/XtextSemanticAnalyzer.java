@@ -85,7 +85,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
                 pConf.getDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setToTargetPropertyName(associationField.getId());
-        if (StringUtils.isEmpty(associationField.getToSourcePropertyName())) {
+        if (!StringUtils.isEmpty(associationField.getToSourcePropertyName())) {
             entityAssociation.setBidirectional(true);
             entityAssociation.setToSourcePropertyName(associationField.getToSourcePropertyName());
         } else {
@@ -172,16 +172,17 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             handleRequiredField();
         }
         if (object.getPattern() != null) {
-            constraint.setPattern(object.getPattern().substring(1, object.getPattern().length() - 1));
+            constraint.setPattern(
+                    object.getPattern().getPattern().substring(1, object.getPattern().getPattern().length() - 1));
             sourceEntity.setHasConstraints(true);
             javaProperty.setHasConstraints(true);
             javaProperty.setHasConstraints(true);
         }
         if (object.getMinLenght() != null) {
-            handleMinLength(object.getMinLenght());
+            handleMinLength(object.getMinLenght().getValue());
         }
         if (object.getMaxLenght() != null) {
-            handleMaxLenght(object.getMaxLenght());
+            handleMaxLenght(object.getMaxLenght().getValue());
         }
         return super.caseStringValidators(object);
     }
@@ -192,10 +193,10 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             handleRequiredField();
         }
         if (object.getMinBytesValue() != null) {
-            handleMinLength(object.getMinBytesValue());
+            handleMinLength(object.getMinBytesValue().getValue());
         }
         if (object.getMaxBytesValue() != null) {
-            handleMaxLenght(object.getMaxBytesValue());
+            handleMaxLenght(object.getMaxBytesValue().getValue());
         }
         return super.caseBlobValidators(object);
     }
@@ -206,10 +207,10 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             handleRequiredField();
         }
         if (object.getMinValue() != null) {
-            handleMinLength(object.getMinValue());
+            handleMinLength(object.getMinValue().getValue());
         }
         if (object.getMaxValue() != null) {
-            handleMaxLenght(object.getMaxValue());
+            handleMaxLenght(object.getMaxValue().getValue());
         }
         return super.caseNumericValidators(object);
     }
@@ -221,15 +222,15 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         javaProperty.setHasConstraints(true);
     }
 
-    private void handleMinLength(String minLength) {
-        constraint.setMin(minLength);
+    private void handleMinLength(int minLength) {
+        constraint.setMin(Integer.toString(minLength));
         sourceEntity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         javaProperty.setSizeValidation(true);
     }
 
-    private void handleMaxLenght(String maxLength) {
-        constraint.setMax(maxLength);
+    private void handleMaxLenght(int maxLength) {
+        constraint.setMax(Integer.toString(maxLength));
         sourceEntity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         javaProperty.setSizeValidation(true);

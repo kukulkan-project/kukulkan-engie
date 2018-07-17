@@ -116,12 +116,15 @@ public class TranslatorServiceTest {
         assert "nombre".equals(nombreProp.getName());
         Constraint nombreConstraint = nombreProp.getConstraint();
 
-//        assert !nombreConstraint.isNullable() && "3".equals(nombreConstraint.getMin())
-//                && "50".equals(nombreConstraint.getMax()) && "persona".equals(nombreConstraint.getPattern());
+        assert !nombreConstraint.isNullable() && "3".equals(nombreConstraint.getMin())
+                && "50".equals(nombreConstraint.getMax()) && "persona".equals(nombreConstraint.getPattern());
 
         // numero Property
         Property<JavaProperty> numeroProp = getProperty(generated, "numero").get();
         assert "numero".equals(numeroProp.getName());
+        
+        //associations
+        assert !generated.getAssociations().isEmpty() && generated.getNotOwnerAssociations().isEmpty();
     }
 
     private static Optional<Entity> getEntity(DomainModel domainModel, String entityName) {
@@ -133,6 +136,7 @@ public class TranslatorServiceTest {
         return Optional.empty();
     }
 
+    @SuppressWarnings("unchecked")
     private static Optional<Property<JavaProperty>> getProperty(Entity entity, String name) {
         for (Property<JavaProperty> property : entity.getProperties()) {
             if (name.equals(property.getName())) {
