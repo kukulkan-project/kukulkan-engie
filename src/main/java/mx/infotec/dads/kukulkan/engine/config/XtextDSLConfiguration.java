@@ -24,7 +24,7 @@
 
 package mx.infotec.dads.kukulkan.engine.config;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,9 +36,9 @@ import mx.infotec.dads.kukulkan.dsl.KukulkanStandaloneSetup;
 public class XtextDSLConfiguration {
 
     @Bean
-    public ResourceSet resourceSet() {
+    public XtextResourceSet resourceSet() {
         Injector injector = new KukulkanStandaloneSetup().createInjectorAndDoEMFRegistration();
-        return injector.getInstance(ResourceSet.class);
+        return injector.getInstance(XtextResourceSet.class);
     }
 
 }

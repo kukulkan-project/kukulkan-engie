@@ -39,7 +39,6 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.BlobFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.BooleanFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DateFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
-import mx.infotec.dads.kukulkan.dsl.kukulkan.KukulkanPackage;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
