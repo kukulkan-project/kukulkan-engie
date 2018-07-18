@@ -1,8 +1,8 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
+import static mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil.createJavaProperty;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping.resolveAssociationType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
 import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.CORE_USER;
 import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.ENTITY_USER;
 import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.determineUserCorePhysicalName;

@@ -97,24 +97,6 @@ public class GrammarUtil {
     }
 
     /**
-     * Creates the java property.
-     *
-     * @param field
-     *            the field
-     * @param propertyName
-     *            the property name
-     * @param propertyType
-     *            the property type
-     * @return the java property
-     */
-    public static JavaProperty createJavaProperty(String propertyName,
-            GrammarFieldType propertyType, DatabaseType dbType) {
-        return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
-                .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).build();
-    }
-
-    /**
      * Creates the content type property.
      *
      * @param propertyName
@@ -125,7 +107,7 @@ public class GrammarUtil {
         return JavaProperty.builder(GRAMMAR).withName(propertyName + "ContentType").withType("String")
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName + "ContentType"))
                 .withColumnType("TextBlob").withQualifiedName("java.lang.String").isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).isLargeObject(false).hasSizeValidation(false).withTecnologyEquivalentClass(String.class)
-                .build();
+                .isIndexed(false).isLargeObject(false).hasSizeValidation(false)
+                .withTecnologyEquivalentClass(String.class).build();
     }
 }
