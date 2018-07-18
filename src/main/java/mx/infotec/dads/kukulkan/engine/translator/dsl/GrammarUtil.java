@@ -172,7 +172,7 @@ public class GrammarUtil {
      *            the property type
      * @return the java property
      */
-    public static JavaProperty createJavaProperty(PrimitiveFieldContext field, String propertyName,
+    public static JavaProperty createJavaProperty(String propertyName,
             GrammarFieldType propertyType, DatabaseType dbType) {
         return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)

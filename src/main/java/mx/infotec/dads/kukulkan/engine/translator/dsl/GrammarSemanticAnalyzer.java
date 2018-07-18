@@ -328,7 +328,7 @@ public class GrammarSemanticAnalyzer extends kukulkanParserBaseVisitor<VisitorCo
     public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
             GrammarFieldType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType,
+            javaProperty = createJavaProperty(propertyName, grammarPropertyType,
                     pConf.getDatabase().getDatabaseType());
             sourceEntity.addProperty(javaProperty);
             addContentType(sourceEntity, propertyName, pConf.getDatabase().getDatabaseType(), grammarPropertyType);

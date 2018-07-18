@@ -33,6 +33,6 @@ public class SchemaMapping {
             GrammarFieldType propertyType, DatabaseType dbType) {
         return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).addType(field.type).build();
+                .isIndexed(false).build();
     }
 }

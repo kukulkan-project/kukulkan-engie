@@ -36,8 +36,6 @@ public interface PropertyBuilder<T> {
 
     public PropertyBuilder<T> addType(ColumnType type);
 
-    public PropertyBuilder<T> addType(FieldTypeContext type);
-
     public PropertyBuilder<T> isBigDecimal(boolean bigDecimal);
 
     public PropertyBuilder<T> isLocalDate(boolean localDate);
