@@ -279,7 +279,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
             GrammarFieldType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(pfc, propertyName, grammarPropertyType,
+            javaProperty = createJavaProperty(propertyName, grammarPropertyType,
                     pConf.getDatabase().getDatabaseType());
 
             javaProperty.setConstraint(constraint);

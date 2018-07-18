@@ -23,6 +23,7 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
+import static mx.infotec.dads.kukulkan.engine.translator.SourceType.GRAMMAR;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.io.IOException;
@@ -106,11 +107,11 @@ public class GrammarUtil {
      *            the property type
      * @return the java property
      */
-    public static JavaProperty createJavaProperty(PrimitiveField field, String propertyName,
+    public static JavaProperty createJavaProperty(String propertyName,
             GrammarFieldType propertyType, DatabaseType dbType) {
         return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).addType(field.getType()).build();
+                .isIndexed(false).build();
     }
 
     /**
@@ -121,10 +122,10 @@ public class GrammarUtil {
      * @return the java property
      */
     public static JavaProperty createContentTypeProperty(String propertyName, DatabaseType dbType) {
-        return JavaProperty.builder().withName(propertyName + "ContentType").withType("String")
+        return JavaProperty.builder(GRAMMAR).withName(propertyName + "ContentType").withType("String")
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName + "ContentType"))
                 .withColumnType("TextBlob").withQualifiedName("java.lang.String").isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).isLargeObject(false).hasSizeValidation(false).withJavaEquivalentClass(String.class)
+                .isIndexed(false).isLargeObject(false).hasSizeValidation(false).withTecnologyEquivalentClass(String.class)
                 .build();
     }
 }
