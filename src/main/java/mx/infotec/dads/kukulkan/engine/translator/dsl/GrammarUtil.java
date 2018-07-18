@@ -38,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.grammar.kukulkanLexer;
 import mx.infotec.dads.kukulkan.grammar.kukulkanParser;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
@@ -162,24 +161,6 @@ public class GrammarUtil {
     }
 
     /**
-     * Creates the java property.
-     *
-     * @param field
-     *            the field
-     * @param propertyName
-     *            the property name
-     * @param propertyType
-     *            the property type
-     * @return the java property
-     */
-    public static JavaProperty createJavaProperty(String propertyName,
-            GrammarFieldType propertyType, DatabaseType dbType) {
-        return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
-                .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).build();
-    }
-
-    /**
      * Creates the content type property.
      *
      * @param propertyName
@@ -190,7 +171,7 @@ public class GrammarUtil {
         return JavaProperty.builder(GRAMMAR).withName(propertyName + "ContentType").withType("String")
                 .withColumnName(toDataBaseNameConvention(dbType, propertyName + "ContentType"))
                 .withColumnType("TextBlob").withQualifiedName("java.lang.String").isNullable(true).isPrimaryKey(false)
-                .isIndexed(false).isLargeObject(false).hasSizeValidation(false).withTecnologyEquivalentClass(String.class)
-                .build();
+                .isIndexed(false).isLargeObject(false).hasSizeValidation(false)
+                .withTecnologyEquivalentClass(String.class).build();
     }
 }

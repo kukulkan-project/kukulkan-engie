@@ -1,7 +1,5 @@
 package mx.infotec.dads.kukulkan.engine.translator.database;
 
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.createJavaProperty;
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createIdJavaProperty;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToHyphens;
@@ -9,7 +7,6 @@ import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.par
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.metamodel.ConnectionException;
 import org.apache.metamodel.MetaModelException;
@@ -23,12 +20,11 @@ import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
+import mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.grammar.kukulkanParser.PrimitiveFieldContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
@@ -95,7 +91,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
     }
 
     public void processColumn(Entity entity, ColumnType columnType) {
-//        JavaProperty javaProperty = SchemaMapping.createJavaProperty(entity, columnType);
+//        JavaProperty javaProperty = JavaPropertyUtil.createJavaProperty(entity, columnType, DatabaseType.SQL_MYSQL);
 //        DataBaseMapping.fillModelMetaData(entity, javaProperty);
 //        GrammarMapping.addImports(entity.getImports(), javaProperty);
 //        entity.addProperty(javaProperty);
