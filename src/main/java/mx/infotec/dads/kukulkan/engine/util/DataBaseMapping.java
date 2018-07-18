@@ -207,10 +207,8 @@ public class DataBaseMapping {
             checkIfTime(dme, javaProperty);
         } else if (javaProperty.isBlob()) {
             dme.setHasBlobProperties(true);
-            javaProperty.setBlob(true);
         } else if (javaProperty.isClob()) {
             dme.setHasClobProperties(true);
-            javaProperty.setClob(true);
         }
     }
 

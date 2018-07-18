@@ -194,6 +194,7 @@ public class GrammarFieldTypeMapping {
             javaProperty.setBlob(true);
             break;
         case TEXT_BLOB:
+            javaProperty.setClob(true);
             javaProperty.setTextBlob(true);
             break;
         case STRING:
@@ -204,7 +205,6 @@ public class GrammarFieldTypeMapping {
             break;
         default:
             throw new MetaModelException("Property not found : "+propertyType.getFieldType());
-//            break;
         }
     }
 
