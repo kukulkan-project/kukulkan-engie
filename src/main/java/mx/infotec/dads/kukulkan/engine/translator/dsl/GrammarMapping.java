@@ -71,7 +71,7 @@ public class GrammarMapping {
      *            the visitor
      * @return DataModelGroup
      */
-    public static DomainModelGroup createDefaultDataModelGroup(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch) {
+    public static DomainModelGroup createDefaultDataModelGroup(DomainModel dm, GrammarSemanticAnalyzer kukulkanSwitch) {
         DomainModelGroup dmg = new DomainModelGroup();
         dmg.setName("");
         dmg.setDescription("Default package");
@@ -94,7 +94,7 @@ public class GrammarMapping {
      * @param dmeList
      *            the dme list
      */
-    private static void createDataModelElement(DomainModel dm, XtextSemanticAnalyzer kukulkanSwitch,
+    private static void createDataModelElement(DomainModel dm, GrammarSemanticAnalyzer kukulkanSwitch,
             List<Entity> dmeList) {
         TreeIterator<EObject> treeIt = EcoreUtil.getAllProperContents(dm, true);
         while (treeIt.hasNext()) {
@@ -210,7 +210,7 @@ public class GrammarMapping {
      *            the file
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(XtextSemanticAnalyzer kukulkanSwitch, File file,
+    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer kukulkanSwitch, File file,
             ResourceSet resourceSet) {
         String program = file.getAbsolutePath();
         DomainModel ast = GrammarUtil.getDomainModelAST(program, resourceSet);

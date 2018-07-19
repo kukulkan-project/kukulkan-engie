@@ -22,7 +22,7 @@ import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorSer
 import mx.infotec.dads.kukulkan.engine.translator.database.DefaultSchemaAnalyzer;
 import mx.infotec.dads.kukulkan.engine.translator.database.SchemaAnalyzer;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.FileSource;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.XtextGrammarTranslatorService;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarTranslatorService;
 import mx.infotec.dads.kukulkan.engine.util.EntityFactory;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
@@ -36,7 +36,7 @@ import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
 import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = { XtextGrammarTranslatorService.class,
+@SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = { GrammarTranslatorService.class,
         DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
         InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
         DefaultModelValidator.class })
@@ -44,7 +44,7 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 public class TranslatorServiceTest {
 
     @Autowired
-    private XtextGrammarTranslatorService grammarTranslatorService;
+    private GrammarTranslatorService grammarTranslatorService;
 
     @Test
     public void grammarTranslatorServiceWithXtextSemanticAnalyzer() {

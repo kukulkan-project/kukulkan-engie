@@ -41,7 +41,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
-public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
+public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private static final String JAVA_UTIL_HASH_SET = "java.util.HashSet";
     private static final String JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
@@ -74,7 +74,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private boolean isPropertyToShow = false;
 
-    public XtextSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
+    public GrammarSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
         this.pConf = pConf;
         this.inflectorService = inflectorService;
     }
