@@ -57,8 +57,6 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private EntityAssociation entityAssociation = null;
 
-    private PrimitiveField pfc = null;
-
     /** The property name. */
     private String propertyName = null;
 
@@ -151,7 +149,6 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext casePrimitiveField(PrimitiveField primitiveField) {
-        pfc = primitiveField;
         propertyName = primitiveField.getId();
         constraint = new Constraint();
         handlePrimitiveFieldMarkers(primitiveField.getMarkers());
@@ -279,8 +276,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
             GrammarFieldType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(propertyName, grammarPropertyType,
-                    pConf.getDatabase().getDatabaseType());
+            javaProperty = createJavaProperty(propertyName, grammarPropertyType, pConf.getDatabase().getDatabaseType());
 
             javaProperty.setConstraint(constraint);
             setPropertyToShow();
@@ -355,6 +351,9 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     private void resolveImports(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
         switch (entityAssociation.getType()) {
         case ONE_TO_ONE:
+            if (entityAssociation.isBidirectional()) {
+                targetEntity.getImports().add(JSON_IGNORE);
+            }
             break;
         case ONE_TO_MANY:
             sourceEntity.getImports().add(JAVA_UTIL_COLLECTION);
