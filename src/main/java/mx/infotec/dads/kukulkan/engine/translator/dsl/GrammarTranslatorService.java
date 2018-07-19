@@ -17,7 +17,7 @@ import mx.infotec.dads.kukulkan.metamodel.translator.Source;
 import mx.infotec.dads.kukulkan.metamodel.translator.TranslatorService;
 
 @Service(value = "grammarTranslatorService")
-public class XtextGrammarTranslatorService implements TranslatorService {
+public class GrammarTranslatorService implements TranslatorService {
 
     @Autowired
     private ModelValidator validator;
@@ -32,7 +32,7 @@ public class XtextGrammarTranslatorService implements TranslatorService {
     public DomainModel translate(ProjectConfiguration pConf, Source from) {
         DomainModel domainModel = new JavaDomainModel();
         from.getSource(File.class).ifPresent(file -> {
-            XtextSemanticAnalyzer semanticAnalyzer = new XtextSemanticAnalyzer(pConf, inflectorService);
+            GrammarSemanticAnalyzer semanticAnalyzer = new GrammarSemanticAnalyzer(pConf, inflectorService);
             List<DomainModelGroup> dmgList = GrammarMapping.createSingleDataModelGroupList(semanticAnalyzer, file,
                     resourceSet);
             domainModel.setDomainModelGroup(dmgList);
