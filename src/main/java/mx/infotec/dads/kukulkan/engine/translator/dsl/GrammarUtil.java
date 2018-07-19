@@ -31,6 +31,7 @@ import java.io.IOException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.resource.XtextResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +73,9 @@ public class GrammarUtil {
         try {
             LOGGER.debug("Interpreting file {}", file);
             Resource resource = resourceSet.getResource(URI.createFileURI(file), true);
-            resource.load(null);
+            // Resource resource = resourceSet.createResource(URI.createFileURI(file));
+            resource.unload();
+            resource.load(resourceSet.getLoadOptions());
             return (DomainModel) resource.getContents().get(0);
         } catch (IOException e) {
             throw new MetaModelException("getDomainModelContext Error: maybe, the FilePath does not exist", e);

@@ -58,6 +58,8 @@ public class TranslatorServiceTest {
         assert !dm.getDomainModelGroup().get(0).getEntities().isEmpty();
         assert fromFactory.getName().equals(generated.getName());
         assert fromFactory.getTableName().equals(generated.getTableName());
+        
+        //Display Field
         assert fromFactory.getDisplayField().getName().equals(generated.getDisplayField().getName());
 
         // nombre property
