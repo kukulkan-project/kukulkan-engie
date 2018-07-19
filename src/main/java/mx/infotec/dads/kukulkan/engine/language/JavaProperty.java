@@ -30,13 +30,13 @@ import java.util.Optional;
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType;
-import mx.infotec.dads.kukulkan.engine.translator.SourceType;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
+import mx.infotec.dads.kukulkan.metamodel.translator.SourceType;
 
 /**
  * PropertyHolder Class that is used for hold the properties of a table.

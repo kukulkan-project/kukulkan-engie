@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Objects;
 import java.util.Optional;
 
-import mx.infotec.dads.kukulkan.engine.translator.Source;
+import mx.infotec.dads.kukulkan.metamodel.translator.Source;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**

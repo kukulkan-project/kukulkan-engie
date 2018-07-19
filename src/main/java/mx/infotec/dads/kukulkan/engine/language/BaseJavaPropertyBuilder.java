@@ -2,10 +2,10 @@ package mx.infotec.dads.kukulkan.engine.language;
 
 import org.apache.metamodel.schema.ColumnType;
 
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 
 /**
  * BaseJavaPropertyBuilder

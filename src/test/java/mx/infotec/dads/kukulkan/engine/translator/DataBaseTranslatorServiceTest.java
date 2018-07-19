@@ -39,6 +39,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.translator.Source;
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
 import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
@@ -61,7 +62,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-    @Test
+//    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -75,7 +76,7 @@ public class DataBaseTranslatorServiceTest {
         });
     }
 
-    // @Test
+     @Test
     public void databaseTranslatorServiceTemp() {
         DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
         DataContextProperties properties = createDataContextProperties(dataStore);

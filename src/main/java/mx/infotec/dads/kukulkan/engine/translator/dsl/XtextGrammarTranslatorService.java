@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.ModelValidator;
-import mx.infotec.dads.kukulkan.engine.translator.Source;
-import mx.infotec.dads.kukulkan.engine.translator.TranslatorService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.translator.Source;
+import mx.infotec.dads.kukulkan.metamodel.translator.TranslatorService;
 
 @Service(value = "grammarTranslatorService")
 public class XtextGrammarTranslatorService implements TranslatorService {

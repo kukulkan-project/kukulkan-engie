@@ -25,8 +25,8 @@ package mx.infotec.dads.kukulkan.engine.language;
 
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 
 /**
  * PropertyHolder Class that is used for hold the properties of a table.

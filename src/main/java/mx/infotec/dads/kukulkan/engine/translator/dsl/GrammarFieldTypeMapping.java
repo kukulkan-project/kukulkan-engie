@@ -23,11 +23,11 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.SuperColumnType.BINARY_TYPE;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.SuperColumnType.BOOLEAN_TYPE;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.SuperColumnType.LITERAL_TYPE;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.SuperColumnType.NUMBER_TYPE;
-import static mx.infotec.dads.kukulkan.engine.translator.dsl.SuperColumnType.TIME_TYPE;
+import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.BINARY_TYPE;
+import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.BOOLEAN_TYPE;
+import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.LITERAL_TYPE;
+import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.NUMBER_TYPE;
+import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.TIME_TYPE;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
+import mx.infotec.dads.kukulkan.metamodel.foundation.FieldType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
@@ -54,43 +56,46 @@ public class GrammarFieldTypeMapping {
         /*
          * Literal
          */
-        getMap().put(FieldType.STRING.text(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
-        getMap().put(FieldType.TEXT_BLOB.text(),
+        GRAMMAR_MAP.put(FieldType.STRING.text(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
+        GRAMMAR_MAP.put(FieldType.TEXT_BLOB.text(),
                 new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
 
         /*
          * Numbers
          */
-        getMap().put(FieldType.INTEGER.text(), new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
-        getMap().put(FieldType.LONG.text(), new GrammarFieldTypeImpl(FieldType.LONG, NUMBER_TYPE, Long.class));
-        getMap().put(FieldType.BIG_DECIMAL.text(),
+        GRAMMAR_MAP.put(FieldType.INTEGER.text(),
+                new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
+        GRAMMAR_MAP.put(FieldType.LONG.text(), new GrammarFieldTypeImpl(FieldType.LONG, NUMBER_TYPE, Long.class));
+        GRAMMAR_MAP.put(FieldType.BIG_DECIMAL.text(),
                 new GrammarFieldTypeImpl(FieldType.BIG_DECIMAL, NUMBER_TYPE, BigDecimal.class));
-        getMap().put(FieldType.FLOAT.text(), new GrammarFieldTypeImpl(FieldType.FLOAT, NUMBER_TYPE, Float.class));
-        getMap().put(FieldType.DOUBLE.text(), new GrammarFieldTypeImpl(FieldType.DOUBLE, NUMBER_TYPE, Double.class));
+        GRAMMAR_MAP.put(FieldType.FLOAT.text(), new GrammarFieldTypeImpl(FieldType.FLOAT, NUMBER_TYPE, Float.class));
+        GRAMMAR_MAP.put(FieldType.DOUBLE.text(), new GrammarFieldTypeImpl(FieldType.DOUBLE, NUMBER_TYPE, Double.class));
 
         /*
          * Time based
          */
-        getMap().put(FieldType.DATE.text(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
-        getMap().put(FieldType.LOCAL_DATE.text(),
+        GRAMMAR_MAP.put(FieldType.DATE.text(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
+        GRAMMAR_MAP.put(FieldType.LOCAL_DATE.text(),
                 new GrammarFieldTypeImpl(FieldType.LOCAL_DATE, TIME_TYPE, LocalDate.class));
-        getMap().put(FieldType.ZONED_DATETIME.text(),
+        GRAMMAR_MAP.put(FieldType.ZONED_DATETIME.text(),
                 new GrammarFieldTypeImpl(FieldType.ZONED_DATETIME, TIME_TYPE, ZonedDateTime.class));
-        getMap().put(FieldType.INSTANT.text(), new GrammarFieldTypeImpl(FieldType.INSTANT, TIME_TYPE, Instant.class));
+        GRAMMAR_MAP.put(FieldType.INSTANT.text(),
+                new GrammarFieldTypeImpl(FieldType.INSTANT, TIME_TYPE, Instant.class));
 
         /*
          * Booleans
          */
-        getMap().put(FieldType.BOOLEAN_TYPE.text(),
+        GRAMMAR_MAP.put(FieldType.BOOLEAN_TYPE.text(),
                 new GrammarFieldTypeImpl(FieldType.BOOLEAN_TYPE, BOOLEAN_TYPE, boolean.class));
 
         /*
          * Blobs
          */
-        getMap().put(FieldType.BLOB.text(), new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
-        getMap().put(FieldType.ANY_BLOB.text(),
+        GRAMMAR_MAP.put(FieldType.BLOB.text(),
+                new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
+        GRAMMAR_MAP.put(FieldType.ANY_BLOB.text(),
                 new GrammarFieldTypeImpl(FieldType.ANY_BLOB, BINARY_TYPE, byte[].class, true));
-        getMap().put(FieldType.IMAGE_BLOB.text(),
+        GRAMMAR_MAP.put(FieldType.IMAGE_BLOB.text(),
                 new GrammarFieldTypeImpl(FieldType.IMAGE_BLOB, BINARY_TYPE, byte[].class, true));
 
     }
@@ -109,7 +114,7 @@ public class GrammarFieldTypeMapping {
      * @return the property type
      */
     public static GrammarFieldType getPropertyType(String property) {
-        return getMap().get(property);
+        return GRAMMAR_MAP.get(property);
     }
 
     public static void configurateGrammarFieldType(GrammarFieldType propertyType, JavaProperty javaProperty) {
@@ -160,16 +165,25 @@ public class GrammarFieldTypeMapping {
             javaProperty.setBoolean(true);
             break;
         default:
-            throw new MetaModelException("Property not found : "+propertyType.getFieldType());
+            throw new MetaModelException("Property not found : " + propertyType.getFieldType());
         }
     }
 
     /**
-     * Gets the map.
-     *
-     * @return the map
+     * 
+     * @return
+     * @deprecated use fieldTypeFrom(String) for acceso to the map
      */
+    @Deprecated
     public static Map<String, GrammarFieldType> getMap() {
         return GRAMMAR_MAP;
+    }
+
+    public static GrammarFieldType fieldTypeFrom(String fieldType) {
+        return GRAMMAR_MAP.get(fieldType);
+    }
+
+    public static GrammarFieldType fieldTypeFrom(FieldType fieldType) {
+        return GRAMMAR_MAP.get(fieldType.text());
     }
 }

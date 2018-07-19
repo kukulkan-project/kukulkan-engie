@@ -24,6 +24,7 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 
 /**
  * GrammarProperty is a Wrapper.

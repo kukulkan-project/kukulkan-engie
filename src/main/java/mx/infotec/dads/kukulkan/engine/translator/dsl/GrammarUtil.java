@@ -23,7 +23,7 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
-import static mx.infotec.dads.kukulkan.engine.translator.SourceType.GRAMMAR;
+import static mx.infotec.dads.kukulkan.metamodel.translator.SourceType.GRAMMAR;
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
 import java.io.IOException;
@@ -38,6 +38,7 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.DomainModel;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**

@@ -23,6 +23,10 @@
  */
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
+import mx.infotec.dads.kukulkan.metamodel.foundation.FieldType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType;
+
 /**
  * GrammarPropertyTypeImpl.
  *
