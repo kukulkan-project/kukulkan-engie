@@ -1,29 +1,13 @@
 package mx.infotec.dads.kukulkan.engine.translator.database;
 
-import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.BINARY_TYPE;
-import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.BOOLEAN_TYPE;
-import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.LITERAL_TYPE;
-import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.NUMBER_TYPE;
-import static mx.infotec.dads.kukulkan.metamodel.foundation.SuperColumnType.TIME_TYPE;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import org.apache.metamodel.factory.DataContextProperties;
 import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.schema.Column;
-import org.apache.metamodel.schema.ColumnType;
 
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeImpl;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap;
-import mx.infotec.dads.kukulkan.metamodel.foundation.FieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
+import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
  * DataBaseTranslatorUtil
@@ -38,7 +22,7 @@ public class DataBaseTranslatorUtil {
     private static final String DATA_STORE_DRIVER_CLASS = "driver-class";
     private static final String DATA_STORE_USERNAME = "username";
     private static final String DATA_STORE_PASS = "password";
-    
+
     public static DataContextProperties createDataContextProperties(DataStore dataStore) {
         validateDataStore(dataStore);
         DataContextPropertiesImpl properties = new DataContextPropertiesImpl();
@@ -61,25 +45,12 @@ public class DataBaseTranslatorUtil {
     }
 
     public static GrammarFieldType fieldTypeFrom(Column column) {
-        ColumnType type = column.getType();
-//        DataBaseFieldTypeMap.
-        if (type.equals(ColumnType.ARRAY)) {
-            return GrammarFieldTypeMap.fieldTypeFrom(FieldType.STRING.text());
-        }        
-        // GrammarFieldTypeMap.getMap()
-        return null;
+        return DataBaseFieldTypeMap.fieldTypeFrom(column.getType().getName());
     }
 
     public static String propertyNameFrom(Column column) {
-        column.getName();
-        // TODO Auto-generated method stub
-        return null;
+        return SchemaPropertiesParser.databaseNameToFieldName(column.getName());
     }
-    
-    public static boolean isString(Column column){
-
-        return false;
-    } 
 
     private DataBaseTranslatorUtil() {
 

@@ -68,6 +68,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     @Override
     public void processRelationships(SchemaAnalyzerContext context, EntityHolder entityHolder,
             Collection<Relationship> relationships) {
+        //
     }
 
     public void processColumnType(SchemaAnalyzerContext context, Entity entity, Column column) {

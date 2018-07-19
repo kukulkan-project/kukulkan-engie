@@ -13,13 +13,13 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeImpl;
 import mx.infotec.dads.kukulkan.metamodel.foundation.FieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
-import mx.infotec.dads.kukulkan.metamodel.translator.FieldTypeMap;
 
 /**
  * DataBaseFieldTypeMap is used for get the FieldType equivalent for DataBase
@@ -27,7 +27,7 @@ import mx.infotec.dads.kukulkan.metamodel.translator.FieldTypeMap;
  * @author Daniel Cortes Pichardo
  *
  */
-public class DataBaseFieldTypeMap implements FieldTypeMap<String> {
+public class DataBaseFieldTypeMap {
 
     private DataBaseFieldTypeMap() {
 
@@ -40,54 +40,60 @@ public class DataBaseFieldTypeMap implements FieldTypeMap<String> {
         /*
          * Literal
          */
-        FIELD_TYPE_MAP.put(ColumnType.STRING.getName(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
-        FIELD_TYPE_MAP.put(FieldType.TEXT_BLOB.text(),
+
+        FIELD_TYPE_MAP.put(ColumnType.CHAR.getName(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
+        FIELD_TYPE_MAP.put(ColumnType.VARCHAR.getName(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
+        FIELD_TYPE_MAP.put(ColumnType.LONGVARCHAR.getName(),
+                new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
+        FIELD_TYPE_MAP.put(ColumnType.CLOB.getName(),
+                new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
+        FIELD_TYPE_MAP.put(ColumnType.NCHAR.getName(), new GrammarFieldTypeImpl(FieldType.STRING, LITERAL_TYPE));
+        FIELD_TYPE_MAP.put(ColumnType.NVARCHAR.getName(),
+                new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
+        FIELD_TYPE_MAP.put(ColumnType.LONGNVARCHAR.getName(),
+                new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
+        FIELD_TYPE_MAP.put(ColumnType.NCLOB.getName(),
                 new GrammarFieldTypeImpl(FieldType.TEXT_BLOB, LITERAL_TYPE, String.class, true));
 
         /*
          * Numbers
          */
-        FIELD_TYPE_MAP.put(FieldType.INTEGER.text(),
-                new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
-        FIELD_TYPE_MAP.put(FieldType.LONG.text(), new GrammarFieldTypeImpl(FieldType.LONG, NUMBER_TYPE, Long.class));
-        FIELD_TYPE_MAP.put(FieldType.BIG_DECIMAL.text(),
-                new GrammarFieldTypeImpl(FieldType.BIG_DECIMAL, NUMBER_TYPE, BigDecimal.class));
-        FIELD_TYPE_MAP.put(FieldType.FLOAT.text(), new GrammarFieldTypeImpl(FieldType.FLOAT, NUMBER_TYPE, Float.class));
-        FIELD_TYPE_MAP.put(FieldType.DOUBLE.text(),
-                new GrammarFieldTypeImpl(FieldType.DOUBLE, NUMBER_TYPE, Double.class));
-
+        FIELD_TYPE_MAP.put(ColumnType.TINYINT.getName(), new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
+        FIELD_TYPE_MAP.put(ColumnType.SMALLINT.getName(), new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
+        FIELD_TYPE_MAP.put(ColumnType.INTEGER.getName(), new GrammarFieldTypeImpl(FieldType.INTEGER, NUMBER_TYPE, Integer.class));
+        FIELD_TYPE_MAP.put(ColumnType.BIGINT.getName(), new GrammarFieldTypeImpl(FieldType.LONG, NUMBER_TYPE, Long.class));
+        FIELD_TYPE_MAP.put(ColumnType.FLOAT.getName(), new GrammarFieldTypeImpl(FieldType.FLOAT, NUMBER_TYPE, Float.class)); 
+        FIELD_TYPE_MAP.put(ColumnType.REAL.getName(), new GrammarFieldTypeImpl(FieldType.BIG_DECIMAL, NUMBER_TYPE, BigDecimal.class));
+        FIELD_TYPE_MAP.put(ColumnType.DOUBLE.getName(), new GrammarFieldTypeImpl(FieldType.DOUBLE, NUMBER_TYPE, Double.class)); 
+        FIELD_TYPE_MAP.put(ColumnType.NUMERIC.getName(), new GrammarFieldTypeImpl(FieldType.BIG_DECIMAL, NUMBER_TYPE, BigDecimal.class));
+        FIELD_TYPE_MAP.put(ColumnType.DECIMAL.getName(), new GrammarFieldTypeImpl(FieldType.BIG_DECIMAL, NUMBER_TYPE, BigDecimal.class));
+        FIELD_TYPE_MAP.put(ColumnType.UUID.getName(), new GrammarFieldTypeImpl(FieldType.LONG, NUMBER_TYPE, UUID.class));
+        
         /*
          * Time based
          */
-        FIELD_TYPE_MAP.put(FieldType.DATE.text(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
-        FIELD_TYPE_MAP.put(FieldType.LOCAL_DATE.text(),
-                new GrammarFieldTypeImpl(FieldType.LOCAL_DATE, TIME_TYPE, LocalDate.class));
-        FIELD_TYPE_MAP.put(FieldType.ZONED_DATETIME.text(),
-                new GrammarFieldTypeImpl(FieldType.ZONED_DATETIME, TIME_TYPE, ZonedDateTime.class));
-        FIELD_TYPE_MAP.put(FieldType.INSTANT.text(),
-                new GrammarFieldTypeImpl(FieldType.INSTANT, TIME_TYPE, Instant.class));
+        FIELD_TYPE_MAP.put(ColumnType.DATE.getName(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class)); 
+        FIELD_TYPE_MAP.put(ColumnType.TIME.getName(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
+        FIELD_TYPE_MAP.put(ColumnType.TIMESTAMP.getName(), new GrammarFieldTypeImpl(FieldType.ZONED_DATETIME, TIME_TYPE, ZonedDateTime.class));
 
         /*
          * Booleans
          */
-        FIELD_TYPE_MAP.put(FieldType.BOOLEAN_TYPE.text(),
-                new GrammarFieldTypeImpl(FieldType.BOOLEAN_TYPE, BOOLEAN_TYPE, boolean.class));
-
+        FIELD_TYPE_MAP.put(ColumnType.BIT.getName(), new GrammarFieldTypeImpl(FieldType.BOOLEAN_TYPE, BOOLEAN_TYPE, boolean.class));
+        FIELD_TYPE_MAP.put(ColumnType.BOOLEAN.getName(), new GrammarFieldTypeImpl(FieldType.BOOLEAN_TYPE, BOOLEAN_TYPE, boolean.class));
+        
         /*
          * Blobs
          */
-        FIELD_TYPE_MAP.put(FieldType.BLOB.text(),
-                new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
-        FIELD_TYPE_MAP.put(FieldType.ANY_BLOB.text(),
-                new GrammarFieldTypeImpl(FieldType.ANY_BLOB, BINARY_TYPE, byte[].class, true));
-        FIELD_TYPE_MAP.put(FieldType.IMAGE_BLOB.text(),
-                new GrammarFieldTypeImpl(FieldType.IMAGE_BLOB, BINARY_TYPE, byte[].class, true));
-
+        
+        FIELD_TYPE_MAP.put(ColumnType.BINARY.getName(), new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
+        FIELD_TYPE_MAP.put(ColumnType.VARBINARY.getName(), new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
+        FIELD_TYPE_MAP.put(ColumnType.LONGVARBINARY.getName(), new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
+        FIELD_TYPE_MAP.put(ColumnType.BLOB.getName(), new GrammarFieldTypeImpl(FieldType.BLOB, BINARY_TYPE, byte[].class, true));
+        
     }
 
-    @Override
-    public GrammarFieldType fieldTypeFrom(String from) {
-        // TODO Auto-generated method stub
-        return null;
+    public static GrammarFieldType fieldTypeFrom(String from) {
+        return FIELD_TYPE_MAP.get(from);
     }
 }

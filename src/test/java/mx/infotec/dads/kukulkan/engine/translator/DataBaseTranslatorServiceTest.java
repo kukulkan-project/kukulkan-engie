@@ -3,6 +3,7 @@ package mx.infotec.dads.kukulkan.engine.translator;
 import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorUtil.createDataContextProperties;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.metamodel.DataContext;
@@ -39,6 +40,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.translator.Source;
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
@@ -62,7 +64,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-//    @Test
+    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -72,11 +74,18 @@ public class DataBaseTranslatorServiceTest {
         domainModel.getDomainModelGroup().forEach(group -> {
             group.getEntities().forEach(entity -> {
                 System.out.println(entity.getName());
+                Collection<Property> properties = entity.getProperties();
+                properties.forEach(property -> {
+                    System.out.println(property.getName());
+                    System.out.println(property.getColumnName());
+                    
+                });
+                System.out.println("******");
             });
         });
     }
 
-     @Test
+    // @Test
     public void databaseTranslatorServiceTemp() {
         DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
         DataContextProperties properties = createDataContextProperties(dataStore);
