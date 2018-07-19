@@ -19,16 +19,17 @@ import org.apache.metamodel.schema.ColumnType;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeImpl;
 import mx.infotec.dads.kukulkan.metamodel.foundation.FieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
+import mx.infotec.dads.kukulkan.metamodel.translator.FieldTypeMap;
 
 /**
- * DataBaseTypeMap is used for get the FieldType equivalent for DataBase
+ * DataBaseFieldTypeMap is used for get the FieldType equivalent for DataBase
  * 
  * @author Daniel Cortes Pichardo
  *
  */
-public class DataBaseTypeMap {
+public class DataBaseFieldTypeMap implements FieldTypeMap<String> {
 
-    private DataBaseTypeMap() {
+    private DataBaseFieldTypeMap() {
 
     }
 
@@ -82,5 +83,11 @@ public class DataBaseTypeMap {
         FIELD_TYPE_MAP.put(FieldType.IMAGE_BLOB.text(),
                 new GrammarFieldTypeImpl(FieldType.IMAGE_BLOB, BINARY_TYPE, byte[].class, true));
 
+    }
+
+    @Override
+    public GrammarFieldType fieldTypeFrom(String from) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

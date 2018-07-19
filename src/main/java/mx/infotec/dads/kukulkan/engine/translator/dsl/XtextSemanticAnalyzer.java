@@ -1,6 +1,7 @@
 package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import static mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil.createJavaProperty;
+import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap.fieldTypeFrom;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping.resolveAssociationType;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
 import static mx.infotec.dads.kukulkan.engine.util.CoreEntitesUtil.CORE_USER;
@@ -98,14 +99,14 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext caseBlobFieldType(BlobFieldType object) {
-        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
+        Optional<GrammarFieldType> optional = Optional.of(fieldTypeFrom(object.getName()));
         processFieldType(optional);
         return super.caseBlobFieldType(object);
     }
 
     @Override
     public VisitorContext caseBooleanFieldType(BooleanFieldType object) {
-        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
+        Optional<GrammarFieldType> optional = Optional.of(fieldTypeFrom(object.getName()));
         processFieldType(optional);
         return super.caseBooleanFieldType(object);
     }
@@ -126,7 +127,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext caseDateFieldType(DateFieldType object) {
-        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getType()));
+        Optional<GrammarFieldType> optional = Optional.of(fieldTypeFrom(object.getType()));
         processFieldType(optional);
         return super.caseDateFieldType(object);
     }
@@ -143,7 +144,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext caseNumericFieldType(NumericFieldType object) {
-        Optional<GrammarFieldType> optional = Optional.of(GrammarFieldTypeMapping.getMap().get(object.getName()));
+        Optional<GrammarFieldType> optional = Optional.of(fieldTypeFrom(object.getName()));
         processFieldType(optional);
         return super.caseNumericFieldType(object);
     }
@@ -158,8 +159,7 @@ public class XtextSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext caseStringFieldType(StringFieldType stringFieldType) {
-        Optional<GrammarFieldType> optional = Optional
-                .of(GrammarFieldTypeMapping.getMap().get(stringFieldType.getName()));
+        Optional<GrammarFieldType> optional = Optional.of(fieldTypeFrom(stringFieldType.getName()));
         processFieldType(optional);
         return super.caseStringFieldType(stringFieldType);
     }

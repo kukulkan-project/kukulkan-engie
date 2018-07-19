@@ -30,7 +30,7 @@ import java.util.Optional;
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;

@@ -227,7 +227,7 @@ public class GrammarMapping {
      * @return the property type
      */
     public static Optional<GrammarFieldType> getPropertyType(String type) {
-        return Optional.of(GrammarFieldTypeMapping.getPropertyType(type));
+        return Optional.of(GrammarFieldTypeMap.getPropertyType(type));
     }
 
     public static AssociationType resolveAssociationType(Entity sourceEntity, String type) {

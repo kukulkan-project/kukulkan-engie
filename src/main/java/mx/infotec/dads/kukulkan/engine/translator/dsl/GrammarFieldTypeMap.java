@@ -47,7 +47,7 @@ import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
  *
  * @author Daniel Cortes Pichardo
  */
-public class GrammarFieldTypeMapping {
+public class GrammarFieldTypeMap {
 
     /** The Constant map. */
     private static final Map<String, GrammarFieldType> GRAMMAR_MAP;
@@ -103,7 +103,7 @@ public class GrammarFieldTypeMapping {
     /**
      * Instantiates a new grammar property mapping.
      */
-    private GrammarFieldTypeMapping() {
+    private GrammarFieldTypeMap() {
     }
 
     /**
@@ -169,21 +169,7 @@ public class GrammarFieldTypeMapping {
         }
     }
 
-    /**
-     * 
-     * @return
-     * @deprecated use fieldTypeFrom(String) for acceso to the map
-     */
-    @Deprecated
-    public static Map<String, GrammarFieldType> getMap() {
-        return GRAMMAR_MAP;
-    }
-
-    public static GrammarFieldType fieldTypeFrom(String fieldType) {
-        return GRAMMAR_MAP.get(fieldType);
-    }
-
-    public static GrammarFieldType fieldTypeFrom(FieldType fieldType) {
-        return GRAMMAR_MAP.get(fieldType.text());
+    public static GrammarFieldType fieldTypeFrom(String from) {
+        return GRAMMAR_MAP.get(from);
     }
 }

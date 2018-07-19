@@ -21,7 +21,7 @@ import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeImpl;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap;
 import mx.infotec.dads.kukulkan.metamodel.foundation.FieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 
@@ -62,11 +62,11 @@ public class DataBaseTranslatorUtil {
 
     public static GrammarFieldType fieldTypeFrom(Column column) {
         ColumnType type = column.getType();
-//        DataBaseTypeMap.
+//        DataBaseFieldTypeMap.
         if (type.equals(ColumnType.ARRAY)) {
-            return GrammarFieldTypeMapping.fieldTypeFrom(FieldType.STRING);
+            return GrammarFieldTypeMap.fieldTypeFrom(FieldType.STRING.text());
         }        
-        // GrammarFieldTypeMapping.getMap()
+        // GrammarFieldTypeMap.getMap()
         return null;
     }
 

@@ -2,7 +2,7 @@ package mx.infotec.dads.kukulkan.engine.language;
 
 import org.apache.metamodel.schema.ColumnType;
 
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMapping;
+import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
@@ -128,7 +128,7 @@ public abstract class BaseJavaPropertyBuilder implements PropertyBuilder<JavaPro
 
     @Override
     public PropertyBuilder<JavaProperty> withPropertyType(GrammarFieldType propertyType) {
-        GrammarFieldTypeMapping.configurateGrammarFieldType(propertyType, getJavaProperty());
+        GrammarFieldTypeMap.configurateGrammarFieldType(propertyType, getJavaProperty());
         this.isLargeObject(propertyType.isLargeObject());
         this.withType(propertyType.getJavaName());
         this.withColumnType(propertyType.getFieldType().text());
