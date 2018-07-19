@@ -2,7 +2,9 @@ package mx.infotec.dads.kukulkan.engine.translator.dsl;
 
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -66,5 +68,9 @@ public class EntityHolder {
             throw new MetaModelException("The Entity is not registered : " + entity.getName());
         }
         entityMap.put(source.getName(), entity);
+    }
+
+    public List<Entity> getEntitiesAsList() {
+        return new ArrayList<>(entityMap.values());
     }
 }

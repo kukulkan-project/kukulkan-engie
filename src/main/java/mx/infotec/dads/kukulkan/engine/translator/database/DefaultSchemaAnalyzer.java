@@ -29,7 +29,6 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Override
     public void processTimeBasedColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        
     }
     
     @Override

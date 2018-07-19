@@ -19,12 +19,8 @@ import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
-import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
@@ -74,6 +70,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
             }
         }
         processRelationships(context, entityHolder, schema.getRelationships());
+        context.getElements().addAll(entityHolder.getEntitiesAsList());
         return getDomainModel(context);
     }
 
