@@ -107,44 +107,20 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         return domainModel;
     }
 
-    public String singularize(String word) {
-        if (word == null) {
-            return null;
-        }
-        String singularize = inflectorService.singularize(word);
-        if (singularize == null) {
-            return word;
-        } else {
-            return singularize;
-        }
-    }
-
-    public String pluralize(String word) {
-        if (word == null) {
-            return null;
-        }
-        String pluralize = inflectorService.pluralize(word);
-        if (pluralize == null) {
-            return word;
-        } else {
-            return pluralize;
-        }
-    }
-
     public void processTable(final SchemaAnalyzerContext context, final Entity entity, final Table table) {
         DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
-        String singularName = singularize(entity.getName());
+        String singularName = inflectorService.singularize(entity.getName());
         if (singularName == null) {
             singularName = entity.getName();
         }
         if (table.getName() == null || "".equals(table.getName())) {
-            entity.setTableName(toDataBaseNameConvention(databaseType, pluralize(entity.getName())));
+            entity.setTableName(toDataBaseNameConvention(databaseType, inflectorService.pluralize(entity.getName())));
         } else {
             entity.setTableName(table.getName());
         }
         entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-        entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
+        entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
         entity.setDisplayField(createIdJavaProperty());
