@@ -82,7 +82,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     @Override
     public VisitorContext caseAssociationField(AssociationField associationField) {
         targetEntity = entityHolder.getEntity(associationField.getTargetEntity().getName(),
-                pConf.getDatabase().getDatabaseType());
+                pConf.getTargetDatabase().getDatabaseType());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setToTargetPropertyName(associationField.getId());
         if (!StringUtils.isEmpty(associationField.getToSourcePropertyName())) {
@@ -117,7 +117,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         if (CORE_USER.equals(associableEntity)) {
             targetEntity = Entity.createDomainModelElement();
             addMetaData(ENTITY_USER, determineUserCorePhysicalName(pConf), targetEntity,
-                    pConf.getDatabase().getDatabaseType());
+                    pConf.getTargetDatabase().getDatabaseType());
             entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
             entityAssociation.setToTargetPropertyName(coreEntityAssociationField.getId());
         }
@@ -135,9 +135,9 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     @Override
     public VisitorContext caseEntity(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity object) {
         String entityName = object.getName();
-        sourceEntity = entityHolder.getEntity(object.getName(), pConf.getDatabase().getDatabaseType());
+        sourceEntity = entityHolder.getEntity(object.getName(), pConf.getTargetDatabase().getDatabaseType());
         String tableName = !StringUtils.isEmpty(object.getTableName()) ? object.getTableName() : null;
-        addMetaData(entityName, tableName, sourceEntity, pConf.getDatabase().getDatabaseType());
+        addMetaData(entityName, tableName, sourceEntity, pConf.getTargetDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);
         return super.caseEntity(object);
     }
@@ -273,13 +273,13 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
             GrammarFieldType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(propertyName, grammarPropertyType, pConf.getDatabase().getDatabaseType());
+            javaProperty = createJavaProperty(propertyName, grammarPropertyType, pConf.getTargetDatabase().getDatabaseType());
 
             javaProperty.setConstraint(constraint);
             setPropertyToShow();
 
             sourceEntity.addProperty(javaProperty);
-            addContentType(sourceEntity, propertyName, pConf.getDatabase().getDatabaseType(), grammarPropertyType);
+            addContentType(sourceEntity, propertyName, pConf.getTargetDatabase().getDatabaseType(), grammarPropertyType);
             GrammarMapping.addImports(sourceEntity.getImports(), javaProperty);
             DataBaseMapping.fillModelMetaData(sourceEntity, javaProperty);
         }

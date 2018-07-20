@@ -64,7 +64,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-    @Test
+//    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -78,16 +78,19 @@ public class DataBaseTranslatorServiceTest {
                 properties.forEach(property -> {
                     System.out.println(property.getName());
                     System.out.println(property.getColumnName());
-                    
+
                 });
                 System.out.println("******");
             });
         });
     }
 
-    // @Test
+     @Test
     public void databaseTranslatorServiceTemp() {
-        DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
+        // DataStore dataStore =
+        // EntityFactory.createTestDataStore(DataStoreType.SQL);
+        DataStore dataStore = EntityFactory.createMySqlDataStore();
+
         DataContextProperties properties = createDataContextProperties(dataStore);
         DataContext dataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
         dataContext.getSchemaNames().forEach(data -> System.out.println(data));

@@ -1,6 +1,5 @@
 package mx.infotec.dads.kukulkan.engine.translator.database;
 
-import java.io.File;
 import java.util.Objects;
 import java.util.Optional;
 

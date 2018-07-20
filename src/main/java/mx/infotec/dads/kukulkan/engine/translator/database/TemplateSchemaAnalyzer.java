@@ -44,7 +44,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         Schema schema = getDefaultSchema(context);
         EntityHolder entityHolder = new EntityHolder();
         for (Table table : schema.getTables()) {
-            DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
+            DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
             Entity entity = entityHolder.getEntity(entityName, databaseType);
             processTable(context, entity, table);
@@ -108,7 +108,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
     }
 
     public void processTable(final SchemaAnalyzerContext context, final Entity entity, final Table table) {
-        DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
+        DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
         String singularName = inflectorService.singularize(entity.getName());
         if (singularName == null) {
             singularName = entity.getName();

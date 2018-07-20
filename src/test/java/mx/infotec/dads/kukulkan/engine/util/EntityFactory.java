@@ -45,6 +45,7 @@ public class EntityFactory {
         }
         return pConf;
     }
+    
 
     public static DataStore createTestDataStore(DataStoreType dst) {
         DataStore testDataStore = new DataStore();
@@ -56,6 +57,19 @@ public class EntityFactory {
         testDataStore.setUrl("jdbc:h2:~");
         testDataStore.setSchema("test");
         testDataStore.setUsername("");
+        return testDataStore;
+    }
+    
+    public static DataStore createMySqlDataStore() {
+        DataStore testDataStore = new DataStore();
+        testDataStore.setDataStoreType(DataStoreType.SQL);
+        testDataStore.setDriverClass("com.mysql.jdbc.Driver");
+        testDataStore.setName("employees");
+        testDataStore.setPassword("");
+        testDataStore.setTableTypes(TableTypes.TABLE_VIEW);
+        testDataStore.setUrl("jdbc:mysql://localhost:3306");
+        testDataStore.setSchema("employees");
+        testDataStore.setUsername("root");
         return testDataStore;
     }
 }

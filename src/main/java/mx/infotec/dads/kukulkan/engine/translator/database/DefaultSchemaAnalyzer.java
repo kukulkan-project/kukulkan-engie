@@ -31,7 +31,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Override
     public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
-        DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
+        DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
         entity.setPrimaryKey(createDefaultPrimaryKey(databaseType));
     }
 
@@ -72,7 +72,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     }
 
     public void processColumnType(SchemaAnalyzerContext context, Entity entity, Column column) {
-        DatabaseType databaseType = context.getProjectConfiguration().getDatabase().getDatabaseType();
+        DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
         GrammarFieldType fieldType = fieldTypeFrom(column);
         String propertyName = propertyNameFrom(column);
         JavaProperty javaProperty = JavaPropertyUtil.createJavaProperty(propertyName, fieldType, databaseType);

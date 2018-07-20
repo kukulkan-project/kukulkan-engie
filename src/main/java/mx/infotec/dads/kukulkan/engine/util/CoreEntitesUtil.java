@@ -38,7 +38,7 @@ public class CoreEntitesUtil {
     public static final String CORE_USER_COLLECTION_NAME = "users";
 
     public static String determineUserCorePhysicalName(ProjectConfiguration pConf) {
-        if (DatabaseType.SQL_MYSQL.equals(pConf.getDatabase().getDatabaseType())) {
+        if (DatabaseType.SQL_MYSQL.equals(pConf.getTargetDatabase().getDatabaseType())) {
             return CORE_USER_TABLE_NAME;
         } else {
             return CORE_USER_COLLECTION_NAME;

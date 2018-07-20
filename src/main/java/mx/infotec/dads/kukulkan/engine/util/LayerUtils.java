@@ -178,7 +178,7 @@ public class LayerUtils {
         Map<String, Object> model = new HashMap<>();
         model.put(YEAR_PROPERTY, pConf.getYear());
         model.put(AUTHOR_PROPERTY, pConf.getAuthor());
-        model.put(IS_MONGO_PROPERTY, pConf.getDatabase().getDatabaseType().equals(DatabaseType.NO_SQL_MONGODB));
+        model.put(IS_MONGO_PROPERTY, pConf.getTargetDatabase().getDatabaseType().equals(DatabaseType.NO_SQL_MONGODB));
         model.put(PROJECT_NAME_PROPERTY, pConf.getId());
         model.put(DATA_MODEL_GROUP_PROPERTY, domainModel.getDomainModelGroup());
         model.put(TIME_STAMP, FileUtil.formatToDateTimeJournal(pConf.getTimestamp()));
@@ -240,7 +240,7 @@ public class LayerUtils {
         map.put(ENTITY_HYPHEN_NOTATION_PLURAL_PROPERTY, dme.getHyphensPluralFormat());
         map.put(ENTITY_CAMEL_CASE_PLURAL_PROPERTY, dme.getCamelCasePluralFormat());
         map.put(ID_PROPERTY, dme.getPrimaryKey().getType());
-        dme.getPrimaryKey().setGenerationType(conf.getDatabase().getGlobalGenerationType());
+        dme.getPrimaryKey().setGenerationType(conf.getTargetDatabase().getGlobalGenerationType());
         map.put(PRIMARY_KEY_PROPERTY, dme.getPrimaryKey());
         map.put(PROPERTIES_PROPERTY, dme.getProperties());
         map.put(OWNER_ASSOCIATIONS, dme.getOwnerAssociations());
