@@ -51,36 +51,60 @@ public class InflectorServiceImpl implements InflectorService {
 
     /**
      * Singularize the word in Spanish
+     * 
+     * @param word
+     *            to singularize
+     * @return the singular (if word not null) or the word itself if it could not
+     *         been singularized
      */
     @Override
     public String singularize(String word) {
-        return spanishInflector.singularize(word);
+        return resultOrWord(word, spanishInflector.singularize(word));
     }
 
     /**
      * Pluralize the word in Spanish
+     * 
+     * @param word
+     *            to pluralize
+     * @return the plural (if word not null) or the word itself if it could not been
+     *         singularized
      */
     @Override
     public String pluralize(String word) {
-        return spanishInflector.pluralize(word);
+        return resultOrWord(word, spanishInflector.pluralize(word));
     }
 
     /**
      * Singularize the word in given language
+     * 
+     * @param word
+     *            to singularize
+     * @param locale
+     *            for regionalization
+     * @return the singular (if word not null) or the word itself if it could not
+     *         been singularized
      */
     @Override
     public String singularize(String word, Locale locale) throws UnsupportedLanguage {
         Inflector inflector = inflectorSelector(locale);
-        return inflector.singularize(word);
+        return resultOrWord(word, inflector.singularize(word));
     }
 
     /**
      * Pluralize the word in given language
+     * 
+     * @param word
+     *            to pluralize
+     * @param locale
+     *            for regionalization
+     * @return the plural (if word not null) or the word itself if it could not been
+     *         singularized
      */
     @Override
     public String pluralize(String word, Locale locale) throws UnsupportedLanguage {
         Inflector inflector = inflectorSelector(locale);
-        return inflector.pluralize(word);
+        return resultOrWord(word, inflector.pluralize(word));
     }
 
     /**
@@ -110,6 +134,23 @@ public class InflectorServiceImpl implements InflectorService {
             return inflector;
         throw new UnsupportedLanguage("Unsupported language " + language);
 
+    }
+
+    /**
+     * 
+     * @param word
+     * @param result
+     * @return
+     */
+    private static String resultOrWord(String word, String result) {
+        if (word == null) {
+            return null;
+        }
+        if (result == null) {
+            return word;
+        } else {
+            return result;
+        }
     }
 
 }

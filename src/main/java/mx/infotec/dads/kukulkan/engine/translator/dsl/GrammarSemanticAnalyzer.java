@@ -247,8 +247,8 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private void genericVisitCardinality(String type) {
         entityAssociation.setType(resolveAssociationType(sourceEntity, type));
-        entityAssociation.setToTargetPropertyNamePlural(pluralize(entityAssociation.getToTargetPropertyName()));
-        entityAssociation.setToSourcePropertyNamePlural(pluralize(entityAssociation.getToSourcePropertyName()));
+        entityAssociation.setToTargetPropertyNamePlural(inflectorService.pluralize(entityAssociation.getToTargetPropertyName()));
+        entityAssociation.setToSourcePropertyNamePlural(inflectorService.pluralize(entityAssociation.getToSourcePropertyName()));
 
         entityAssociation.setToTargetPropertyNameUnderscore(
                 SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToTargetPropertyName()));
@@ -256,9 +256,9 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
                 SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToSourcePropertyName()));
 
         entityAssociation.setToTargetPropertyNameUnderscorePlural(
-                SchemaPropertiesParser.parseToUnderscore(pluralize(entityAssociation.getToTargetPropertyName())));
+                SchemaPropertiesParser.parseToUnderscore(inflectorService.pluralize(entityAssociation.getToTargetPropertyName())));
         entityAssociation.setToSourcePropertyNameUnderscorePlural(
-                SchemaPropertiesParser.parseToUnderscore(pluralize(entityAssociation.getToSourcePropertyName())));
+                SchemaPropertiesParser.parseToUnderscore(inflectorService.pluralize(entityAssociation.getToSourcePropertyName())));
 
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
         resolveImports(sourceEntity, targetEntity, entityAssociation);
@@ -286,19 +286,19 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     public void addMetaData(String entityName, String physicalName, Entity entity, DatabaseType dbType) {
-        String singularName = singularize(entityName);
+        String singularName = inflectorService.singularize(entityName);
         if (singularName == null) {
             singularName = entityName;
         }
         if (StringUtils.isEmpty(physicalName)) {
-            entity.setTableName(toDataBaseNameConvention(dbType, pluralize(entityName)));
+            entity.setTableName(toDataBaseNameConvention(dbType, inflectorService.pluralize(entityName)));
         } else {
             entity.setTableName(physicalName);
         }
         entity.setUnderscoreName(SchemaPropertiesParser.parsePascalCaseToUnderscore(entity.getName()));
         entity.setName(entityName);
         entity.setCamelCaseFormat(SchemaPropertiesParser.parseToPropertyName(singularName));
-        entity.setCamelCasePluralFormat(pluralize(entity.getCamelCaseFormat()));
+        entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
@@ -318,30 +318,6 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         if (isDisplayField) {
             sourceEntity.setDisplayField(javaProperty);
             isDisplayField = false;
-        }
-    }
-
-    public String singularize(String word) {
-        if (word == null) {
-            return null;
-        }
-        String singularize = inflectorService.singularize(word);
-        if (singularize == null) {
-            return word;
-        } else {
-            return singularize;
-        }
-    }
-
-    public String pluralize(String word) {
-        if (word == null) {
-            return null;
-        }
-        String pluralize = inflectorService.pluralize(word);
-        if (pluralize == null) {
-            return word;
-        } else {
-            return pluralize;
         }
     }
 
