@@ -87,10 +87,7 @@ public class DataBaseTranslatorServiceTest {
 
      @Test
     public void databaseTranslatorServiceTemp() {
-        // DataStore dataStore =
-        // EntityFactory.createTestDataStore(DataStoreType.SQL);
-        DataStore dataStore = EntityFactory.createMySqlDataStore();
-
+         DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
         DataContextProperties properties = createDataContextProperties(dataStore);
         DataContext dataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
         dataContext.getSchemaNames().forEach(data -> System.out.println(data));
