@@ -72,7 +72,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private InflectorService inflectorService;
 
-    private boolean isPropertyToShow = false;
+    private boolean isDisplayField = false;
 
     public GrammarSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
         this.pConf = pConf;
@@ -153,7 +153,9 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     public VisitorContext casePrimitiveField(PrimitiveField primitiveField) {
         propertyName = primitiveField.getId();
         constraint = new Constraint();
-        handlePrimitiveFieldMarkers(primitiveField.getMarkers());
+        if (primitiveField.getDisplayFieldMarker() != null) {
+            isDisplayField = true;
+        }
         return vctx;
     }
 
@@ -232,12 +234,6 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         sourceEntity.setHasConstraints(true);
         javaProperty.setHasConstraints(true);
         javaProperty.setSizeValidation(true);
-    }
-
-    private void handlePrimitiveFieldMarkers(String marker) {
-        if ("->".equals(marker)) {
-            isPropertyToShow = true;
-        }
     }
 
     /**
@@ -319,9 +315,9 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     }
 
     private void setPropertyToShow() {
-        if (isPropertyToShow) {
+        if (isDisplayField) {
             sourceEntity.setDisplayField(javaProperty);
-            isPropertyToShow = false;
+            isDisplayField = false;
         }
     }
 

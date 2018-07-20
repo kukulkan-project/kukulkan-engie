@@ -210,8 +210,8 @@ public class GrammarMapping {
      *            the file
      * @return the list
      */
-    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer kukulkanSwitch, File file,
-            ResourceSet resourceSet) {
+    public static List<DomainModelGroup> createSingleDataModelGroupList(GrammarSemanticAnalyzer kukulkanSwitch,
+            File file, ResourceSet resourceSet) {
         String program = file.getAbsolutePath();
         DomainModel ast = GrammarUtil.getDomainModelAST(program, resourceSet);
         List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
