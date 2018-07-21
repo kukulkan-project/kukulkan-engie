@@ -74,7 +74,6 @@ public class GrammarFieldTypeMap {
         /*
          * Time based
          */
-        GRAMMAR_MAP.put(FieldType.DATE.text(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
         GRAMMAR_MAP.put(FieldType.LOCAL_DATE.text(),
                 new GrammarFieldTypeImpl(FieldType.LOCAL_DATE, TIME_TYPE, LocalDate.class));
         GRAMMAR_MAP.put(FieldType.ZONED_DATETIME.text(),

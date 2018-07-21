@@ -79,19 +79,12 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
             return DataContextFactoryRegistryImpl.getDefaultInstance()
                     .createDataContext(context.getDataContextProperties()).getDefaultSchema();
         } catch (UnsupportedDataContextPropertiesException e) {
-            throw new SchemaAnalyzerException("Unsupported DataContext: ", e);
+            throw new SchemaAnalyzerException(e.getMessage(), e);
         } catch (ConnectionException e) {
-            throw new SchemaAnalyzerException("Connection Exception: ", e);
+            throw new SchemaAnalyzerException(e.getMessage(), e);
         } catch (MetaModelException e) {
             throw new SchemaAnalyzerException("Default Schema cannot be returned: ", e);
         }
-    }
-
-    public void processColumn(Entity entity, ColumnType columnType) {
-//        JavaProperty javaProperty = JavaPropertyUtil.createJavaProperty(entity, columnType, DatabaseType.SQL_MYSQL);
-//        DataBaseMapping.fillModelMetaData(entity, javaProperty);
-//        GrammarMapping.addImports(entity.getImports(), javaProperty);
-//        entity.addProperty(javaProperty);
     }
 
     public DomainModel getDomainModel(SchemaAnalyzerContext context) {

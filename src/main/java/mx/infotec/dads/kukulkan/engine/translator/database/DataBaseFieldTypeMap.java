@@ -72,8 +72,8 @@ public class DataBaseFieldTypeMap {
         /*
          * Time based
          */
-        FIELD_TYPE_MAP.put(ColumnType.DATE.getName(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class)); 
-        FIELD_TYPE_MAP.put(ColumnType.TIME.getName(), new GrammarFieldTypeImpl(FieldType.DATE, TIME_TYPE, Date.class));
+        FIELD_TYPE_MAP.put(ColumnType.DATE.getName(), new GrammarFieldTypeImpl(FieldType.LOCAL_DATE, TIME_TYPE, Date.class)); 
+        FIELD_TYPE_MAP.put(ColumnType.TIME.getName(), new GrammarFieldTypeImpl(FieldType.INSTANT, TIME_TYPE, Instant.class));
         FIELD_TYPE_MAP.put(ColumnType.TIMESTAMP.getName(), new GrammarFieldTypeImpl(FieldType.ZONED_DATETIME, TIME_TYPE, ZonedDateTime.class));
 
         /*
