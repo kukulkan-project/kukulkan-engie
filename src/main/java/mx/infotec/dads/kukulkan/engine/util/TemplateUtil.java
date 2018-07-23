@@ -23,15 +23,11 @@
  */
 package mx.infotec.dads.kukulkan.engine.util;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +36,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import mx.infotec.dads.kukulkan.engine.model.ModelContext;
-import mx.infotec.dads.kukulkan.engine.service.FileUtil;
-import mx.infotec.dads.kukulkan.metamodel.context.BaseContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
-import mx.infotec.dads.kukulkan.metamodel.template.TemplateInfo;
-import mx.infotec.dads.kukulkan.metamodel.template.TemplateType;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
-import mx.infotec.dads.kukulkan.metamodel.util.StringFormater;
 
 /**
  * TemplateUtil class used for basic operation with freemarker.
@@ -67,8 +58,8 @@ public class TemplateUtil {
     }
 
     /**
-     * Get a template by name using the configuration object. This method handle
-     * the IOexception that the configuration object could throws.
+     * Get a template by name using the configuration object. This method handle the
+     * IOexception that the configuration object could throws.
      *
      * @param config
      *            the config
@@ -138,5 +129,25 @@ public class TemplateUtil {
         } catch (IOException | TemplateException e) {
             throw new MetaModelException("Fill Model Error", e);
         }
+    }
+
+    /**
+     * Process the text with the model using the Freemarker Configuration
+     * 
+     * @param text
+     *            to process
+     * @param model
+     * @param fmConfiguration
+     * @return the processed text
+     */
+    public static String processString(String text, Object model, Configuration fmConfiguration) {
+        Template template = null;
+        try {
+            template = new Template("tmp", new StringReader(text), fmConfiguration);
+            return processTemplate(model, template);
+        } catch (IOException e) {
+            LOGGER.error("Error while processing {} as Template", text);
+        }
+        return text;
     }
 }

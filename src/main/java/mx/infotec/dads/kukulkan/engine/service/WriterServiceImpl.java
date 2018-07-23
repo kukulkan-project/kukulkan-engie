@@ -26,6 +26,7 @@ package mx.infotec.dads.kukulkan.engine.service;
 
 import static mx.infotec.dads.kukulkan.engine.service.FileUtil.copyFromJar;
 import static mx.infotec.dads.kukulkan.engine.service.FileUtil.saveToFile;
+import static mx.infotec.dads.kukulkan.engine.util.TemplateUtil.processString;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class WriterServiceImpl implements WriterService {
     @Override
     public Optional<File> copyTemplate(String template, Path path, String relative, Object model) {
         String content = templateService.fillTemplate(template, model);
-        Path toSave = path.resolve(processString(relative, model));
+        Path toSave = path.resolve(processString(relative, model, fmConfiguration));
         if (saveToFile(toSave, content)) {
             return Optional.of(toSave.toFile());
         }
@@ -102,7 +103,7 @@ public class WriterServiceImpl implements WriterService {
 
     @Override
     public void copyDir(Class clazz, String directory, String pattern, Path path, String relative, Object model) {
-        String processed = processString(relative, model);
+        String processed = processString(relative, model, fmConfiguration);
         copyDir(clazz, directory, pattern, path, processed);
     }
 
@@ -120,20 +121,9 @@ public class WriterServiceImpl implements WriterService {
         }
     }
 
-    private String processString(String text, Object model) {
-        Template template = null;
-        try {
-            template = new Template("tmp", new StringReader(text), fmConfiguration);
-            return TemplateUtil.processTemplate(model, template);
-        } catch (IOException e) {
-            LOGGER.error("Error while processing {} as Template", text);
-        }
-        return text;
-    }
-
     @Override
     public Optional<File> copy(String resource, Path path, String toSave, Object model) {
-        return copy(resource, path, processString(toSave, model));
+        return copy(resource, path, processString(toSave, model, fmConfiguration));
     }
 
     @Override

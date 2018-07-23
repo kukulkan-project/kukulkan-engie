@@ -42,6 +42,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -76,14 +77,14 @@ public class FileUtil {
     }
 
     /**
-     * Closes this stream and releases any system resources associated with it.
-     * If the stream is already closed then invoking this method has no effect.
+     * Closes this stream and releases any system resources associated with it. If
+     * the stream is already closed then invoking this method has no effect.
      * 
      * <p>
      * As noted in {@link AutoCloseable#close()}, cases where the close may fail
      * require careful attention. It is strongly advised to relinquish the
-     * underlying resources and to internally <em>mark</em> the
-     * {@code Closeable} as closed, prior to throwing the {@code IOException}.
+     * underlying resources and to internally <em>mark</em> the {@code Closeable} as
+     * closed, prior to throwing the {@code IOException}.
      *
      * @param resource
      *            the resource
@@ -217,6 +218,27 @@ public class FileUtil {
             printProvider.error("FileUtil.createFileIfNotExist: ", ioe);
             return false;
         }
+    }
+
+    /**
+     * Save to file.
+     *
+     * @param pathToSave
+     *            the path to save
+     * @param content
+     *            the content
+     * @return true, if successful
+     */
+    public static boolean saveToFile(Path pathToSave, List<String> content) {
+        return saveToFile(pathToSave, joinWithNewLine(content));
+    }
+
+    public static String joinWithNewLine(List<String> lines) {
+        String joinedString = "";
+        for (String line : lines) {
+            joinedString += line + "\n";
+        }
+        return joinedString;
     }
 
     /**
