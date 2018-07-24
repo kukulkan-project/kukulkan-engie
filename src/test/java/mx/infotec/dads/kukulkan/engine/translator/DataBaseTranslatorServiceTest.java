@@ -9,8 +9,10 @@ import java.util.List;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
+import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
+import org.h2.table.Column;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,7 +67,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-    @Test
+//    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -84,9 +86,9 @@ public class DataBaseTranslatorServiceTest {
         });
     }
 
-//     @Test
+     @Test
     public void databaseTranslatorServiceTemp() {
-         DataStore dataStore = EntityFactory.createMySqlDataStore();
+        DataStore dataStore = EntityFactory.createMySqlDataStore();
         DataContextProperties properties = createDataContextProperties(dataStore);
         DataContext dataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
         dataContext.getSchemaNames().forEach(data -> System.out.println(data));
@@ -98,13 +100,14 @@ public class DataBaseTranslatorServiceTest {
             System.out.println("**********************************");
             System.out.println("Table Name :: " + table.getName());
             System.out.println("**********************************");
-//            table.getColumns().forEach(column -> {
-//                System.out.println("name[" + column.getName() + "] type[" + column.getType() + "]");
-//            });
-            table.getRelationships().forEach(relationship-> {
+             table.getColumns().forEach(column -> {
+             System.out.println("name[" + column.getName() + "] type[" +
+             column.getType() + "]");
+             });
+            table.getRelationships().forEach(relationship -> {
                 System.out.println(relationship.toString());
             });
-            
+
         }
         System.out.println("**********************************");
     }

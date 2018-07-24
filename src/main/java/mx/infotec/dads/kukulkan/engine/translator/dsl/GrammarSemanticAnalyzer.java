@@ -82,8 +82,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     @Override
     public VisitorContext caseAssociationField(AssociationField associationField) {
-        targetEntity = entityHolder.getEntity(associationField.getTargetEntity().getName(),
-                pConf.getTargetDatabase().getDatabaseType());
+        targetEntity = entityHolder.getEntity(associationField.getTargetEntity().getName());
         entityAssociation = new EntityAssociation(sourceEntity, targetEntity);
         entityAssociation.setToTargetPropertyName(associationField.getId());
         if (!StringUtils.isEmpty(associationField.getToSourcePropertyName())) {
@@ -136,7 +135,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     @Override
     public VisitorContext caseEntity(mx.infotec.dads.kukulkan.dsl.kukulkan.Entity object) {
         String entityName = object.getName();
-        sourceEntity = entityHolder.getEntity(object.getName(), pConf.getTargetDatabase().getDatabaseType());
+        sourceEntity = entityHolder.getEntity(object.getName());
         String tableName = !StringUtils.isEmpty(object.getTableName()) ? object.getTableName() : null;
         addMetaData(entityName, tableName, sourceEntity, pConf.getTargetDatabase().getDatabaseType());
         getVctx().getElements().add(sourceEntity);

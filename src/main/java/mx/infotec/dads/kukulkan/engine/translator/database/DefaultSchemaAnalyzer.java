@@ -7,19 +7,22 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addCont
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil;
-import mx.infotec.dads.kukulkan.engine.language.PropertyBuilder;
+import mx.infotec.dads.kukulkan.engine.model.AssociationMap;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
+import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
+import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 
 /**
@@ -30,6 +33,9 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
  */
 @Service
 public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
+
+    @Autowired
+    private InflectorService inflectorService;
 
     @Override
     public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
@@ -70,7 +76,8 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     @Override
     public void processRelationships(SchemaAnalyzerContext context, EntityHolder entityHolder,
             Collection<Relationship> relationships) {
-        //
+        AssociationMap map = new AssociationMap(inflectorService);
+        map.processRelationships(relationships, entityHolder);
     }
 
     public void processColumnType(SchemaAnalyzerContext context, Entity entity, Column column) {

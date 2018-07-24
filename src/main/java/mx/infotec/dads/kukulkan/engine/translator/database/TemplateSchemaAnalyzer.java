@@ -44,9 +44,8 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         Schema schema = getDefaultSchema(context);
         EntityHolder entityHolder = new EntityHolder();
         for (Table table : schema.getTables()) {
-            DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
-            Entity entity = entityHolder.getEntity(entityName, databaseType);
+            Entity entity = entityHolder.getEntity(entityName);
             processTable(context, entity, table);
             for (Column column : table.getColumns()) {
                 if (column.isPrimaryKey()) {

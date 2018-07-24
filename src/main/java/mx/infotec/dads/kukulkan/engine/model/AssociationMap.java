@@ -1,0 +1,97 @@
+package mx.infotec.dads.kukulkan.engine.model;
+
+import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.databaseNameToFieldName;
+import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.parseToClassName;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.metamodel.schema.Column;
+import org.apache.metamodel.schema.Relationship;
+
+import mx.infotec.dads.kukulkan.engine.service.InflectorService;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
+import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
+import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
+
+/**
+ * Association Holder
+ * 
+ * @author Daniel Cortes Pichardo
+ *
+ */
+public class AssociationMap extends HashMap<String, EntityAssociation> {
+    private static final long serialVersionUID = 1L;
+
+    private InflectorService inflectorService;
+
+    public AssociationMap(InflectorService inflectorService) {
+        this.inflectorService = inflectorService;
+    }
+
+    @Override
+    public EntityAssociation put(String key, EntityAssociation value) {
+        throw new MetaModelException("Method not supported");
+    }
+
+    public EntityAssociation add(Relationship relationship, EntityHolder entityHolder) {
+        String key = createKeyMap(relationship);
+        EntityAssociation entityAssociation = this.get(key);
+        if (entityAssociation == null) {
+            String targetEntityName = parseToClassName(relationship.getPrimaryTable().getName());
+            String sourceEntityName = parseToClassName(relationship.getForeignTable().getName());
+            Entity targetEntity = entityHolder.findEntity(targetEntityName)
+                    .orElseThrow(() -> new RuntimeException("not found : " + targetEntityName));
+            Entity sourceEntity = entityHolder.findEntity(sourceEntityName)
+                    .orElseThrow(() -> new RuntimeException("not found : " + sourceEntityName));
+            String foreignColumn = getSingleColumn(relationship.getForeignColumns());
+            entityAssociation = EntityAssociation.createEntityAssociation().bidirectional(false).ownerside(false)
+                    .target(targetEntity).toTargetPropertyName(databaseNameToFieldName(foreignColumn))
+                    .toTargetPropertyNamePlural(inflectorService.pluralize(databaseNameToFieldName(foreignColumn)))
+                    .toTargetPropertyNameUnderscore(foreignColumn.toLowerCase())
+                    .toTargetPropertyNameUnderscorePlural(inflectorService.pluralize(foreignColumn.toLowerCase()))
+                    .source(sourceEntity).build();
+        }
+//        entityHolder.getEntity(entityName, type);
+        this.put(key, entityAssociation);
+        return entityAssociation;
+    }
+
+    public List<EntityAssociation> getAssociationsAsList() {
+        return new ArrayList<>(this.values());
+    }
+
+    private static String getSingleColumn(List<Column> foreignColumns) {
+        if (foreignColumns.size() > 1) {
+            throw new MetaModelException("No support for Multiple foreignKeys Columns");
+        } else {
+            return foreignColumns.get(0).getName();
+        }
+    }
+
+    private static String createKeyMap(Relationship relationship) {
+        // by default all foreign tables are sourceTable and primary table are
+        // targetEntity
+        String targetEntityName = relationship.getPrimaryTable().getName().toUpperCase();
+        String targetColumnKey = convertToKeyValue(relationship.getPrimaryColumns());
+        String sourceEntityName = relationship.getForeignTable().getName().toUpperCase();
+        String sourceColumnKey = convertToKeyValue(relationship.getForeignColumns());
+        return targetEntityName + targetColumnKey + sourceEntityName + sourceColumnKey;
+    }
+
+    private static String convertToKeyValue(List<Column> columns) {
+        StringBuilder sb = new StringBuilder();
+        for (Column column : columns) {
+            sb.append(column.getName());
+        }
+        return sb.toString().toUpperCase();
+    }
+
+    public void processRelationships(Collection<Relationship> relationships, EntityHolder entityHolder) {
+        relationships.forEach(relationship -> {
+            this.add(relationship, entityHolder);
+        });
+    }
+}

@@ -30,12 +30,11 @@ public class EntityHolder {
      * @param entityName
      * @return
      */
-    public Entity getEntity(String entityName, DatabaseType type) {
+    public Entity getEntity(String entityName) {
         Entity source = entityMap.get(entityName);
         if (source == null) {
             source = Entity.createDomainModelElement();
             source.setName(entityName);
-            source.setTableName(toDataBaseNameConvention(type, entityName));
             entityMap.put(source.getName(), source);
         }
         return source;
