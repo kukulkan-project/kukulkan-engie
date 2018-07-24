@@ -42,6 +42,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.translator.Source;
+import mx.infotec.dads.kukulkan.metamodel.translator.SourceType;
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
 import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
@@ -64,7 +65,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-//    @Test
+    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -77,17 +78,15 @@ public class DataBaseTranslatorServiceTest {
                 Collection<Property> properties = entity.getProperties();
                 properties.forEach(property -> {
                     System.out.println(property.getName());
-                    System.out.println(property.getColumnName());
-
                 });
                 System.out.println("******");
             });
         });
     }
 
-     @Test
+//     @Test
     public void databaseTranslatorServiceTemp() {
-         DataStore dataStore = EntityFactory.createTestDataStore(DataStoreType.SQL);
+         DataStore dataStore = EntityFactory.createMySqlDataStore();
         DataContextProperties properties = createDataContextProperties(dataStore);
         DataContext dataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
         dataContext.getSchemaNames().forEach(data -> System.out.println(data));
@@ -96,10 +95,16 @@ public class DataBaseTranslatorServiceTest {
         System.out.println("**********************************");
         List<Table> tables = schema.getTables();
         for (Table table : tables) {
+            System.out.println("**********************************");
             System.out.println("Table Name :: " + table.getName());
-            table.getColumns().forEach(column -> {
-                System.out.println("name[" + column.getName() + "] type[" + column.getType() + "]");
+            System.out.println("**********************************");
+//            table.getColumns().forEach(column -> {
+//                System.out.println("name[" + column.getName() + "] type[" + column.getType() + "]");
+//            });
+            table.getRelationships().forEach(relationship-> {
+                System.out.println(relationship.toString());
             });
+            
         }
         System.out.println("**********************************");
     }
