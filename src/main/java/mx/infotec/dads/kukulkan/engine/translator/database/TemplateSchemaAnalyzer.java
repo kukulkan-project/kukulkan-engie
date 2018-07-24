@@ -19,8 +19,8 @@ import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
@@ -78,9 +78,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         try {
             return DataContextFactoryRegistryImpl.getDefaultInstance()
                     .createDataContext(context.getDataContextProperties()).getDefaultSchema();
-        } catch (UnsupportedDataContextPropertiesException e) {
-            throw new SchemaAnalyzerException(e.getMessage(), e);
-        } catch (ConnectionException e) {
+        } catch (ConnectionException | UnsupportedDataContextPropertiesException e) {
             throw new SchemaAnalyzerException(e.getMessage(), e);
         } catch (MetaModelException e) {
             throw new SchemaAnalyzerException("Default Schema cannot be returned: ", e);

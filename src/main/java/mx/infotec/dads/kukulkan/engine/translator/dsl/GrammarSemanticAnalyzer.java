@@ -31,6 +31,7 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringValidators;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.util.KukulkanSwitch;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
+import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;

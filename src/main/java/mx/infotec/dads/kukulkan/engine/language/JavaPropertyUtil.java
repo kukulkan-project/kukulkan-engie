@@ -57,4 +57,22 @@ public class JavaPropertyUtil {
                 .isIndexed(false).build();
     }
 
+    /**
+     * Creates the java property.
+     *
+     * @param field
+     *            the field
+     * @param propertyName
+     *            the property name
+     * @param propertyType
+     *            the property type
+     * @return the java property
+     */
+    public static PropertyBuilder<JavaProperty> createJavaPropertyBuilder(String propertyName,
+            GrammarFieldType propertyType, DatabaseType dbType) {
+        return JavaProperty.builder().withName(propertyName).withPropertyType(propertyType)
+                .withColumnName(toDataBaseNameConvention(dbType, propertyName)).isNullable(true).isPrimaryKey(false)
+                .isIndexed(false);
+    }
+
 }

@@ -1,4 +1,4 @@
-package mx.infotec.dads.kukulkan.engine.translator.dsl;
+package mx.infotec.dads.kukulkan.engine.model;
 
 import static mx.infotec.dads.kukulkan.metamodel.util.NameConventionFormatter.toDataBaseNameConvention;
 

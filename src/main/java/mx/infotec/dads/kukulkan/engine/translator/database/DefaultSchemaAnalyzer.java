@@ -1,5 +1,6 @@
 package mx.infotec.dads.kukulkan.engine.translator.database;
 
+import static mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil.createJavaPropertyBuilder;
 import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorUtil.fieldTypeFrom;
 import static mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorUtil.propertyNameFrom;
 import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addContentType;
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.language.JavaPropertyUtil;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.EntityHolder;
+import mx.infotec.dads.kukulkan.engine.language.PropertyBuilder;
+import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
@@ -75,13 +77,11 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
         DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
         GrammarFieldType fieldType = fieldTypeFrom(column);
         String propertyName = propertyNameFrom(column);
-        JavaProperty javaProperty = JavaPropertyUtil.createJavaProperty(propertyName, fieldType, databaseType);
-        // javaProperty.setConstraint(constraint);
-        // setPropertyToShow();
+        JavaProperty javaProperty = createJavaPropertyBuilder(propertyName, fieldType, databaseType)
+                .isIndexed(column.isIndexed()).isNullable(column.isNullable()).build();
         entity.addProperty(javaProperty);
         addContentType(entity, propertyName, databaseType, fieldType);
         GrammarMapping.addImports(entity.getImports(), javaProperty);
         DataBaseMapping.fillModelMetaData(entity, javaProperty);
     }
-
 }
