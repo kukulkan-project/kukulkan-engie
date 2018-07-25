@@ -63,7 +63,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-//    @Test
+    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -82,7 +82,7 @@ public class DataBaseTranslatorServiceTest {
         });
     }
 
-     @Test
+//     @Test
     public void databaseTranslatorServiceTemp() {
         DataStore dataStore = EntityFactory.createMySqlDataStore();
         DataContextProperties properties = createDataContextProperties(dataStore);
