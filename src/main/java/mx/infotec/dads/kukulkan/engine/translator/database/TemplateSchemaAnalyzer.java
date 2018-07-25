@@ -13,19 +13,21 @@ import org.apache.metamodel.MetaModelException;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.UnsupportedDataContextPropertiesException;
 import org.apache.metamodel.schema.Column;
-import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
+import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
@@ -39,6 +41,9 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
     @Autowired
     private InflectorService inflectorService;
 
+    @Autowired
+    private PropertyRankStrategy rankStrategy;
+
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
         Schema schema = getDefaultSchema(context);
@@ -47,25 +52,31 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
             Entity entity = entityHolder.getEntity(entityName);
             processTable(context, entity, table);
+            List<Column> foreignKeys = table.getForeignKeys();
             for (Column column : table.getColumns()) {
+                boolean isForeignKey = foreignKeys.contains(column);
                 if (column.isPrimaryKey()) {
                     processPrimaryKey(context, entity, column);
                 } else if (column.getType().isBinary()) {
-                    processBinaryColumn(context, entity, column);
+                    processBinaryColumn(context, entity, column, isForeignKey);
                 } else if (column.getType().isBoolean()) {
-                    processBooleanColumn(context, entity, column);
+                    processBooleanColumn(context, entity, column, isForeignKey);
                 } else if (column.getType().isLargeObject()) {
-                    processLargeObjectColumn(context, entity, column);
+                    processLargeObjectColumn(context, entity, column, isForeignKey);
                 } else if (column.getType().isLiteral()) {
-                    processLiteralColumn(context, entity, column);
+                    processLiteralColumn(context, entity, column, isForeignKey);
                 } else if (column.getType().isNumber()) {
-                    processNumberColumn(context, entity, column);
+                    processNumberColumn(context, entity, column, isForeignKey);
                 } else if (column.getType().isTimeBased()) {
-                    processTimeBasedColumn(context, entity, column);
+                    processTimeBasedColumn(context, entity, column, isForeignKey);
                 } else {
                     throw new SchemaAnalyzerException("Column type not supported :: " + column.getType().getName());
                 }
                 entityHolder.update(entity);
+            }
+            Property<?> rank = rankStrategy.rank(entity.getProperties());
+            if (rank != null) {
+                entity.setDisplayField(rank);
             }
         }
         processRelationships(context, entityHolder, schema.getRelationships());
@@ -119,22 +130,22 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
     public abstract void processPrimaryKey(SchemaAnalyzerContext context, final Entity entity, Column column);
 
     public abstract void processTimeBasedColumn(final SchemaAnalyzerContext context, final Entity entity,
-            final Column column);
+            final Column column, boolean isForeignKey);
 
     public abstract void processNumberColumn(final SchemaAnalyzerContext context, final Entity entity,
-            final Column column);
+            final Column column, boolean isForeignKey);
 
     public abstract void processLiteralColumn(final SchemaAnalyzerContext context, final Entity entity,
-            final Column column);
+            final Column column, boolean isForeignKey);
 
     public abstract void processLargeObjectColumn(final SchemaAnalyzerContext context, final Entity entity,
-            final Column column);
+            final Column column, boolean isForeignKey);
 
     public abstract void processBooleanColumn(final SchemaAnalyzerContext context, final Entity entity,
-            final Column column);
+            final Column column, boolean isForeignKey);
 
     public abstract void processBinaryColumn(final SchemaAnalyzerContext context, final Entity entity,
-            final Column column);
+            final Column column, boolean isForeignKey);
 
     public abstract void processRelationships(final SchemaAnalyzerContext context, final EntityHolder entityHolder,
             final Collection<Relationship> relationships);

@@ -12,33 +12,30 @@ import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
 
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
+import mx.infotec.dads.kukulkan.metamodel.foundation.AssociationType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
 
 /**
- * Association Holder
+ * Association Processor
  * 
  * @author Daniel Cortes Pichardo
  *
  */
-public class AssociationMap extends HashMap<String, EntityAssociation> {
-    private static final long serialVersionUID = 1L;
+public class AssociationProcessor {
+
+    private HashMap<String, EntityAssociation> map = new HashMap<>();
 
     private InflectorService inflectorService;
 
-    public AssociationMap(InflectorService inflectorService) {
+    public AssociationProcessor(InflectorService inflectorService) {
         this.inflectorService = inflectorService;
-    }
-
-    @Override
-    public EntityAssociation put(String key, EntityAssociation value) {
-        throw new MetaModelException("Method not supported");
     }
 
     public EntityAssociation add(Relationship relationship, EntityHolder entityHolder) {
         String key = createKeyMap(relationship);
-        EntityAssociation entityAssociation = this.get(key);
+        EntityAssociation entityAssociation = map.get(key);
         if (entityAssociation == null) {
             String targetEntityName = parseToClassName(relationship.getPrimaryTable().getName());
             String sourceEntityName = parseToClassName(relationship.getForeignTable().getName());
@@ -53,14 +50,19 @@ public class AssociationMap extends HashMap<String, EntityAssociation> {
                     .toTargetPropertyNameUnderscore(foreignColumn.toLowerCase())
                     .toTargetPropertyNameUnderscorePlural(inflectorService.pluralize(foreignColumn.toLowerCase()))
                     .source(sourceEntity).build();
+            entityAssociation.setType(AssociationType.MANY_TO_ONE);
+            sourceEntity.addAssociation(entityAssociation);
         }
-//        entityHolder.getEntity(entityName, type);
-        this.put(key, entityAssociation);
+        map.put(key, entityAssociation);
         return entityAssociation;
     }
 
+    public void processRelationships(Collection<Relationship> relationships, EntityHolder entityHolder) {
+        relationships.forEach(relationship -> this.add(relationship, entityHolder));
+    }
+
     public List<EntityAssociation> getAssociationsAsList() {
-        return new ArrayList<>(this.values());
+        return new ArrayList<>(map.values());
     }
 
     private static String getSingleColumn(List<Column> foreignColumns) {
@@ -89,9 +91,4 @@ public class AssociationMap extends HashMap<String, EntityAssociation> {
         return sb.toString().toUpperCase();
     }
 
-    public void processRelationships(Collection<Relationship> relationships, EntityHolder entityHolder) {
-        relationships.forEach(relationship -> {
-            this.add(relationship, entityHolder);
-        });
-    }
 }
