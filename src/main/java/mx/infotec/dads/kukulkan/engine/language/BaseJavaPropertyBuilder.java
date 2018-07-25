@@ -1,5 +1,7 @@
 package mx.infotec.dads.kukulkan.engine.language;
 
+import java.util.Objects;
+
 import org.apache.metamodel.schema.ColumnType;
 
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap;
@@ -24,6 +26,7 @@ public abstract class BaseJavaPropertyBuilder implements PropertyBuilder<JavaPro
     public BaseJavaPropertyBuilder() {
         this.javaProperty = new JavaProperty();
         this.javaProperty.setConstraint(new Constraint());
+        this.javaProperty.setHasConstraints(true);
     }
 
     protected JavaProperty getJavaProperty() {
@@ -123,6 +126,15 @@ public abstract class BaseJavaPropertyBuilder implements PropertyBuilder<JavaPro
     @Override
     public PropertyBuilder<JavaProperty> isLargeObject(boolean largeObject) {
         this.javaProperty.setLargeObject(largeObject);
+        return this;
+    }
+
+    @Override
+    public PropertyBuilder<JavaProperty> maxSize(Integer maxSize) {
+        if (!Objects.isNull(maxSize)) {
+            this.javaProperty.getConstraint().setMax(String.valueOf(maxSize));
+            this.javaProperty.setSizeValidation(true);
+        }
         return this;
     }
 

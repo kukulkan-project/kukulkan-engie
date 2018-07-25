@@ -39,7 +39,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
-    
+
     @Autowired
     private PropertyRankStrategy rankStrategy;
 
@@ -50,7 +50,8 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     }
 
     @Override
-    public void processTimeBasedColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+    public void processTimeBasedColumn(SchemaAnalyzerContext context, Entity entity, Column column,
+            boolean isForeignKey) {
         processColumnType(context, entity, column, isForeignKey);
     }
 
@@ -60,17 +61,20 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     }
 
     @Override
-    public void processLiteralColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+    public void processLiteralColumn(SchemaAnalyzerContext context, Entity entity, Column column,
+            boolean isForeignKey) {
         processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processLargeObjectColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+    public void processLargeObjectColumn(SchemaAnalyzerContext context, Entity entity, Column column,
+            boolean isForeignKey) {
         processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processBooleanColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+    public void processBooleanColumn(SchemaAnalyzerContext context, Entity entity, Column column,
+            boolean isForeignKey) {
         processColumnType(context, entity, column, isForeignKey);
     }
 
@@ -94,7 +98,10 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
         GrammarFieldType fieldType = fieldTypeFrom(column);
         String propertyName = propertyNameFrom(column);
         JavaProperty javaProperty = createJavaPropertyBuilder(propertyName, fieldType, databaseType)
-                .isIndexed(column.isIndexed()).isNullable(column.isNullable()).build();
+                .isIndexed(column.isIndexed())
+                .isNullable(column.isNullable())
+                .maxSize(column.getColumnSize())
+                .build();
         entity.addProperty(javaProperty);
         addContentType(entity, propertyName, databaseType, fieldType);
         GrammarMapping.addImports(entity.getImports(), javaProperty);

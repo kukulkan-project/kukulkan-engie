@@ -45,6 +45,8 @@ public interface PropertyBuilder<T> {
 
     public PropertyBuilder<T> isLargeObject(boolean largeObject);
 
+    public PropertyBuilder<T> maxSize(Integer maxSize);
+
     public T build();
 
 }

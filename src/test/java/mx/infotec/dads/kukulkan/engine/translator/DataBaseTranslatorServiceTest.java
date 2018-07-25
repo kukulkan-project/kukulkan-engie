@@ -9,10 +9,8 @@ import java.util.List;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextProperties;
-import org.apache.metamodel.schema.Relationship;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
-import org.h2.table.Column;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,11 +38,9 @@ import mx.infotec.dads.kukulkan.engine.util.EntityFactory;
 import mx.infotec.dads.kukulkan.engine.util.H2FileDatabaseConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.translator.Source;
-import mx.infotec.dads.kukulkan.metamodel.translator.SourceType;
 import mx.infotec.dads.nlp.inflector.core.Inflector;
 import mx.infotec.dads.nlp.inflector.service.EnglishInflector;
 import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
@@ -67,7 +63,7 @@ public class DataBaseTranslatorServiceTest {
         H2FileDatabaseConfiguration.run("relationship-schema.sql");
     }
 
-    @Test
+//    @Test
     public void databaseTranslatorService() {
         assertNotNull(translatorService);
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
@@ -86,7 +82,7 @@ public class DataBaseTranslatorServiceTest {
         });
     }
 
-//     @Test
+     @Test
     public void databaseTranslatorServiceTemp() {
         DataStore dataStore = EntityFactory.createMySqlDataStore();
         DataContextProperties properties = createDataContextProperties(dataStore);
