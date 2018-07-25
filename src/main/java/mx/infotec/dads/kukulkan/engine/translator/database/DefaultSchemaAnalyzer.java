@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
-import mx.infotec.dads.kukulkan.engine.model.AssociationMap;
+import mx.infotec.dads.kukulkan.engine.model.AssociationProcessor;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
@@ -44,43 +44,46 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     }
 
     @Override
-    public void processTimeBasedColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        processColumnType(context, entity, column);
+    public void processTimeBasedColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processNumberColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        processColumnType(context, entity, column);
+    public void processNumberColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processLiteralColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        processColumnType(context, entity, column);
+    public void processLiteralColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processLargeObjectColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        processColumnType(context, entity, column);
+    public void processLargeObjectColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processBooleanColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        processColumnType(context, entity, column);
+    public void processBooleanColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
-    public void processBinaryColumn(SchemaAnalyzerContext context, Entity entity, Column column) {
-        processColumnType(context, entity, column);
+    public void processBinaryColumn(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        processColumnType(context, entity, column, isForeignKey);
     }
 
     @Override
     public void processRelationships(SchemaAnalyzerContext context, EntityHolder entityHolder,
             Collection<Relationship> relationships) {
-        AssociationMap map = new AssociationMap(inflectorService);
-        map.processRelationships(relationships, entityHolder);
+        AssociationProcessor associationProcessor = new AssociationProcessor(inflectorService);
+        associationProcessor.processRelationships(relationships, entityHolder);
     }
 
-    public void processColumnType(SchemaAnalyzerContext context, Entity entity, Column column) {
+    public void processColumnType(SchemaAnalyzerContext context, Entity entity, Column column, boolean isForeignKey) {
+        if (isForeignKey) {
+            return;
+        }
         DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
         GrammarFieldType fieldType = fieldTypeFrom(column);
         String propertyName = propertyNameFrom(column);

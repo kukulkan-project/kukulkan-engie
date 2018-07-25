@@ -25,16 +25,8 @@ package mx.infotec.dads.kukulkan.engine.language;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
-import org.apache.metamodel.schema.ColumnType;
-
-import mx.infotec.dads.kukulkan.dsl.kukulkan.FieldType;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarFieldTypeMap;
-import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
-import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
-import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.translator.SourceType;
 

@@ -410,40 +410,4 @@ public class DataBaseMapping {
             property.setClob(true);
         }
     }
-
-    public static List<DomainModelGroup> createSingleDataModelGroupList(ProjectConfiguration pConf,
-            DataContextProperties properties) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-//    public static List<DomainModelGroup> createSingleDataModelGroupList(ProjectConfiguration configuration,
-//            DataContextProperties properties) {
-//        DataContext dataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(properties);
-//        List<DomainModelGroup> dataModelGroupList = new ArrayList<>();
-//        dataModelGroupList.add(createDefaultDataModelGroup(dataContext, configuration));
-//        return dataModelGroupList;
-//    }
-//
-//    /**
-//     * Create a DataModelGroup Class.
-//     *
-//     * @param dmc
-//     *            the dmc
-//     * @param visitor
-//     *            the visitor
-//     * @return DataModelGroup
-//     */
-//    public static DomainModelGroup createDefaultDataModelGroup(DataContext dataContext, ProjectConfiguration visitor) {
-//        DomainModelGroup dmg = new DomainModelGroup();
-//        dmg.setName("");
-//        dmg.setDescription("Default package");
-//        dmg.setBriefDescription("Default package");
-//        dmg.setEntities(new ArrayList<>());
-//        List<Entity> dmeList = new ArrayList<>();
-//        createDataModelElement(dmc, visitor, dmeList);
-//        dmg.setEntities(dmeList);
-//        return dmg;
-//    }
-
 }
