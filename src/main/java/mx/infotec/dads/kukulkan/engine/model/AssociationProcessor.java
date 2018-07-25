@@ -39,22 +39,31 @@ public class AssociationProcessor {
         if (entityAssociation == null) {
             String targetEntityName = parseToClassName(relationship.getPrimaryTable().getName());
             String sourceEntityName = parseToClassName(relationship.getForeignTable().getName());
-            Entity targetEntity = entityHolder.findEntity(targetEntityName)
-                    .orElseThrow(() -> new RuntimeException("not found : " + targetEntityName));
-            Entity sourceEntity = entityHolder.findEntity(sourceEntityName)
-                    .orElseThrow(() -> new RuntimeException("not found : " + sourceEntityName));
+            Entity targetEntity = findEntity(entityHolder, targetEntityName);
+            Entity sourceEntity = findEntity(entityHolder, sourceEntityName);
             String foreignColumn = getSingleColumn(relationship.getForeignColumns());
-            entityAssociation = EntityAssociation.createEntityAssociation().bidirectional(false).ownerside(false)
-                    .target(targetEntity).toTargetPropertyName(databaseNameToFieldName(foreignColumn))
-                    .toTargetPropertyNamePlural(inflectorService.pluralize(databaseNameToFieldName(foreignColumn)))
-                    .toTargetPropertyNameUnderscore(foreignColumn.toLowerCase())
-                    .toTargetPropertyNameUnderscorePlural(inflectorService.pluralize(foreignColumn.toLowerCase()))
-                    .source(sourceEntity).build();
+            entityAssociation = createEntityAssociation(targetEntity, sourceEntity, foreignColumn);
             entityAssociation.setType(AssociationType.MANY_TO_ONE);
             sourceEntity.addAssociation(entityAssociation);
         }
         map.put(key, entityAssociation);
         return entityAssociation;
+    }
+
+    public EntityAssociation createEntityAssociation(Entity targetEntity, Entity sourceEntity, String foreignColumn) {
+        EntityAssociation entityAssociation;
+        entityAssociation = EntityAssociation.createEntityAssociation().bidirectional(false).ownerside(false)
+                .target(targetEntity).toTargetPropertyName(databaseNameToFieldName(foreignColumn))
+                .toTargetPropertyNamePlural(inflectorService.pluralize(databaseNameToFieldName(foreignColumn)))
+                .toTargetPropertyNameUnderscore(foreignColumn.toLowerCase())
+                .toTargetPropertyNameUnderscorePlural(inflectorService.pluralize(foreignColumn.toLowerCase()))
+                .source(sourceEntity).build();
+        return entityAssociation;
+    }
+
+    public Entity findEntity(EntityHolder entityHolder, String targetEntityName) {
+        return entityHolder.findEntity(targetEntityName)
+                .orElseThrow(() -> new RuntimeException("not found : " + targetEntityName));
     }
 
     public void processRelationships(Collection<Relationship> relationships, EntityHolder entityHolder) {
