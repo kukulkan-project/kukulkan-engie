@@ -1,6 +1,7 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,12 @@ public class DefaultPropertyRankStrategy implements PropertyRankStrategy {
 
     @Override
     @SuppressWarnings("rawtypes")
-    public Property rank(Collection<Property> properties) {
-//        Map<String, Property> rank = new HashMap<>();
+    public Optional<Property<?>> rank(Collection<Property> properties) {
         for (Property property : properties) {
             if (FieldType.STRING.text().equals(property.getType())) {
-                return property;
+                return Optional.of(property);
             }
         }
-        return null;
+        return Optional.empty();
     }
 }

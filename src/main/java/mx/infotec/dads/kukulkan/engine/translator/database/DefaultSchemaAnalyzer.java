@@ -8,6 +8,7 @@ import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefault
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
@@ -18,12 +19,14 @@ import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.model.AssociationProcessor;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
+import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 
 /**
  * DefatulSchemaAnalyzer
@@ -36,6 +39,9 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
+    
+    @Autowired
+    private PropertyRankStrategy rankStrategy;
 
     @Override
     public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
@@ -93,5 +99,10 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
         addContentType(entity, propertyName, databaseType, fieldType);
         GrammarMapping.addImports(entity.getImports(), javaProperty);
         DataBaseMapping.fillModelMetaData(entity, javaProperty);
+    }
+
+    @Override
+    public Optional<Property<?>> resolveDisplayField(Collection<Property> properties) {
+        return rankStrategy.rank(properties);
     }
 }

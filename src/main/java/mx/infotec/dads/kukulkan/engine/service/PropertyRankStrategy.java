@@ -1,6 +1,7 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 
@@ -12,5 +13,5 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
  */
 public interface PropertyRankStrategy {
 
-    Property rank(Collection<Property> properties);
+    Optional<Property<?>> rank(Collection<Property> properties);
 }

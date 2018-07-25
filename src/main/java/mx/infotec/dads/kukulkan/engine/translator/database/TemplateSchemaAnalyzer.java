@@ -7,6 +7,7 @@ import static mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser.par
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.metamodel.ConnectionException;
 import org.apache.metamodel.MetaModelException;
@@ -18,7 +19,6 @@ import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
@@ -40,9 +40,6 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
-
-    @Autowired
-    private PropertyRankStrategy rankStrategy;
 
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
@@ -74,15 +71,15 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
                 }
                 entityHolder.update(entity);
             }
-            Property<?> rank = rankStrategy.rank(entity.getProperties());
-            if (rank != null) {
-                entity.setDisplayField(rank);
-            }
+            Optional<Property<?>> propertyDisplayField = resolveDisplayField(entity.getProperties());
+            propertyDisplayField.ifPresent(entity::setDisplayField);
         }
         processRelationships(context, entityHolder, schema.getRelationships());
         context.getElements().addAll(entityHolder.getEntitiesAsList());
         return getDomainModel(context);
     }
+
+    public abstract Optional<Property<?>> resolveDisplayField(Collection<Property> properties);
 
     private Schema getDefaultSchema(SchemaAnalyzerContext context) {
         try {
