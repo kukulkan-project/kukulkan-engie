@@ -113,19 +113,28 @@ public class FileUtil {
      *            the out put dir
      * @return the path
      */
-    public static PathPair buildRealFilePath(Path outPutDir, String proyectoId, BasePathEnum resourcePath, String packaging,
-            String layerName, String fileName) {
-        Path realPath = Paths.get(outPutDir.toString(), proyectoId, resourcePath.getPath(), convertPackageToPath(packaging),
-                layerName, fileName);
-        Path relativePath =Paths.get(proyectoId, resourcePath.getPath(), convertPackageToPath(packaging),
-                layerName, fileName);
+    public static PathPair buildRealFilePath(Path outPutDir, String proyectoId, BasePathEnum resourcePath,
+            String packaging, String layerName, String fileName) {
+        Path realPath = Paths.get(outPutDir.toString(), proyectoId, resourcePath.getPath(),
+                convertPackageToPath(packaging), layerName, fileName);
+        Path relativePath = Paths.get(proyectoId, resourcePath.getPath(), convertPackageToPath(packaging), layerName,
+                fileName);
         return new PathPair(realPath, relativePath);
+    }
+
+    public static void deleteFiles(String currentDirectory, List<String> files) {
+        files.forEach(file -> {
+            Path path = Paths.get(currentDirectory, file);
+            if(path.toFile().delete()){
+                printProvider.info("deleting: "+path.toString());                
+            }
+        });
     }
 
     public static String convertPackageToPath(String basePackage) {
         return basePackage.replace('.', '/');
     }
-    
+
     /**
      * Creates the parents file if not exist.
      *
