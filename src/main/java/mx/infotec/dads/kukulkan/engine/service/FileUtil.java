@@ -52,6 +52,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import mx.infotec.dads.kukulkan.engine.util.PathPair;
 import mx.infotec.dads.kukulkan.metamodel.context.GeneratorContext;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GeneratedElement;
@@ -77,14 +78,14 @@ public class FileUtil {
     }
 
     /**
-     * Closes this stream and releases any system resources associated with it. If
-     * the stream is already closed then invoking this method has no effect.
+     * Closes this stream and releases any system resources associated with it.
+     * If the stream is already closed then invoking this method has no effect.
      * 
      * <p>
      * As noted in {@link AutoCloseable#close()}, cases where the close may fail
      * require careful attention. It is strongly advised to relinquish the
-     * underlying resources and to internally <em>mark</em> the {@code Closeable} as
-     * closed, prior to throwing the {@code IOException}.
+     * underlying resources and to internally <em>mark</em> the
+     * {@code Closeable} as closed, prior to throwing the {@code IOException}.
      *
      * @param resource
      *            the resource
@@ -112,34 +113,19 @@ public class FileUtil {
      *            the out put dir
      * @return the path
      */
-    public static Path buildRealFilePath(Path outPutDir, String proyectoId, BasePathEnum resourcePath, String packaging,
+    public static PathPair buildRealFilePath(Path outPutDir, String proyectoId, BasePathEnum resourcePath, String packaging,
             String layerName, String fileName) {
-        return Paths.get(outPutDir.toString(), proyectoId, resourcePath.getPath(), convertPackageToPath(packaging),
+        Path realPath = Paths.get(outPutDir.toString(), proyectoId, resourcePath.getPath(), convertPackageToPath(packaging),
                 layerName, fileName);
+        Path relativePath =Paths.get(proyectoId, resourcePath.getPath(), convertPackageToPath(packaging),
+                layerName, fileName);
+        return new PathPair(realPath, relativePath);
     }
 
     public static String convertPackageToPath(String basePackage) {
         return basePackage.replace('.', '/');
     }
-
-    /**
-     * Builds the real File Path
-     *
-     * @param proyectoId
-     *            the proyecto id
-     * @param resourcePath
-     *            the path
-     * @param relativeFilePath
-     *            the file path
-     * @param outPutDir
-     *            the out put dir
-     * @return the path
-     */
-    public static Path buildRealFilePath(Path outPutDir, String proyectoId, BasePathEnum resourcePath,
-            String fileName) {
-        return Paths.get(outPutDir.toString(), proyectoId, resourcePath.getPath(), fileName);
-    }
-
+    
     /**
      * Creates the parents file if not exist.
      *
