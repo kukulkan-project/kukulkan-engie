@@ -31,7 +31,6 @@ import java.util.Map;
 
 import mx.infotec.dads.kukulkan.engine.service.FileUtil;
 import mx.infotec.dads.kukulkan.metamodel.context.GeneratorContext;
-import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
@@ -60,7 +59,7 @@ public class LayerUtils {
     public static final String AUTHOR_PROPERTY = "author";
 
     /** The Constant IS_MONGO_PROPERTY. */
-    public static final String IS_MONGO_PROPERTY = "isMongoDB";
+    public static final String DATABASE_TYPE = "databaseType";
 
     /** The Constant PROJECT_NAME_PROPERTY. */
     public static final String PROJECT_NAME_PROPERTY = "projectName";
@@ -178,7 +177,7 @@ public class LayerUtils {
         Map<String, Object> model = new HashMap<>();
         model.put(YEAR_PROPERTY, pConf.getYear());
         model.put(AUTHOR_PROPERTY, pConf.getAuthor());
-        model.put(IS_MONGO_PROPERTY, pConf.getTargetDatabase().getDatabaseType().equals(DatabaseType.NO_SQL_MONGODB));
+        model.put(DATABASE_TYPE, pConf.getTargetDatabase().getDatabaseType());
         model.put(PROJECT_NAME_PROPERTY, pConf.getId());
         model.put(DATA_MODEL_GROUP_PROPERTY, domainModel.getDomainModelGroup());
         model.put(TIME_STAMP, FileUtil.formatToDateTimeJournal(pConf.getTimestamp()));
