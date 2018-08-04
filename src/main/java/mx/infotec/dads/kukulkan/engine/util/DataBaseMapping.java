@@ -36,6 +36,7 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.PrimaryKey;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 import mx.infotec.dads.kukulkan.metamodel.util.MetaModelException;
+import mx.infotec.dads.kukulkan.metamodel.util.PKGenerationStrategy;
 import mx.infotec.dads.kukulkan.metamodel.util.SchemaPropertiesParser;
 
 /**
@@ -146,6 +147,14 @@ public class DataBaseMapping {
             pk.setName(ID_DEFAULT_NAME);
             pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
+            pk.setGenerationType(PKGenerationStrategy.IDENTITY);
+        } else if (dbType.equals(DatabaseType.SQL_ORACLE)) {
+            pk.setType(LONG_TYPE);
+            pk.setName(ID_DEFAULT_NAME);
+            pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
+            pk.setComposed(Boolean.FALSE);
+            pk.setSequenceGeneratorName("sequenceGenerator");
+            pk.setGenerationType(PKGenerationStrategy.SEQUENCE);
         } else {
             pk.setType(STRING_TYPE);
             pk.setName(ID_DEFAULT_NAME);
