@@ -22,6 +22,7 @@ import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
+import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
@@ -43,10 +44,13 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     @Autowired
     private PropertyRankStrategy rankStrategy;
 
+    @Autowired
+    private PrimaryKeyNameStrategy primaryKeyNameStrategy;
+
     @Override
     public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
         DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
-        entity.setPrimaryKey(createDefaultPrimaryKey(databaseType));
+        entity.setPrimaryKey(createDefaultPrimaryKey(databaseType, primaryKeyNameStrategy.getName(entity)));
     }
 
     @Override
@@ -98,10 +102,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
         GrammarFieldType fieldType = fieldTypeFrom(column);
         String propertyName = propertyNameFrom(column);
         JavaProperty javaProperty = createJavaPropertyBuilder(propertyName, fieldType, databaseType)
-                .isIndexed(column.isIndexed())
-                .isNullable(column.isNullable())
-                .maxSize(column.getColumnSize())
-                .build();
+                .isIndexed(column.isIndexed()).isNullable(column.isNullable()).maxSize(column.getColumnSize()).build();
         entity.addProperty(javaProperty);
         addContentType(entity, propertyName, databaseType, fieldType);
         GrammarMapping.addImports(entity.getImports(), javaProperty);

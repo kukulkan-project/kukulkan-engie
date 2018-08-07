@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
+import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
@@ -40,6 +41,9 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
+    
+    @Autowired
+    private PrimaryKeyNameStrategy primaryKeyNameStrategy;
 
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
@@ -121,7 +125,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        entity.setDisplayField(createIdJavaProperty());
+        entity.setDisplayField(createIdJavaProperty(primaryKeyNameStrategy.getName(entity)));
     }
 
     public abstract void processPrimaryKey(SchemaAnalyzerContext context, final Entity entity, Column column);

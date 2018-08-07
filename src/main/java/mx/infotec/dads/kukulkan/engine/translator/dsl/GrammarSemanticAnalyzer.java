@@ -34,6 +34,7 @@ import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
+import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
@@ -72,12 +73,16 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     private ProjectConfiguration pConf = null;
 
     private InflectorService inflectorService;
+    
+    private PrimaryKeyNameStrategy primaryKeyNameStrategy;
 
     private boolean isDisplayField = false;
 
-    public GrammarSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService) {
+    public GrammarSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService,
+            PrimaryKeyNameStrategy primaryKeyNameStrategy) {
         this.pConf = pConf;
         this.inflectorService = inflectorService;
+        this.primaryKeyNameStrategy = primaryKeyNameStrategy;
     }
 
     @Override
@@ -247,18 +252,20 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private void genericVisitCardinality(String type) {
         entityAssociation.setType(resolveAssociationType(sourceEntity, type));
-        entityAssociation.setToTargetPropertyNamePlural(inflectorService.pluralize(entityAssociation.getToTargetPropertyName()));
-        entityAssociation.setToSourcePropertyNamePlural(inflectorService.pluralize(entityAssociation.getToSourcePropertyName()));
+        entityAssociation
+                .setToTargetPropertyNamePlural(inflectorService.pluralize(entityAssociation.getToTargetPropertyName()));
+        entityAssociation
+                .setToSourcePropertyNamePlural(inflectorService.pluralize(entityAssociation.getToSourcePropertyName()));
 
         entityAssociation.setToTargetPropertyNameUnderscore(
                 SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNameUnderscore(
                 SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToSourcePropertyName()));
 
-        entityAssociation.setToTargetPropertyNameUnderscorePlural(
-                SchemaPropertiesParser.parseToUnderscore(inflectorService.pluralize(entityAssociation.getToTargetPropertyName())));
-        entityAssociation.setToSourcePropertyNameUnderscorePlural(
-                SchemaPropertiesParser.parseToUnderscore(inflectorService.pluralize(entityAssociation.getToSourcePropertyName())));
+        entityAssociation.setToTargetPropertyNameUnderscorePlural(SchemaPropertiesParser
+                .parseToUnderscore(inflectorService.pluralize(entityAssociation.getToTargetPropertyName())));
+        entityAssociation.setToSourcePropertyNameUnderscorePlural(SchemaPropertiesParser
+                .parseToUnderscore(inflectorService.pluralize(entityAssociation.getToSourcePropertyName())));
 
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
         resolveImports(sourceEntity, targetEntity, entityAssociation);
@@ -273,13 +280,15 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     public void processFieldType(Optional<GrammarFieldType> optional) {
         if (optional.isPresent()) {
             GrammarFieldType grammarPropertyType = optional.get();
-            javaProperty = createJavaProperty(propertyName, grammarPropertyType, pConf.getTargetDatabase().getDatabaseType());
+            javaProperty = createJavaProperty(propertyName, grammarPropertyType,
+                    pConf.getTargetDatabase().getDatabaseType());
 
             javaProperty.setConstraint(constraint);
             setPropertyToShow();
 
             sourceEntity.addProperty(javaProperty);
-            addContentType(sourceEntity, propertyName, pConf.getTargetDatabase().getDatabaseType(), grammarPropertyType);
+            addContentType(sourceEntity, propertyName, pConf.getTargetDatabase().getDatabaseType(),
+                    grammarPropertyType);
             GrammarMapping.addImports(sourceEntity.getImports(), javaProperty);
             DataBaseMapping.fillModelMetaData(sourceEntity, javaProperty);
         }
@@ -301,8 +310,8 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        entity.setPrimaryKey(createDefaultPrimaryKey(dbType));
-        entity.setDisplayField(createIdJavaProperty());
+        entity.setPrimaryKey(createDefaultPrimaryKey(dbType, primaryKeyNameStrategy.getName(entity)));
+        entity.setDisplayField(createIdJavaProperty(primaryKeyNameStrategy.getName(entity)));
     }
 
     private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {

@@ -82,11 +82,6 @@ public class DataBaseMapping {
     private static final String LONG_QUALIFIED_NAME = "java.lang.Long";
 
     /**
-     * The Constant ID_DEFAULT_NAME.
-     */
-    private static final String ID_DEFAULT_NAME = "id";
-
-    /**
      * The Constant PK_SUFIX.
      */
     private static final String PK_SUFIX = "PK";
@@ -140,33 +135,33 @@ public class DataBaseMapping {
      *            DatabaseType
      * @return the primary key
      */
-    public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType) {
+    public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType, String idName) {
         PrimaryKey pk = PrimaryKey.createOrderedDataModel();
         if (dbType.equals(DatabaseType.SQL_MYSQL)) {
             pk.setType(LONG_TYPE);
-            pk.setName(ID_DEFAULT_NAME);
+            pk.setName(idName);
             pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
             pk.setGenerationType(PKGenerationStrategy.IDENTITY);
         } else if (dbType.equals(DatabaseType.SQL_ORACLE)) {
             pk.setType(LONG_TYPE);
-            pk.setName(ID_DEFAULT_NAME);
+            pk.setName(idName);
             pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
             pk.setSequenceGeneratorName("sequenceGenerator");
             pk.setGenerationType(PKGenerationStrategy.SEQUENCE);
         } else {
             pk.setType(STRING_TYPE);
-            pk.setName(ID_DEFAULT_NAME);
+            pk.setName(idName);
             pk.setQualifiedLabel(STRING_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
         }
-        pk.addProperty(createIdJavaProperty());
+        pk.addProperty(createIdJavaProperty(idName));
         return pk;
     }
 
-    public static Property<JavaProperty> createIdJavaProperty() {
-        return JavaProperty.builder().withColumnName(ID_DEFAULT_NAME).withName(ID_DEFAULT_NAME)
+    public static Property<JavaProperty> createIdJavaProperty(String idName) {
+        return JavaProperty.builder().withColumnName(idName).withName(idName)
                 .addType(ColumnType.BIGINT).isIndexed(true).isNullable(false).isPrimaryKey(true).build();
     }
 
