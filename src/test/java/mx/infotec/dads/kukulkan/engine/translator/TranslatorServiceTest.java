@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -16,8 +14,10 @@ import mx.infotec.dads.kukulkan.engine.config.InflectorConf;
 import mx.infotec.dads.kukulkan.engine.config.XtextDSLConfiguration;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.service.DefaultModelValidator;
+import mx.infotec.dads.kukulkan.engine.service.DefaultPropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
+import mx.infotec.dads.kukulkan.engine.service.pk.DefaultPrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorService;
 import mx.infotec.dads.kukulkan.engine.translator.database.DefaultSchemaAnalyzer;
 import mx.infotec.dads.kukulkan.engine.translator.database.SchemaAnalyzer;
@@ -39,7 +39,7 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = { GrammarTranslatorService.class,
         DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
         InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
-        DefaultModelValidator.class })
+        DefaultModelValidator.class, DefaultPrimaryKeyNameStrategy.class, DefaultPropertyRankStrategy.class })
 @Import({ InflectorConf.class, XtextDSLConfiguration.class })
 public class TranslatorServiceTest {
 
@@ -58,8 +58,8 @@ public class TranslatorServiceTest {
         assert !dm.getDomainModelGroup().get(0).getEntities().isEmpty();
         assert fromFactory.getName().equals(generated.getName());
         assert fromFactory.getTableName().equals(generated.getTableName());
-        
-        //Display Field
+
+        // Display Field
         assert fromFactory.getDisplayField().getName().equals(generated.getDisplayField().getName());
 
         // nombre property

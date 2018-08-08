@@ -29,6 +29,7 @@ import mx.infotec.dads.kukulkan.engine.service.DefaultPropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
 import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
+import mx.infotec.dads.kukulkan.engine.service.pk.DefaultPrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseSource;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorService;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStore;
@@ -51,8 +52,9 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = { GrammarTranslatorService.class,
         DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
         InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
-        DefaultModelValidator.class, PropertyRankStrategy.class, DefaultPropertyRankStrategy.class })
-@Import({ InflectorConf.class, XtextDSLConfiguration.class }) 
+        DefaultModelValidator.class, PropertyRankStrategy.class, DefaultPropertyRankStrategy.class,
+        DefaultPrimaryKeyNameStrategy.class })
+@Import({ InflectorConf.class, XtextDSLConfiguration.class })
 public class DataBaseTranslatorServiceTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DataBaseTranslatorServiceTest.class);
@@ -84,7 +86,7 @@ public class DataBaseTranslatorServiceTest {
         });
     }
 
-//     @Test
+    // @Test
     public void databaseTranslatorServiceTemp() {
         DataStore dataStore = EntityFactory.createMySqlDataStore();
         DataContextProperties properties = createDataContextProperties(dataStore);
@@ -98,10 +100,9 @@ public class DataBaseTranslatorServiceTest {
             System.out.println("**********************************");
             System.out.println("Table Name :: " + table.getName());
             System.out.println("**********************************");
-             table.getColumns().forEach(column -> {
-             System.out.println("name[" + column.getName() + "] type[" +
-             column.getType() + "]");
-             });
+            table.getColumns().forEach(column -> {
+                System.out.println("name[" + column.getName() + "] type[" + column.getType() + "]");
+            });
             table.getRelationships().forEach(relationship -> {
                 System.out.println(relationship.toString());
             });
