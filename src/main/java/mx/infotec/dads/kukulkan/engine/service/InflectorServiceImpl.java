@@ -59,6 +59,9 @@ public class InflectorServiceImpl implements InflectorService {
      */
     @Override
     public String singularize(String word) {
+        if (word == null) {
+            return null;
+        }
         return resultOrWord(word, spanishInflector.singularize(word));
     }
 
@@ -72,6 +75,9 @@ public class InflectorServiceImpl implements InflectorService {
      */
     @Override
     public String pluralize(String word) {
+        if (word == null) {
+            return null;
+        }
         return resultOrWord(word, spanishInflector.pluralize(word));
     }
 
@@ -87,6 +93,9 @@ public class InflectorServiceImpl implements InflectorService {
      */
     @Override
     public String singularize(String word, Locale locale) throws UnsupportedLanguage {
+        if (word == null) {
+            return null;
+        }
         Inflector inflector = inflectorSelector(locale);
         return resultOrWord(word, inflector.singularize(word));
     }
@@ -103,6 +112,9 @@ public class InflectorServiceImpl implements InflectorService {
      */
     @Override
     public String pluralize(String word, Locale locale) throws UnsupportedLanguage {
+        if (word == null) {
+            return null;
+        }
         Inflector inflector = inflectorSelector(locale);
         return resultOrWord(word, inflector.pluralize(word));
     }
@@ -143,9 +155,6 @@ public class InflectorServiceImpl implements InflectorService {
      * @return
      */
     private static String resultOrWord(String word, String result) {
-        if (word == null) {
-            return null;
-        }
         if (result == null) {
             return word;
         } else {

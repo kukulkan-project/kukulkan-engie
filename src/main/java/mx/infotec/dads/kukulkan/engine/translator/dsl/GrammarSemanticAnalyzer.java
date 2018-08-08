@@ -73,7 +73,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     private ProjectConfiguration pConf = null;
 
     private InflectorService inflectorService;
-    
+
     private PrimaryKeyNameStrategy primaryKeyNameStrategy;
 
     private boolean isDisplayField = false;
@@ -254,9 +254,10 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         entityAssociation.setType(resolveAssociationType(sourceEntity, type));
         entityAssociation
                 .setToTargetPropertyNamePlural(inflectorService.pluralize(entityAssociation.getToTargetPropertyName()));
-        entityAssociation
-                .setToSourcePropertyNamePlural(inflectorService.pluralize(entityAssociation.getToSourcePropertyName()));
-
+        if (entityAssociation.isBidirectional()) {
+            entityAssociation.setToSourcePropertyNamePlural(
+                    inflectorService.pluralize(entityAssociation.getToSourcePropertyName()));
+        }
         entityAssociation.setToTargetPropertyNameUnderscore(
                 SchemaPropertiesParser.parseToUnderscore(entityAssociation.getToTargetPropertyName()));
         entityAssociation.setToSourcePropertyNameUnderscore(
