@@ -166,12 +166,17 @@ public class WriterServiceImpl implements WriterService {
     @Override
     public Optional<File> rewriteFile(String template, Path file, Object model, String needle) {
         try {
-            //Find needle in haystack
+            // Find needle in haystack
             List<String> haystack = Files.readAllLines(file);
             Optional<Integer> index = FileUtils.getNeedleIndex(haystack, "jhipster-needle-css-add-main");
 
             if (index.isPresent()) {
                 // Fill template with model
+                String filledTemplate = templateService.fillTemplate(template, model);
+                // Avoid duplicated content insert
+                if (haystack.stream().collect(Collectors.joining("\n")).contains(filledTemplate)) {
+                    return Optional.empty();
+                }
                 List<String> content = Stream.of(templateService.fillTemplate(template, model).split("\n"))
                         .collect(Collectors.toList());
                 // Rewrite file
