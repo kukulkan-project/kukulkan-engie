@@ -30,11 +30,13 @@ import static mx.infotec.dads.kukulkan.engine.util.TemplateUtil.processString;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +44,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateService;
+import mx.infotec.dads.kukulkan.engine.util.FileUtils;
 import mx.infotec.dads.kukulkan.engine.util.ListFileUtil;
-import mx.infotec.dads.kukulkan.engine.util.TemplateUtil;
 
 /**
  * 
@@ -158,6 +159,28 @@ public class WriterServiceImpl implements WriterService {
     public Optional<File> save(Path path, String content) {
         if (FileUtil.saveToFile(path, content)) {
             return Optional.of(path.toFile());
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<File> rewriteFile(String template, Path file, Object model, String needle) {
+        try {
+            //Find needle in haystack
+            List<String> haystack = Files.readAllLines(file);
+            Optional<Integer> index = FileUtils.getNeedleIndex(haystack, "jhipster-needle-css-add-main");
+
+            if (index.isPresent()) {
+                // Fill template with model
+                List<String> content = Stream.of(templateService.fillTemplate(template, model).split("\n"))
+                        .collect(Collectors.toList());
+                // Rewrite file
+                haystack.addAll(index.get(), content);
+                return save(file, FileUtil.joinWithNewLine(haystack));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }

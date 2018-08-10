@@ -26,6 +26,7 @@ package mx.infotec.dads.kukulkan.engine.service;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -179,5 +180,17 @@ public interface WriterService {
      * @return the file if created
      */
     public Optional<File> copySmart(String template, Path path, Function<String, String> function, Object model);
+
+    /**
+     * Find the needle in file and inserts the contents(template filled with model)
+     * before the needle if found
+     * 
+     * @param template
+     * @param file
+     * @param model
+     * @param needle
+     * @return the file if has been rewrited
+     */
+    public Optional<File> rewriteFile(String template, Path file, Object model, String needle);
 
 }

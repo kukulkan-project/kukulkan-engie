@@ -24,40 +24,10 @@
 
 package mx.infotec.dads.kukulkan.engine.util;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-
-import mx.infotec.dads.kukulkan.engine.service.FileUtil;
+import java.util.Optional;
 
 public class FileUtils {
-
-    /**
-     * Find the needle in file and inserts the contents before the needle if found
-     * 
-     * @param file
-     *            the text file
-     * @param needle
-     *            the substring to find
-     * @param content
-     *            the content to add if needle is found
-     * @return
-     */
-    public static void rewriteFile(String file, String needle, List<String> content) {
-        Path filePath = Paths.get(file);
-        List<String> haystack;
-        try {
-            haystack = Files.readAllLines(filePath);
-            Integer indexNeedle = getNeedleIndex(haystack, needle);
-            if (indexNeedle != null) {
-                haystack.addAll(indexNeedle.intValue(), content);
-                FileUtil.saveToFile(filePath, haystack);
-            }
-        } catch (IOException e) {
-        }
-    }
 
     /**
      * Find the needle in haystack and returns its index
@@ -68,13 +38,13 @@ public class FileUtils {
      *            the substring to find
      * @return the index needle
      */
-    public static Integer getNeedleIndex(List<String> haystack, String needle) {
+    public static Optional<Integer> getNeedleIndex(List<String> haystack, String needle) {
         for (int i = 0; i < haystack.size(); i++) {
             if (haystack.get(i).contains(needle)) {
-                return i;
+                return Optional.of(i);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
 }
