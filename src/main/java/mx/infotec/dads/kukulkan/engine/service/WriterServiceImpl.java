@@ -168,24 +168,25 @@ public class WriterServiceImpl implements WriterService {
         try {
             // Find needle in haystack
             List<String> haystack = Files.readAllLines(file);
-            Optional<Integer> index = FileUtils.getNeedleIndex(haystack, "jhipster-needle-css-add-main");
+            Optional<Integer> index = FileUtils.getNeedleIndex(haystack, needle);
 
             if (index.isPresent()) {
                 // Fill template with model
                 String filledTemplate = templateService.fillTemplate(template, model);
                 // Avoid duplicated content insert
-                if (haystack.stream().collect(Collectors.joining("\n")).contains(filledTemplate)) {
+                if (haystack.stream().collect(Collectors.joining(System.lineSeparator())).contains(filledTemplate)) {
                     return Optional.empty();
                 }
-                List<String> content = Stream.of(templateService.fillTemplate(template, model).split("\n"))
+                List<String> content = Stream
+                        .of(templateService.fillTemplate(template, model).split(System.lineSeparator()))
                         .collect(Collectors.toList());
                 // Rewrite file
                 haystack.addAll(index.get(), content);
-                return save(file, FileUtil.joinWithNewLine(haystack));
+                return save(file, haystack.stream().collect(Collectors.joining(System.lineSeparator())));
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to read {}", file);
         }
         return Optional.empty();
     }
