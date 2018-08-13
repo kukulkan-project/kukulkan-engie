@@ -41,9 +41,6 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
-    
-    @Autowired
-    private PrimaryKeyNameStrategy primaryKeyNameStrategy;
 
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
@@ -125,7 +122,8 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        entity.setDisplayField(createIdJavaProperty(primaryKeyNameStrategy.getName(entity)));
+        //Refactor in order to have a strategy from differents sourcess
+        entity.setDisplayField(createIdJavaProperty("id"));
     }
 
     public abstract void processPrimaryKey(SchemaAnalyzerContext context, final Entity entity, Column column);

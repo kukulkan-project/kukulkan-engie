@@ -311,8 +311,8 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        entity.setPrimaryKey(createDefaultPrimaryKey(dbType, primaryKeyNameStrategy.getName(entity)));
-        entity.setDisplayField(createIdJavaProperty(primaryKeyNameStrategy.getName(entity)));
+        entity.setPrimaryKey(createDefaultPrimaryKey(dbType, "id", primaryKeyNameStrategy.getPrimaryKeyPhysicalName(entity)));
+        entity.setDisplayField(createIdJavaProperty("id"));
     }
 
     private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {

@@ -31,6 +31,7 @@ import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Table;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
+import mx.infotec.dads.kukulkan.metamodel.conventions.PhysicalName;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.PrimaryKey;
@@ -133,30 +134,29 @@ public class DataBaseMapping {
      *
      * @param dbType
      *            DatabaseType
-     * @return the primary key
+     *l @return the primary key
      */
-    public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType, String idName) {
+    public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType, String idName, PhysicalName physicalName) {
         PrimaryKey pk = PrimaryKey.createOrderedDataModel();
+        pk.setPhysicalName(physicalName);
+        pk.setName(idName);
+        pk.addProperty(createIdJavaProperty(idName));
         if (dbType.equals(DatabaseType.SQL_MYSQL)) {
             pk.setType(LONG_TYPE);
-            pk.setName(idName);
             pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
             pk.setGenerationType(PKGenerationStrategy.IDENTITY);
         } else if (dbType.equals(DatabaseType.SQL_ORACLE)) {
             pk.setType(LONG_TYPE);
-            pk.setName(idName);
             pk.setQualifiedLabel(LONG_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
             pk.setSequenceGeneratorName("sequenceGenerator");
             pk.setGenerationType(PKGenerationStrategy.SEQUENCE);
         } else {
             pk.setType(STRING_TYPE);
-            pk.setName(idName);
             pk.setQualifiedLabel(STRING_QUALIFIED_NAME);
             pk.setComposed(Boolean.FALSE);
         }
-        pk.addProperty(createIdJavaProperty(idName));
         return pk;
     }
 
