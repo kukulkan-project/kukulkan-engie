@@ -4,7 +4,7 @@ import com.google.common.base.CaseFormat;
 
 import mx.infotec.dads.kukulkan.metamodel.conventions.PhysicalName;
 
-public class DefaultPrimaryKeyName implements PhysicalName {
+public class DefaultPhysicalName implements PhysicalName {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,7 +17,7 @@ public class DefaultPrimaryKeyName implements PhysicalName {
     private String snakeCase;
     private String snakeCasePlural;
 
-    public DefaultPrimaryKeyName(String loweCamelCaseName, String loweCamelCaseNamePlural) {
+    public DefaultPhysicalName(String loweCamelCaseName, String loweCamelCaseNamePlural) {
         this.upperCamelCase = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, loweCamelCaseName);
         this.upperCamelCasePlural = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, loweCamelCaseNamePlural);
         this.lowerCamelCase = loweCamelCaseName;
