@@ -29,6 +29,7 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.NumericValidators;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.PrimitiveField;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringFieldType;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.StringValidators;
+import mx.infotec.dads.kukulkan.dsl.kukulkan.ViewDeclaration;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.util.KukulkanSwitch;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
@@ -48,6 +49,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
     private static final String JAVA_UTIL_HASH_SET = "java.util.HashSet";
     private static final String JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
     private static final String JAVA_UTIL_COLLECTION = "java.util.Set";
+    private static final String SHEET_VIEW = "Sheet";
 
     /** The vctx. */
     private final VisitorContext vctx = new VisitorContext(new ArrayList<>());
@@ -218,6 +220,14 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             handleMaxLenght(object.getMaxValue().getValue());
         }
         return super.caseNumericValidators(object);
+    }
+
+    @Override
+    public VisitorContext caseViewDeclaration(ViewDeclaration object) {
+        if (SHEET_VIEW.equals(object.getViewType())) {
+            entityHolder.getEntity(object.getEntity().getName()).getFeatures().setSheetable(true);
+        }
+        return super.caseViewDeclaration(object);
     }
 
     private void handleRequiredField() {
