@@ -191,4 +191,10 @@ public class WriterServiceImpl implements WriterService {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<File> addMavenDependency(String template, Path projectFolder) {
+        return rewriteFile(template, projectFolder.resolve("pom.xml"), new Object(),
+                "<!-- jhipster-needle-maven-add-dependency -->");
+    }
+
 }

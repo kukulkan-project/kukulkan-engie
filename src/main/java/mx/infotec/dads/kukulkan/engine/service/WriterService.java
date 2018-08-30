@@ -26,7 +26,6 @@ package mx.infotec.dads.kukulkan.engine.service;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -192,5 +191,15 @@ public interface WriterService {
      * @return the file if has been rewrited
      */
     public Optional<File> rewriteFile(String template, Path file, Object model, String needle);
+
+    /**
+     * Add the Maven dependecy specified in template to the pom.xml contained in the
+     * projectFolder
+     * 
+     * @param template
+     * @param projectFolder
+     * @return the modified file if success
+     */
+    public Optional<File> addMavenDependency(String template, Path projectFolder);
 
 }
