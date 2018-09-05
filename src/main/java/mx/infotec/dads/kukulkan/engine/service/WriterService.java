@@ -202,4 +202,14 @@ public interface WriterService {
      */
     public Optional<File> addMavenDependency(String template, Path projectFolder);
 
+    /**
+     * Add an entity entry to the navigation bar
+     * 
+     * @param template
+     * @param projectFolder
+     * @param model
+     * @return
+     */
+    public Optional<File> addEntityMenuEntry(String template, Path projectFolder, Object model);
+
 }

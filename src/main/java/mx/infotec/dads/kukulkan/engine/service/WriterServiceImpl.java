@@ -197,4 +197,10 @@ public class WriterServiceImpl implements WriterService {
                 "<!-- jhipster-needle-maven-add-dependency -->");
     }
 
+    @Override
+    public Optional<File> addEntityMenuEntry(String template, Path projectFolder, Object model) {
+        return rewriteFile(template, projectFolder.resolve("src/main/webapp/app/layouts/navbar/navbar.html"), model,
+                "<!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->");
+    }
+
 }

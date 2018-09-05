@@ -20,6 +20,7 @@ import com.google.common.io.Resources;
 import freemarker.template.Configuration;
 import mx.infotec.dads.kukulkan.engine.config.PrintProviderConfiguration;
 import mx.infotec.dads.kukulkan.engine.templating.service.TemplateServiceImpl;
+import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { Configuration.class, TemplateServiceImpl.class, WriterServiceImpl.class, FileUtil.class })
@@ -46,9 +47,29 @@ public class WriterServiceTest {
         URL projectFolder = Resources.getResource(writerTestFolder);
         URL fileToRewrite = Resources.getResource(writerTestFolder + "/pom.xml");
         URL fileRewrited = Resources.getResource(writerTestFolder + "/pom-rewrited.xml");
-        writerService.addMavenDependency("target/test-classes/" + writerTestFolder + "/example-maven-dependency.ftl", Paths.get(projectFolder.toURI()));
+        writerService.addMavenDependency("target/test-classes/" + writerTestFolder + "/example-maven-dependency.ftl",
+                Paths.get(projectFolder.toURI()));
         assertEquals(Resources.toString(fileRewrited, Charsets.UTF_8),
                 Resources.toString(fileToRewrite, Charsets.UTF_8));
+    }
+
+    @Test
+    public void testAddEntityMenuEntry() throws URISyntaxException, IOException {
+        URL projectFolder = Resources.getResource(writerTestFolder);
+        URL fileToRewrite = Resources.getResource(writerTestFolder + "/src/main/webapp/layouts/navbar/navbar.html");
+        URL fileRewrited = Resources
+                .getResource(writerTestFolder + "/src/main/webapp/layouts/navbar/navbar-rewrited.html");
+        writerService.addEntityMenuEntry("target/test-classes/" + writerTestFolder + "/menu-entry.ftl",
+                Paths.get(projectFolder.toURI()), getEntity());
+        assertEquals(Resources.toString(fileRewrited, Charsets.UTF_8),
+                Resources.toString(fileToRewrite, Charsets.UTF_8));
+    }
+
+    public Entity getEntity() {
+        Entity entity = Entity.createDomainModelElement();
+        entity.setName("Persona");
+        entity.setCamelCaseFormat("persona");
+        return entity;
     }
 
 }
