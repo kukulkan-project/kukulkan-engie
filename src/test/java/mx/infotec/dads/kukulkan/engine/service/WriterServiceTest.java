@@ -56,9 +56,9 @@ public class WriterServiceTest {
     @Test
     public void testAddEntityMenuEntry() throws URISyntaxException, IOException {
         URL projectFolder = Resources.getResource(writerTestFolder);
-        URL fileToRewrite = Resources.getResource(writerTestFolder + "/src/main/webapp/layouts/navbar/navbar.html");
+        URL fileToRewrite = Resources.getResource(writerTestFolder + "/src/main/webapp/app/layouts/navbar/navbar.html");
         URL fileRewrited = Resources
-                .getResource(writerTestFolder + "/src/main/webapp/layouts/navbar/navbar-rewrited.html");
+                .getResource(writerTestFolder + "/src/main/webapp/app/layouts/navbar/navbar-rewrited.html");
         writerService.addEntityMenuEntry("target/test-classes/" + writerTestFolder + "/menu-entry.ftl",
                 Paths.get(projectFolder.toURI()), getEntity());
         assertEquals(Resources.toString(fileRewrited, Charsets.UTF_8),
