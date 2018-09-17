@@ -5,13 +5,11 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.ModelValidator;
-import mx.infotec.dads.kukulkan.metamodel.conventions.CodeStandard;
-import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
+import mx.infotec.dads.kukulkan.engine.service.PhysicalNameConventionService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
 import mx.infotec.dads.kukulkan.metamodel.foundation.JavaDomainModel;
@@ -32,20 +30,14 @@ public class GrammarTranslatorService implements TranslatorService {
     private ResourceSet resourceSet;
 
     @Autowired
-    @Qualifier("defaultPrimaryKeyNameStrategy")
-    private PrimaryKeyNameStrategy defaultPrimaryKeyNameStrategy;
-
-    @Autowired
-    @Qualifier("composedPrimaryKeyNameStrategy")
-    private PrimaryKeyNameStrategy composedKeyNameStrategy;
+    private PhysicalNameConventionService physicalNameConventionService;
 
     @Override
     public DomainModel translate(ProjectConfiguration pConf, Source from) {
         DomainModel domainModel = new JavaDomainModel();
-
         from.getSource(File.class).ifPresent(file -> {
             GrammarSemanticAnalyzer semanticAnalyzer = new GrammarSemanticAnalyzer(pConf, inflectorService,
-                    resolvePrimaryKeyNameStrategy(pConf.getCodeStandard()));
+                    physicalNameConventionService.getPhysicalNameConvention(pConf.getCodeStandard()));
             List<DomainModelGroup> dmgList = GrammarMapping.createSingleDataModelGroupList(semanticAnalyzer, file,
                     resourceSet);
             domainModel.setDomainModelGroup(dmgList);
@@ -54,11 +46,4 @@ public class GrammarTranslatorService implements TranslatorService {
         return domainModel;
     }
 
-    private PrimaryKeyNameStrategy resolvePrimaryKeyNameStrategy(CodeStandard cs) {
-        if (cs.equals(CodeStandard.DEFAULT)) {
-            return defaultPrimaryKeyNameStrategy;
-        } else {
-            return composedKeyNameStrategy;
-        }
-    }
 }

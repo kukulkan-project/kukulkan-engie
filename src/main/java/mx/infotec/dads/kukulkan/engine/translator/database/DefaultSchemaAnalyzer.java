@@ -7,13 +7,11 @@ import static mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarUtil.addCont
 import static mx.infotec.dads.kukulkan.engine.util.DataBaseMapping.createDefaultPrimaryKey;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
@@ -23,11 +21,8 @@ import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.dsl.GrammarMapping;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.metamodel.conventions.CodeStandard;
-import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
-import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 import mx.infotec.dads.kukulkan.metamodel.foundation.GrammarFieldType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Property;
 
@@ -46,21 +41,11 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     @Autowired
     private PropertyRankStrategy rankStrategy;
 
-
-    @Autowired
-    @Qualifier("defaultPrimaryKeyNameStrategy")
-    private PrimaryKeyNameStrategy defaultPrimaryKeyNameStrategy;
-
-    @Autowired
-    @Qualifier("composedPrimaryKeyNameStrategy")
-    private PrimaryKeyNameStrategy composedKeyNameStrategy;
-    
-
     @Override
     public void processPrimaryKey(SchemaAnalyzerContext context, Entity entity, Column column) {
-        PrimaryKeyNameStrategy primaryKeyNameStrategy = resolvePrimaryKeyNameStrategy(context.getProjectConfiguration().getCodeStandard());
         DatabaseType databaseType = context.getProjectConfiguration().getTargetDatabase().getDatabaseType();
-        entity.setPrimaryKey(createDefaultPrimaryKey(databaseType, "id", primaryKeyNameStrategy.getPrimaryKeyPhysicalName(entity)));
+        entity.setPrimaryKey(createDefaultPrimaryKey(databaseType, "id",
+                context.getPhysicalNameConvention().getPrimaryKeyNameStrategy().getPrimaryKeyPhysicalName(entity)));
     }
 
     @Override
@@ -122,13 +107,5 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     @Override
     public Optional<Property<?>> resolveDisplayField(Collection<Property> properties) {
         return rankStrategy.rank(properties);
-    }
-    
-    private PrimaryKeyNameStrategy resolvePrimaryKeyNameStrategy(CodeStandard cs) {
-        if (cs.equals(CodeStandard.DEFAULT)) {
-            return defaultPrimaryKeyNameStrategy;
-        } else {
-            return composedKeyNameStrategy;
-        }
     }
 }

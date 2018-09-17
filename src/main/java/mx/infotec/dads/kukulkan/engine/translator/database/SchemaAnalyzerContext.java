@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.metamodel.factory.DataContextProperties;
 
+import mx.infotec.dads.kukulkan.engine.model.PhysicalNameConvention;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
 import mx.infotec.dads.kukulkan.metamodel.foundation.ProjectConfiguration;
 
@@ -18,6 +19,7 @@ public class SchemaAnalyzerContext {
 
     private DataContextProperties dataContextProperties;
     private ProjectConfiguration projectConfiguration;
+    private PhysicalNameConvention physicalNameConvention;
 
     private List<Entity> elements = new ArrayList<>();
 
@@ -41,5 +43,13 @@ public class SchemaAnalyzerContext {
 
     public void addEntity(Entity entity) {
         this.elements.add(entity);
+    }
+
+    public PhysicalNameConvention getPhysicalNameConvention() {
+        return physicalNameConvention;
+    }
+
+    public void setPhysicalNameConvention(PhysicalNameConvention physicalNameConvention) {
+        this.physicalNameConvention = physicalNameConvention;
     }
 }

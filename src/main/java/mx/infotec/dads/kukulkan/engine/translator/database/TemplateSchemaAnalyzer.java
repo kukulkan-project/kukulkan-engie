@@ -20,9 +20,9 @@ import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
+import mx.infotec.dads.kukulkan.engine.model.PhysicalNameConvention;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
-import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
-import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
+import mx.infotec.dads.kukulkan.engine.service.PhysicalNameConventionService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModelGroup;
@@ -42,10 +42,16 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
     @Autowired
     private InflectorService inflectorService;
 
+    @Autowired
+    private PhysicalNameConventionService physicalNameConventionService;
+
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
         Schema schema = getDefaultSchema(context);
         EntityHolder entityHolder = new EntityHolder();
+        PhysicalNameConvention physicalNameConvention = physicalNameConventionService
+                .getPhysicalNameConvention(context.getProjectConfiguration().getCodeStandard());
+        context.setPhysicalNameConvention(physicalNameConvention);
         for (Table table : schema.getTables()) {
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
             Entity entity = entityHolder.getEntity(entityName);
@@ -122,7 +128,7 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        //Refactor in order to have a strategy from differents sourcess
+        // Refactor in order to have a strategy from differents sourcess
         entity.setDisplayField(createIdJavaProperty("id"));
     }
 

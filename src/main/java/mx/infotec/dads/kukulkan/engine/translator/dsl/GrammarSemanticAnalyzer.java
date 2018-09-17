@@ -33,6 +33,7 @@ import mx.infotec.dads.kukulkan.dsl.kukulkan.ViewDeclaration;
 import mx.infotec.dads.kukulkan.dsl.kukulkan.util.KukulkanSwitch;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
+import mx.infotec.dads.kukulkan.engine.model.PhysicalNameConvention;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
 import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
@@ -76,15 +77,15 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private InflectorService inflectorService;
 
-    private PrimaryKeyNameStrategy primaryKeyNameStrategy;
+    private PhysicalNameConvention physicalNameConvention;
 
     private boolean isDisplayField = false;
 
     public GrammarSemanticAnalyzer(ProjectConfiguration pConf, InflectorService inflectorService,
-            PrimaryKeyNameStrategy primaryKeyNameStrategy) {
+            PhysicalNameConvention physicalNameConvention) {
         this.pConf = pConf;
         this.inflectorService = inflectorService;
-        this.primaryKeyNameStrategy = primaryKeyNameStrategy;
+        this.physicalNameConvention = physicalNameConvention;
     }
 
     @Override
@@ -321,7 +322,8 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
-        entity.setPrimaryKey(createDefaultPrimaryKey(dbType, "id", primaryKeyNameStrategy.getPrimaryKeyPhysicalName(entity)));
+        entity.setPrimaryKey(createDefaultPrimaryKey(dbType, "id",
+                physicalNameConvention.getPrimaryKeyNameStrategy().getPrimaryKeyPhysicalName(entity)));
         entity.setDisplayField(createIdJavaProperty("id"));
     }
 
