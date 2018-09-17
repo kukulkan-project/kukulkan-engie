@@ -24,9 +24,10 @@ public class SchemaAnalyzerContext {
     private List<Entity> elements = new ArrayList<>();
 
     public SchemaAnalyzerContext(DataContextProperties dataContextProperties,
-            ProjectConfiguration projectConfiguration) {
+            ProjectConfiguration projectConfiguration, PhysicalNameConvention physicalNameConvention) {
         this.dataContextProperties = dataContextProperties;
         this.projectConfiguration = projectConfiguration;
+        this.physicalNameConvention = physicalNameConvention;
     }
 
     public DataContextProperties getDataContextProperties() {
@@ -47,9 +48,5 @@ public class SchemaAnalyzerContext {
 
     public PhysicalNameConvention getPhysicalNameConvention() {
         return physicalNameConvention;
-    }
-
-    public void setPhysicalNameConvention(PhysicalNameConvention physicalNameConvention) {
-        this.physicalNameConvention = physicalNameConvention;
     }
 }

@@ -41,17 +41,11 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
-
-    @Autowired
-    private PhysicalNameConventionService physicalNameConventionService;
-
+    
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
         Schema schema = getDefaultSchema(context);
         EntityHolder entityHolder = new EntityHolder();
-        PhysicalNameConvention physicalNameConvention = physicalNameConventionService
-                .getPhysicalNameConvention(context.getProjectConfiguration().getCodeStandard());
-        context.setPhysicalNameConvention(physicalNameConvention);
         for (Table table : schema.getTables()) {
             String entityName = SchemaPropertiesParser.parseToClassName(table.getName());
             Entity entity = entityHolder.getEntity(entityName);
