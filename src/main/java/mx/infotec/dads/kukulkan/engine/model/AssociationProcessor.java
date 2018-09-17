@@ -29,8 +29,11 @@ public class AssociationProcessor {
 
     private InflectorService inflectorService;
 
-    public AssociationProcessor(InflectorService inflectorService) {
+    private PhysicalNameConvention nameConvention;
+
+    public AssociationProcessor(InflectorService inflectorService, PhysicalNameConvention physicalNameConvention) {
         this.inflectorService = inflectorService;
+        this.nameConvention = physicalNameConvention;
     }
 
     public EntityAssociation add(Relationship relationship, EntityHolder entityHolder) {
@@ -58,6 +61,11 @@ public class AssociationProcessor {
                 .toTargetPropertyNameUnderscore(foreignColumn.toLowerCase())
                 .toTargetPropertyNameUnderscorePlural(inflectorService.pluralize(foreignColumn.toLowerCase()))
                 .source(sourceEntity).build();
+        // For references
+        entityAssociation.setToSourceReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
+                .getPhysicalReferenceName(entityAssociation.getToSourcePropertyNameUnderscore()));
+        entityAssociation.setToTargetReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
+                .getPhysicalReferenceName(entityAssociation.getToTargetPropertyNameUnderscore()));
         return entityAssociation;
     }
 

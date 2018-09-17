@@ -128,6 +128,8 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
         entity.setCamelCasePluralFormat(inflectorService.pluralize(entity.getCamelCaseFormat()));
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
+        entity.setReferencePhysicalName(context.getPhysicalNameConvention().getPhysicalReferenceNameStrategy()
+                .getPhysicalReferenceName(entity.getTableName()));
         // Refactor in order to have a strategy from differents sourcess
         entity.setDisplayField(createIdJavaProperty("id"));
     }

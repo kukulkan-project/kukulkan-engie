@@ -85,7 +85,7 @@ public class DefaultSchemaAnalyzer extends TemplateSchemaAnalyzer {
     @Override
     public void processRelationships(SchemaAnalyzerContext context, EntityHolder entityHolder,
             Collection<Relationship> relationships) {
-        AssociationProcessor associationProcessor = new AssociationProcessor(inflectorService);
+        AssociationProcessor associationProcessor = new AssociationProcessor(inflectorService, context.getPhysicalNameConvention());
         associationProcessor.processRelationships(relationships, entityHolder);
     }
 
