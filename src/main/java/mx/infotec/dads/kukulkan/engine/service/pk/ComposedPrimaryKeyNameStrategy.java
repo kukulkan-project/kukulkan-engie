@@ -3,6 +3,8 @@ package mx.infotec.dads.kukulkan.engine.service.pk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.CaseFormat;
+
 import mx.infotec.dads.kukulkan.engine.model.DefaultPhysicalName;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.metamodel.conventions.PhysicalName;
@@ -22,7 +24,9 @@ public class ComposedPrimaryKeyNameStrategy implements PrimaryKeyNameStrategy {
 
     @Override
     public PhysicalName getPrimaryKeyPhysicalName(Entity entity) {
-        return new DefaultPhysicalName("id" + entity.getName(), "id" + inflectorService.pluralize(entity.getName()));
+        String entityPlural = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
+                inflectorService.pluralize(entity.getName()));
+        return new DefaultPhysicalName("id" + entity.getName(), "id" + entityPlural);
     }
 
 }
