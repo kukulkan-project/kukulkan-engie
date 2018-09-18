@@ -15,7 +15,7 @@ public class DefaultPhysicalReferenceNameStrategy implements PhysicalReferenceNa
 
     @Override
     public String getPhysicalReferenceName(String snakeConventionName) {
-        return snakeConventionName + "_id";
+        return snakeConventionName != null ? snakeConventionName + "_id" : null;
     }
 
 }

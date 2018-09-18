@@ -15,6 +15,6 @@ public class CustomPhysicalReferenceNameStrategy implements PhysicalReferenceNam
 
     @Override
     public String getPhysicalReferenceName(String snakeConventionName) {
-        return "id_" + snakeConventionName;
+        return snakeConventionName != null ? "id_" + snakeConventionName : null;
     }
 }

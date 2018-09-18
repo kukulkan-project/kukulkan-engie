@@ -77,7 +77,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
 
     private InflectorService inflectorService;
 
-    private PhysicalNameConvention physicalNameConvention;
+    private PhysicalNameConvention nameConvention;
 
     private boolean isDisplayField = false;
 
@@ -85,7 +85,7 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
             PhysicalNameConvention physicalNameConvention) {
         this.pConf = pConf;
         this.inflectorService = inflectorService;
-        this.physicalNameConvention = physicalNameConvention;
+        this.nameConvention = physicalNameConvention;
     }
 
     @Override
@@ -280,6 +280,11 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
                 .parseToUnderscore(inflectorService.pluralize(entityAssociation.getToSourcePropertyName())));
 
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
+        // For references
+        entityAssociation.setToSourceReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
+                .getPhysicalReferenceName(entityAssociation.getToSourcePropertyNameUnderscore()));
+        entityAssociation.setToTargetReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
+                .getPhysicalReferenceName(entityAssociation.getToTargetPropertyNameUnderscore()));
         resolveImports(sourceEntity, targetEntity, entityAssociation);
     }
 
@@ -323,8 +328,11 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         entity.setHyphensFormat(parseToHyphens(entity.getCamelCaseFormat()));
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType, "id",
-                physicalNameConvention.getPrimaryKeyNameStrategy().getPrimaryKeyPhysicalName(entity)));
+                nameConvention.getPrimaryKeyNameStrategy().getPrimaryKeyPhysicalName(entity)));
+        entity.setReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
+                .getPhysicalReferenceName(entity.getTableName()));
         entity.setDisplayField(createIdJavaProperty("id"));
+        
     }
 
     private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
