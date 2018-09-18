@@ -62,10 +62,13 @@ public class AssociationProcessor {
                 .toTargetPropertyNameUnderscorePlural(inflectorService.pluralize(foreignColumn.toLowerCase()))
                 .source(sourceEntity).build();
         // For references
+        // Si la relación es OneToMany unidireccional entonces se debería usar
+        // getSource().getReferencePhysicalName en cualquier otro caso usar
+        // getToSourcePropertyNameUnderscorePlural
         entityAssociation.setToSourceReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
-                .getPhysicalReferenceName(entityAssociation.getToSourcePropertyNameUnderscore()));
+                .getPhysicalReferenceName(entityAssociation.getToSourcePropertyNameUnderscorePlural()));
         entityAssociation.setToTargetReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
-                .getPhysicalReferenceName(entityAssociation.getToTargetPropertyNameUnderscore()));
+                .getPhysicalReferenceName(entityAssociation.getToTargetPropertyNameUnderscorePlural()));
         return entityAssociation;
     }
 

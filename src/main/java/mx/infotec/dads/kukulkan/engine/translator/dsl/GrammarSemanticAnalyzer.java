@@ -36,7 +36,6 @@ import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
 import mx.infotec.dads.kukulkan.engine.model.PhysicalNameConvention;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.util.DataBaseMapping;
-import mx.infotec.dads.kukulkan.metamodel.conventions.PrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Constraint;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.Entity;
@@ -282,9 +281,9 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         assignAssociation(sourceEntity, targetEntity, entityAssociation);
         // For references
         entityAssociation.setToSourceReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
-                .getPhysicalReferenceName(entityAssociation.getToSourcePropertyNameUnderscore()));
+                .getPhysicalReferenceName(entityAssociation.getToSourcePropertyNameUnderscorePlural()));
         entityAssociation.setToTargetReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
-                .getPhysicalReferenceName(entityAssociation.getToTargetPropertyNameUnderscore()));
+                .getPhysicalReferenceName(entityAssociation.getToTargetPropertyNameUnderscorePlural()));
         resolveImports(sourceEntity, targetEntity, entityAssociation);
     }
 
@@ -329,10 +328,10 @@ public class GrammarSemanticAnalyzer extends KukulkanSwitch<VisitorContext> {
         entity.setHyphensPluralFormat(parseToHyphens(entity.getCamelCasePluralFormat()));
         entity.setPrimaryKey(createDefaultPrimaryKey(dbType, "id",
                 nameConvention.getPrimaryKeyNameStrategy().getPrimaryKeyPhysicalName(entity)));
-        entity.setReferencePhysicalName(nameConvention.getPhysicalReferenceNameStrategy()
-                .getPhysicalReferenceName(entity.getTableName()));
+        entity.setReferencePhysicalName(
+                nameConvention.getPhysicalReferenceNameStrategy().getPhysicalReferenceName(entity.getTableName()));
         entity.setDisplayField(createIdJavaProperty("id"));
-        
+
     }
 
     private void assignAssociation(Entity sourceEntity, Entity targetEntity, EntityAssociation entityAssociation) {
