@@ -114,12 +114,11 @@ public class FileUtil {
      *            the out put dir
      * @return the path
      */
-    public static PathPair buildRealFilePath(Path outPutDir, String proyectoId, BasePathEnum resourcePath,
-            String packaging, String layerName, String fileName) {
-        Path realPath = Paths.get(outPutDir.toString(), proyectoId, resourcePath.getPath(),
-                convertPackageToPath(packaging), layerName, fileName);
-        Path relativePath = Paths.get(proyectoId, resourcePath.getPath(), convertPackageToPath(packaging), layerName,
-                fileName);
+    public static PathPair buildRealFilePath(Path outPutDir, BasePathEnum resourcePath, String packaging,
+            String layerName, String fileName) {
+        Path realPath = outPutDir.resolve(resourcePath.getPath()).resolve(convertPackageToPath(packaging))
+                .resolve(layerName).resolve(fileName);
+        Path relativePath = Paths.get(resourcePath.getPath(), convertPackageToPath(packaging), layerName, fileName);
         return new PathPair(realPath, relativePath);
     }
 
