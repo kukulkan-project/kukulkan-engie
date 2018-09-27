@@ -133,8 +133,7 @@ public class DataBaseMapping {
      * Creates the default primary key.
      *
      * @param dbType
-     *            DatabaseType
-     *l @return the primary key
+     *            DatabaseType l @return the primary key
      */
     public static PrimaryKey createDefaultPrimaryKey(DatabaseType dbType, String idName, PhysicalName physicalName) {
         PrimaryKey pk = PrimaryKey.createOrderedDataModel();
@@ -161,8 +160,8 @@ public class DataBaseMapping {
     }
 
     public static Property<JavaProperty> createIdJavaProperty(String idName) {
-        return JavaProperty.builder().withColumnName(idName).withName(idName)
-                .addType(ColumnType.BIGINT).isIndexed(true).isNullable(false).isPrimaryKey(true).build();
+        return JavaProperty.builder().withColumnName(idName).withName(idName).addType(ColumnType.BIGINT).isIndexed(true)
+                .isNullable(false).isPrimaryKey(true).build();
     }
 
     /**
@@ -196,6 +195,10 @@ public class DataBaseMapping {
     public static void fillModelMetaData(Entity dme, JavaProperty javaProperty) {
         if (!javaProperty.getConstraint().isNullable()) {
             dme.setHasNotNullElements(true);
+            dme.setHasConstraints(true);
+        }
+        if (javaProperty.getConstraint().getMax() != null || javaProperty.getConstraint().getMax() != null
+                || javaProperty.getConstraint().getPattern() != null) {
             dme.setHasConstraints(true);
         }
         if (javaProperty.isTime()) {
