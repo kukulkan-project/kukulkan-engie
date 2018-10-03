@@ -14,18 +14,18 @@ import mx.infotec.dads.kukulkan.metamodel.foundation.EntityAssociation;
 @Service
 public class CustomPhysicalReferenceNameStrategy implements PhysicalReferenceNameStrategy {
 
-	@Override
-	public String getPhysicalReferenceName(EntityAssociation entityAssociation, boolean toSource) {
-		return toSource ? getToSourcePhysicalReferenceName(entityAssociation)
-				: getToTargetPhysicalReferenceName(entityAssociation);
-	}
+    @Override
+    public String getPhysicalReferenceName(EntityAssociation entityAssociation, boolean toSource) {
+        return toSource ? getToSourcePhysicalReferenceName(entityAssociation)
+                : getToTargetPhysicalReferenceName(entityAssociation);
+    }
 
-	public String getToSourcePhysicalReferenceName(EntityAssociation entityAssociation) {
-		return "fk_id_" + entityAssociation.getSource().getTableName();
-	}
+    public String getToSourcePhysicalReferenceName(EntityAssociation entityAssociation) {
+        return "id_" + entityAssociation.getSource().getTableName();
+    }
 
-	public String getToTargetPhysicalReferenceName(EntityAssociation entityAssociation) {
-		return "fk_id_" + entityAssociation.getTarget().getTableName();
-	}
+    public String getToTargetPhysicalReferenceName(EntityAssociation entityAssociation) {
+        return "id_" + entityAssociation.getTarget().getTableName();
+    }
 
 }
