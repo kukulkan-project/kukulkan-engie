@@ -20,6 +20,7 @@ import org.apache.metamodel.schema.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.infotec.dads.kukulkan.engine.model.EntityHolder;
+import mx.infotec.dads.kukulkan.engine.service.GeneratorPrintProvider;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DatabaseType;
 import mx.infotec.dads.kukulkan.metamodel.foundation.DomainModel;
@@ -40,6 +41,9 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
 
     @Autowired
     private InflectorService inflectorService;
+
+    @Autowired
+    private GeneratorPrintProvider printer;
 
     @Override
     public DomainModel analyse(SchemaAnalyzerContext context) {
@@ -67,9 +71,9 @@ public abstract class TemplateSchemaAnalyzer implements SchemaAnalyzer {
                 } else if (column.getType().isTimeBased()) {
                     processTimeBasedColumn(context, entity, column, isForeignKey);
                 } else {
-                    throw new SchemaAnalyzerException("Column type not supported :: " + column.getType().getName()
-                            + " for column " + column.getName() + " from table " + table.getName()
-                            + " with native column type: " + column.getNativeType());
+                    printer.error("Column type not supported :: " + column.getType().getName() + " for column "
+                            + column.getName() + " from table " + table.getName() + " with native column type: "
+                            + column.getNativeType());
                 }
                 entityHolder.update(entity);
             }
