@@ -81,7 +81,7 @@
 		<dependency>
 			<groupId>mx.infotec.dads.kukulkan.dsl</groupId>
 			<artifactId>kukulkan-grammar</artifactId>
-			<version>0.2.0-RELEASE</version>
+			<version>0.1.0-RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
