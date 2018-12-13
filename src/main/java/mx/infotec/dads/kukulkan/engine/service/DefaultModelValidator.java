@@ -16,43 +16,43 @@ import mx.infotec.dads.kukulkan.metamodel.util.ModelValidationException;
 @Service
 public class DefaultModelValidator implements ModelValidator {
 
-	public static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("^[A-Z]+[a-z0-9]+([A-Z]+[A-Za-z0-9]+)*$");
+    public static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("^[A-Z]+[a-z0-9]+([A-Z]+[a-z0-9]+)*$");
 
-	public static final Pattern PROPERTY_NAME_PATTERN = Pattern.compile("^[a-z]+([0-9])*([A-Z]+[A-Za-z0-9]+)*$");
+    public static final Pattern PROPERTY_NAME_PATTERN = Pattern.compile("^[a-z]+([0-9])*([A-Z]+[a-z0-9]+)*$");
 
-	@Override
-	public void validateEntityName(Entity entity) {
-		if (!isValid(ENTITY_NAME_PATTERN, entity.getName())) {
-			throw new ModelValidationException(entity.getName());
-		}
-	}
+    @Override
+    public void validateEntityName(Entity entity) {
+        if (!isValid(ENTITY_NAME_PATTERN, entity.getName())) {
+            throw new ModelValidationException(entity.getName());
+        }
+    }
 
-	@Override
-	public void validatePropertiesName(Entity entity) {
-		entity.getProperties().forEach(property -> {
-			if (!isValid(PROPERTY_NAME_PATTERN, property.getName())) {
-				throw new ModelValidationException(entity.getName(), property.getName());
-			}
-		});
-	}
+    @Override
+    public void validatePropertiesName(Entity entity) {
+        entity.getProperties().forEach(property -> {
+            if (!isValid(PROPERTY_NAME_PATTERN, property.getName())) {
+                throw new ModelValidationException(entity.getName(), property.getName());
+            }
+        });
+    }
 
-	@Override
-	public void validateAssociationNames(Entity entity) {
-		entity.getAssociations().forEach(association -> {
-			if (!isValid(PROPERTY_NAME_PATTERN, association.getToTargetPropertyName())) {
-				throw new ModelValidationException(entity.getName(), association.getToTargetPropertyName());
-			}
-			if (!isValid(PROPERTY_NAME_PATTERN, association.getToSourcePropertyName())) {
-				throw new ModelValidationException(entity.getName(), association.getToSourcePropertyName());
-			}
-		});
-	}
+    @Override
+    public void validateAssociationNames(Entity entity) {
+        entity.getAssociations().forEach(association -> {
+            if (!isValid(PROPERTY_NAME_PATTERN, association.getToTargetPropertyName())) {
+                throw new ModelValidationException(entity.getName(), association.getToTargetPropertyName());
+            }
+            if (!isValid(PROPERTY_NAME_PATTERN, association.getToSourcePropertyName())) {
+                throw new ModelValidationException(entity.getName(), association.getToSourcePropertyName());
+            }
+        });
+    }
 
-	private boolean isValid(Pattern pattern, String toTest) {
-		if (toTest != null) {
-			return pattern.matcher(toTest).find();
-		} else {
-			return true;
-		}
-	}
+    private boolean isValid(Pattern pattern, String toTest) {
+        if (toTest != null) {
+            return pattern.matcher(toTest).find();
+        } else {
+            return true;
+        }
+    }
 }

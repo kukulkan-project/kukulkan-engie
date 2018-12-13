@@ -13,11 +13,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import mx.infotec.dads.kukulkan.engine.config.InflectorConf;
 import mx.infotec.dads.kukulkan.engine.config.XtextDSLConfiguration;
 import mx.infotec.dads.kukulkan.engine.language.JavaProperty;
+import mx.infotec.dads.kukulkan.engine.service.DefaultGeneratorPrintProvider;
 import mx.infotec.dads.kukulkan.engine.service.DefaultModelValidator;
+import mx.infotec.dads.kukulkan.engine.service.DefaultPhysicalNameConventionService;
 import mx.infotec.dads.kukulkan.engine.service.DefaultPropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
+import mx.infotec.dads.kukulkan.engine.service.pk.ComposedPrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.engine.service.pk.DefaultPrimaryKeyNameStrategy;
+import mx.infotec.dads.kukulkan.engine.service.references.CustomPhysicalReferenceNameStrategy;
+import mx.infotec.dads.kukulkan.engine.service.references.DefaultPhysicalReferenceNameStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorService;
 import mx.infotec.dads.kukulkan.engine.translator.database.DefaultSchemaAnalyzer;
 import mx.infotec.dads.kukulkan.engine.translator.database.SchemaAnalyzer;
@@ -39,7 +44,10 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = { GrammarTranslatorService.class,
         DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
         InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
-        DefaultModelValidator.class, DefaultPrimaryKeyNameStrategy.class, DefaultPropertyRankStrategy.class })
+        DefaultModelValidator.class, DefaultPrimaryKeyNameStrategy.class, DefaultPropertyRankStrategy.class,
+        DefaultPhysicalNameConventionService.class, DefaultPrimaryKeyNameStrategy.class,
+        ComposedPrimaryKeyNameStrategy.class, DefaultPhysicalReferenceNameStrategy.class,
+        CustomPhysicalReferenceNameStrategy.class, DefaultGeneratorPrintProvider.class })
 @Import({ InflectorConf.class, XtextDSLConfiguration.class })
 public class TranslatorServiceTest {
 
@@ -49,7 +57,7 @@ public class TranslatorServiceTest {
     @Test
     public void grammarTranslatorServiceWithXtextSemanticAnalyzer() {
         ProjectConfiguration pConf = EntityFactory.createProjectConfiguration(DatabaseType.SQL_MYSQL);
-        Source fileSource = new FileSource("/home/roberto/git/kukulkan-engine/src/test/resources/domain-model.3k");
+        Source fileSource = new FileSource("target/test-classes/domain-model.3k");
         DomainModel dm = grammarTranslatorService.translate(pConf, fileSource);
 
         Entity generated = getEntity(dm, "Persona").get();

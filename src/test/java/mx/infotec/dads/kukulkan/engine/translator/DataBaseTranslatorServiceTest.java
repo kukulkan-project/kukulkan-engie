@@ -24,12 +24,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import mx.infotec.dads.kukulkan.engine.config.InflectorConf;
 import mx.infotec.dads.kukulkan.engine.config.XtextDSLConfiguration;
+import mx.infotec.dads.kukulkan.engine.service.DefaultGeneratorPrintProvider;
 import mx.infotec.dads.kukulkan.engine.service.DefaultModelValidator;
+import mx.infotec.dads.kukulkan.engine.service.DefaultPhysicalNameConventionService;
 import mx.infotec.dads.kukulkan.engine.service.DefaultPropertyRankStrategy;
 import mx.infotec.dads.kukulkan.engine.service.InflectorService;
 import mx.infotec.dads.kukulkan.engine.service.InflectorServiceImpl;
 import mx.infotec.dads.kukulkan.engine.service.PropertyRankStrategy;
+import mx.infotec.dads.kukulkan.engine.service.pk.ComposedPrimaryKeyNameStrategy;
 import mx.infotec.dads.kukulkan.engine.service.pk.DefaultPrimaryKeyNameStrategy;
+import mx.infotec.dads.kukulkan.engine.service.references.CustomPhysicalReferenceNameStrategy;
+import mx.infotec.dads.kukulkan.engine.service.references.DefaultPhysicalReferenceNameStrategy;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseSource;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataBaseTranslatorService;
 import mx.infotec.dads.kukulkan.engine.translator.database.DataStore;
@@ -53,7 +58,10 @@ import mx.infotec.dads.nlp.inflector.service.SpanishInflector;
         DataBaseTranslatorService.class, SchemaAnalyzer.class, DefaultSchemaAnalyzer.class, InflectorService.class,
         InflectorServiceImpl.class, Inflector.class, SpanishInflector.class, EnglishInflector.class,
         DefaultModelValidator.class, PropertyRankStrategy.class, DefaultPropertyRankStrategy.class,
-        DefaultPrimaryKeyNameStrategy.class })
+        DefaultPrimaryKeyNameStrategy.class, DefaultPhysicalNameConventionService.class,
+        DefaultPrimaryKeyNameStrategy.class, ComposedPrimaryKeyNameStrategy.class,
+        DefaultPhysicalReferenceNameStrategy.class, CustomPhysicalReferenceNameStrategy.class,
+        DefaultGeneratorPrintProvider.class })
 @Import({ InflectorConf.class, XtextDSLConfiguration.class })
 public class DataBaseTranslatorServiceTest {
 

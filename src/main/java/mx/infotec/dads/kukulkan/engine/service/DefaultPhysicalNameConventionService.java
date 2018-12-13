@@ -1,7 +1,5 @@
 package mx.infotec.dads.kukulkan.engine.service;
 
-import javax.annotation.processing.SupportedSourceVersion;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
